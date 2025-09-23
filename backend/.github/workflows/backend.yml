@@ -1,0 +1,17 @@
+name: Backend CI
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+      - run: npm ci
+        working-directory: backend
+      - run: npm run lint
+        working-directory: backend
+      - run: npm test
+        working-directory: backend
