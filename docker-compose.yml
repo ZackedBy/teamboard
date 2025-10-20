@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> docker compose
 services:
   frontend:
     build:
@@ -11,4 +14,8 @@ services:
       context: ./backend
     ports:
       - '3000:3000'
+<<<<<<< HEAD
     restart: always
+=======
+    restart: always
+>>>>>>> docker compose
