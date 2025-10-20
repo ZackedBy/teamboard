@@ -11,8 +11,8 @@ on:
 env:
   REGISTRY: ghcr.io
   REPOSITORY: ${{ github.repository }}
-  FRONTEND_IMAGE_NAME: 5g00dm04-3007/zada-frontend
-  BACKEND_IMAGE_NAME: 5g00dm04-3007/zada-backend
+  FRONTEND_IMAGE_NAME: 5g00dm04-3008/zada-frontend
+  BACKEND_IMAGE_NAME: 5g00dm04-3008/zada-backend
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
