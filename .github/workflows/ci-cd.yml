@@ -1,0 +1,59 @@
+# This is the CD/CD pipeline
+name: CI/CD
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push events but only for the "main" branch
+  push:
+    branches: ["main"]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+
+      # Installing a Node LTS version
+      - name: Install Node
+        uses: actions/setup-node@v4.1.0
+        with:
+          node-version: "22"
+
+      # Installing the node modules for the frontend
+      - name: Install Frontend Dependencies
+        working-directory: ./frontend
+        run: npm install
+
+      # Running lint check for the frontend
+      - name: Install Frontend Dependencies
+        working-directory: ./frontend
+        run: npm run lint
+
+      # Test that the frontend code build
+      - name: Run Frontend Tests
+        working-directory: ./frontend
+        run: npm run build
+
+      # Running the frontend tests
+      # Will be added in Week 40
+
+      # Installing the node modules for the backend
+      - name: Install Backend Dependencies
+        working-directory: ./backend
+        run: npm install
+
+      # Running the linter
+      - name: Run Backend Build
+        working-directory: ./backend
+        run: npm run lint
+
+      # Running backend tests
+      - name: Test Backend Code
+        working-directory: ./backend
+        run: npm run test
