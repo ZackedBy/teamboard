@@ -1,68 +1,64 @@
-# This is the CI/CD pipeline for Zada project
+# This is the CD/CD pipeline
 name: CI/CD
 
-# Trigger workflow on push to main branch
+# Controls when the workflow will run
 on:
+  # Triggers the workflow on push events but only for the "main" branch
   push:
     branches: ["main"]
 
+# Environment variables for easier maintenance
 env:
   REGISTRY: ghcr.io
   REPOSITORY: ${{ github.repository }}
   FRONTEND_IMAGE_NAME: 5g00dm04-3007/zada-frontend
   BACKEND_IMAGE_NAME: 5g00dm04-3007/zada-backend
 
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # -----------------------------
-  # Job 1: Test and build frontend & backend code
-  # -----------------------------
-  test-and-build:
+  # Job to build and test frontend and backend
+  test:
     runs-on: ubuntu-latest
     steps:
+      # Checkout code
       - uses: actions/checkout@v4
 
-      # Node setup for frontend
+      # Install Node LTS
       - name: Install Node
         uses: actions/setup-node@v4.1.0
         with:
           node-version: "22"
 
-      # Frontend dependencies
+      # Frontend
       - name: Install Frontend Dependencies
         working-directory: ./frontend
         run: npm install
 
-      # Lint frontend
       - name: Lint Frontend
         working-directory: ./frontend
         run: npm run lint
 
-      # Build frontend
       - name: Build Frontend
         working-directory: ./frontend
         run: npm run build
 
-      # Backend dependencies
+      # Backend
       - name: Install Backend Dependencies
         working-directory: ./backend
         run: npm install
 
-      # Lint backend
       - name: Lint Backend
         working-directory: ./backend
         run: npm run lint
 
-      # Test backend
-      - name: Test Backend Code
+      - name: Test Backend
         working-directory: ./backend
         run: npm run test
 
-  # -----------------------------
-  # Job 2: Build Docker images and push to GHCR
-  # -----------------------------
-  build-docker:
+  # Job for building Docker images and pushing them to GHCR
+  build:
     runs-on: ubuntu-latest
-    needs: test-and-build
+    needs: test
     permissions:
       contents: read
       packages: write
@@ -72,38 +68,39 @@ jobs:
       - name: Fetch Code
         uses: actions/checkout@v4
 
-      # Node setup if needed
+      # Install Node (needed for frontend build)
       - name: Install Node
         uses: actions/setup-node@v4.1.0
         with:
-          node-version: "20"
+          node-version: "22"
 
-      # Docker Buildx и QEMU
+      # Setup Docker build environment
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # Docker login в GHCR с персональным токеном
-      - name: Docker Login to GHCR
-        uses: docker/login-action@v3
+      # Login to GitHub Container Registry
+      - name: Docker Login
+        uses: docker/login-action@v3.3.0
         with:
-          registry: ghcr.io
-          username: 5G00DM04-3008 # твой GitHub username
-          password: ${{ secrets.GHCR_PAT }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Сборка и пуш фронтенда
-      - name: Build & Push Frontend Image
-        uses: docker/build-push-action@v5
+      # Build and push frontend image
+      - name: Build and push Docker Frontend image
+        uses: docker/build-push-action@v5.0.0
         with:
           context: ./frontend
           file: ./frontend/Dockerfile
           push: true
           tags: "${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:latest"
 
-      # Сборка и пуш бэкенда
-      - name: Build & Push Backend Image
-        uses: docker/build-push-action@v5
+      # Build and push backend image
+      - name: Build and push Docker Backend image
+        uses: docker/build-push-action@v5.0.0
         with:
           context: ./backend
           file: ./backend/Dockerfile
