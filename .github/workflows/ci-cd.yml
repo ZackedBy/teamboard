@@ -10,8 +10,8 @@ on:
 env:
   REGISTRY: ghcr.io
   REPOSITORY: ${{ github.repository }}
-  FRONTEND_IMAGE_NAME: 5g00dm04-3007/null-garden-frontend
-  BACKEND_IMAGE_NAME: 5g00dm04-3007/null-garden-backend
+  FRONTEND_IMAGE_NAME: 5g00dm04-3007/zada-frontend
+  BACKEND_IMAGE_NAME: 5g00dm04-3007/zada-backend
 
 jobs:
   # -----------------------------
