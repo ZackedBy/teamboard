@@ -41,6 +41,21 @@ describe("GET /api/v1/emojis/random", () => {
   });
 });
 
+describe("Schema Validation: GET /api/v1/emojis", () => {
+  it("validates that response is an array of strings", async () => {
+    const res = await request(app)
+      .get("/api/v1/emojis")
+      .expect(200);
+
+    expect(Array.isArray(res.body)).toBe(true);
+    expect(res.body.length).toBeGreaterThan(0);
+    
+    res.body.forEach((emoji) => {
+      expect(typeof emoji).toBe("string");
+    });
+  });
+});
+
 describe("Invalid route", () => {
   it("responds with 404", () =>
     request(app)
