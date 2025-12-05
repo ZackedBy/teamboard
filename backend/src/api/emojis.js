@@ -1,6 +1,5 @@
 import express from "express";
-import { env } from "./env.js";
-
+import { env } from "../env.js";
 const router = express.Router();
 
 const emojis = ["😀", "😳", "🙄"];
