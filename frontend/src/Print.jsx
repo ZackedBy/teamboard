@@ -1,11 +1,11 @@
-import Print from "./Print";
 import { useState } from "react";
+import Print from "./Print";
 
 const Greeting = () => {
-  const [ textChanged, setTextChanged] = useState(false);
+  const [textChanged, setTextChanged] = useState(false);
   const changeTextHandler = () => {
-    setTextChanged(!textChanged)
-  }
+    setTextChanged(!textChanged);
+  };
 
   return (
     <div>
@@ -14,7 +14,7 @@ const Greeting = () => {
       {textChanged && <Print>Changed!</Print>}
       <button onClick={changeTextHandler}>Change Text</button>
     </div>
-  )
-}
+  );
+};
 
 export default Greeting;

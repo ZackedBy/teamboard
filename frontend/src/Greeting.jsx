@@ -1,10 +1,10 @@
 import { useState } from "react";
 
 const Greeting = () => {
-  const [ textChanged, setTextChanged] = useState(false);
+  const [textChanged, setTextChanged] = useState(false);
   const changeTextHandler = () => {
-    setTextChanged(!textChanged)
-  }
+    setTextChanged(!textChanged);
+  };
 
   return (
     <div>
@@ -13,7 +13,7 @@ const Greeting = () => {
       {textChanged && <p>Changed</p>}
       <button onClick={changeTextHandler}>Change Text</button>
     </div>
-  )
-}
+  );
+};
 
 export default Greeting;
