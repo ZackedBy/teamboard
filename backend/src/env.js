@@ -5,6 +5,7 @@ const envSchema = z.object({
     .enum(["development", "production", "test"])
     .default("development"),
   PORT: z.coerce.number().default(3000),
+  FEATURE_RANDOM_EMOJI: z.coerce.boolean().default(true),
 });
 
 try {
