@@ -115,35 +115,61 @@ jobs:
   # 4. UPDATED JOB: DEPLOYMENT (с VPN, rsync, deploy user)
   deploy:
     runs-on: ubuntu-latest
-    needs: build # Depends on successful image build
-    continue-on-error: true # Для network issues
+    needs: build
+    continue-on-error: true
     steps:
-      - name: Checkout code # Нужно для rsync docker-compose
+      - name: Checkout code
         uses: actions/checkout@v5
 
-      # VPN Setup (обязательно для TUNI VM!)
+      # VPN Setup
       - name: Install OpenVPN
         run: |
           sudo apt update
           sudo apt install -y openvpn openvpn-systemd-resolved
 
+      # Setup config (расширь, если certs нужны — см. ниже)
       - name: Setup VPN config
         run: |
-          echo "${{ secrets.VPN_PASSWORD }}" > secret.txt  # Org-secret
-          echo "${{ secrets.VPN_CONFIG }}" > config.ovpn    # Org-secret
+          echo "${{ secrets.VPN_PASSWORD }}" > secret.txt
+          echo "${{ secrets.VPN_CONFIG }}" > config.ovpn
+          # Если TUNI требует certs: echo "${{ secrets.CA_CRT }}" > ca.crt  # Добавь secrets
+          # echo "${{ secrets.USER_CRT }}" > user.crt
+          # echo "${{ secrets.USER_KEY }}" > user.key
 
+      # Connect с action (лучше daemon: auto-handles restart/ping)
       - name: Connect VPN
-        run: sudo openvpn --config config.ovpn --daemon --log vpn.log
+        uses: kota65535/github-openvpn-connect-action@v2
+        with:
+          config_file: config.ovpn
+          password: ${{ secrets.VPN_PASSWORD }}
+          # Если certs: ca: ${{ secrets.CA_CRT }}, cert: ${{ secrets.USER_CRT }}, key: ${{ secrets.USER_KEY }}
+          # username: ${{ secrets.OVPN_USERNAME }}  # Если TUNI user-based
 
-      - name: Wait for VPN connection
-        timeout-minutes: 2
+      # Wait + DEBUG: Логи, роуты, IP-check
+      - name: Wait for VPN and Debug
+        timeout-minutes: 3 # Больше времени
         run: |
-          until ping -c1 ${{ secrets.REMOTE_SERVER }}; do
-            echo "Waiting for VPN...";
+          # Проверь VPN logs
+          echo "=== VPN LOGS ==="
+          tail -n 50 vpn.log || echo "No vpn.log"
+          # Проверь роуты (ищи конфликты 10.1.0.0 или 172.16.x)
+          echo "=== IP ADDR ==="
+          ip addr show
+          echo "=== ROUTES ==="
+          ip route show
+          # Ping приватный IP? (замени на твой из TUNI panel/status.tamk.cloud)
+          echo "=== PING PRIVATE? (use 172.16.x.x if available) ==="
+          ping -c 3 172.16.4.1 || echo "Private ping fail"
+          # Твой публичный ping
+          until ping -c 1 ${{ secrets.REMOTE_SERVER }}; do
+            echo "Waiting for VPN... (retry in 5s)";
             sleep 5;
           done
+          echo "VPN UP!"
+          # Check external IP change (через VPN?)
+          curl -s ifconfig.me || echo "No curl"
 
-      # SSH Setup (base64 decode DEPLOY_KEY_PRIVATE)
+      # Остальные шаги (SSH, rsync, deploy) — как раньше
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
