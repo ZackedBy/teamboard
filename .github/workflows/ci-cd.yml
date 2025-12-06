@@ -12,10 +12,7 @@ env:
   REPOSITORY: ${{ github.repository }}
   FRONTEND_IMAGE_NAME: 5g00dm04-3008/zada-frontend
   BACKEND_IMAGE_NAME: 5g00dm04-3008/zada-backend
-  VM_HOST: 193.167.167.59
-  VM_USER: zack
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # Job 1: Test the Backend
   backend_tests:
@@ -82,13 +79,21 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Copy staging .env to frontend folder
+        working-directory: ./frontend
+        run: echo "${{ secrets.FRONTEND_STAGING_ENV }}" > .env
+
       - name: Build and push Docker Frontend image
         uses: docker/build-push-action@v5.0.0
         with:
           context: ./frontend
           file: ./frontend/Dockerfile
           push: true
-          tags: "${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:latest"
+          tags: "${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}"
+
+      - name: Copy staging .env to backend folder
+        working-directory: ./backend
+        run: echo "${{ secrets.BACKEND_STAGING_ENV }}" > .env
 
       - name: Build and push Docker Backend image
         uses: docker/build-push-action@v5.0.0
@@ -96,28 +101,64 @@ jobs:
           context: ./backend
           file: ./backend/Dockerfile
           push: true
-          tags: "${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:latest"
+          tags: "${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}"
 
-  # 4. DEPLOYMENT
+  # Job 4: DEPLOYMENT
   deploy:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Deploy via SSH and Docker Compose
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ env.VM_HOST }}
-          username: ${{ env.VM_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd /home/${{ env.VM_USER }}/course-project-zada 
+      - name: Checkout
+        uses: actions/checkout@v5
 
-            git pull origin main
+      - name: Install OpenVPN and Rsync
+        run: |
+          sudo apt update
+          sudo apt --assume-yes --no-install-recommends install openvpn openvpn-systemd-resolved rsync
 
-            docker pull ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:latest
-            docker pull ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:latest
+      - name: Setup VPN config
+        run: |
+          echo "${{ secrets.VPN_PASSWORD }}" > secret.txt
+          echo "${{ secrets.VPN_CONFIG }}" | base64 -d > config.ovpn
 
-            docker compose down 
-            docker compose up -d 
+      - name: Connect VPN
+        run: sudo openvpn --config config.ovpn --daemon --log vpn.log
 
-            docker compose ps
+      - name: Wait for a VPN connection
+        timeout-minutes: 1
+        run: until ping -c1 ${{ secrets.REMOTE_SERVER }}; do sleep 10; done
+
+      - name: Setup SSH Key
+        run: |
+          mkdir -p ~/.ssh/
+          echo "${{ secrets.DEPLOY_KEY_PRIVATE }}" | base64 -d > ~/.ssh/id_rsa 
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.REMOTE_SERVER }} >> ~/.ssh/known_hosts
+
+      - name: Create and sync stack configuration
+        run: |
+          mkdir -p stage_stack
+          # ВАЖНО: Вы должны создать этот файл локально
+          cp docker-compose.staging.yml stage_stack/docker-compose.yml 
+
+          # Образы тегируются :latest в build, используем их здесь
+          echo "BACKEND_IMAGE=${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:latest" >> stage_stack/.env
+          echo "FRONTEND_IMAGE=${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:latest" >> stage_stack/.env
+
+          rsync -r stage_stack "${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_SERVER }}:./"
+
+      - name: Start containers via SSH
+        run: |
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_SERVER }} \
+          "
+          docker login ${{ env.REGISTRY }} -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }};
+          cd stage_stack;
+          docker compose pull;
+          docker compose up -d;
+          docker compose ps;
+          "
+
+      - name: Kill VPN connection
+        if: always()
+        run: |
+          sudo killall openvpn
