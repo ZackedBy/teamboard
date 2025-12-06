@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  # Backend API Service
+  backend:
+    # Image name is loaded from the BACKEND_IMAGE variable in the .env file
+    image: ${BACKEND_IMAGE} 
+    
+    # Frontend will communicate with the backend on port 3000
+    # The external port (3000) is the same as the internal container port (3000)
+    ports:
+      - "3000:3000"
+      
+    # Environment variables (NODE_ENV, PORT) are loaded from the .env file
+    # This .env file is created in the CI/CD pipeline step "Create and sync stack configuration"
+    env_file:
+      - .env
+      
+    restart: always
+
+  # Frontend Web Service
+  frontend:
+    # Image name is loaded from the FRONTEND_IMAGE variable in the .env file
+    image: ${FRONTEND_IMAGE}
+    
+    # Exposes the frontend on the default HTTP port 80 (accessible from the outside)
+    # The external port (80) maps to the internal port (80) of the frontend container
+    ports:
+      - "80:80"
+      
+    # Environment variables (VITE_API_URL, etc.) are loaded from the .env file
+    env_file:
+      - .env
+      
+    restart: always
+
+  # Database Service (PostgreSQL - Required for TeamBoard)
+  # NOTE: Add PostgreSQL service here if it is needed for the database (PostgreSQL in the tech stack guidelines).
+  # If you are using an external managed database, omit this service.
+  # postgres:
+  #   image: postgres:14-alpine
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data/
+  #   environment:
+  #     POSTGRES_USER: ${POSTGRES_USER}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  #     POSTGRES_DB: ${POSTGRES_DB}
+  #   ports:
+  #     - "5432:5432"
+  #   restart: always
+
+# Define named volumes for persistent data (like database storage)
+# volumes:
+#   postgres_data:
