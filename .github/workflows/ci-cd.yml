@@ -1,4 +1,3 @@
-# This is the CD/CD pipeline
 name: CI/CD
 
 # Controls when the workflow will run
@@ -13,79 +12,70 @@ env:
   REPOSITORY: ${{ github.repository }}
   FRONTEND_IMAGE_NAME: 5g00dm04-3008/zada-frontend
   BACKEND_IMAGE_NAME: 5g00dm04-3008/zada-backend
+  # 1. ПЕРЕМЕННЫЕ ДЛЯ РАЗВЕРТЫВАНИЯ
+  VM_HOST: 172.16.7.59 # IP-адрес вашего сервера
+  VM_USER: zack # Имя пользователя для SSH
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # Job to build and test frontend and backend
-  test:
+  # Job 1: Test the Backend
+  backend_tests:
     runs-on: ubuntu-latest
     steps:
-      # Checkout code
-      - uses: actions/checkout@v4
-
-      # Install Node LTS
+      - name: Checkout code
+        uses: actions/checkout@v5
       - name: Install Node
-        uses: actions/setup-node@v4.1.0
+        uses: actions/setup-node@v5
         with:
-          node-version: "22"
+          node-version: "20"
+      - name: Install Backend Dependencies
+        working-directory: ./backend
+        run: npm ci
+      - name: Lint Backend
+        working-directory: ./backend
+        run: npm run lint
+      - name: Test Backend
+        working-directory: ./backend
+        run: npm test
 
-      # Frontend
+  # Job 2: Test the Frontend
+  frontend_tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      - name: Install Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "20"
       - name: Install Frontend Dependencies
         working-directory: ./frontend
-        run: npm install
-
+        run: npm ci
       - name: Lint Frontend
         working-directory: ./frontend
         run: npm run lint
-
       - name: Test Frontend
         working-directory: ./frontend
         run: npm run test:ci
 
-      - name: Build Frontend
-        working-directory: ./frontend
-        run: npm run build
-
-      # Backend
-      - name: Install Backend Dependencies
-        working-directory: ./backend
-        run: npm install
-
-      - name: Lint Backend
-        working-directory: ./backend
-        run: npm run lint
-
-      - name: Test Backend
-        working-directory: ./backend
-        run: npm run test
-
-  # Job for building Docker images and pushing them to GHCR
+  # Job 3: Building Docker images and pushing them to GHCR
   build:
     runs-on: ubuntu-latest
-    needs: test
+    needs: [frontend_tests, backend_tests]
     permissions:
       contents: read
       packages: write
-
     steps:
-      # Checkout code
       - name: Fetch Code
-        uses: actions/checkout@v4
-
-      # Install Node (needed for frontend build)
+        uses: actions/checkout@v5
       - name: Install Node
-        uses: actions/setup-node@v4.1.0
+        uses: actions/setup-node@v5
         with:
-          node-version: "22"
-
-      # Setup Docker build environment
+          node-version: "20"
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-
-      # Login to GitHub Container Registry
       - name: Docker Login
         uses: docker/login-action@v3.3.0
         with:
@@ -93,7 +83,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Build and push frontend image
       - name: Build and push Docker Frontend image
         uses: docker/build-push-action@v5.0.0
         with:
@@ -102,7 +91,6 @@ jobs:
           push: true
           tags: "${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:latest"
 
-      # Build and push backend image
       - name: Build and push Docker Backend image
         uses: docker/build-push-action@v5.0.0
         with:
@@ -110,3 +98,27 @@ jobs:
           file: ./backend/Dockerfile
           push: true
           tags: "${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:latest"
+
+  # 4. DEPLOYMENT
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy via SSH and Docker Compose
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ env.VM_HOST }}
+          username: ${{ env.VM_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /home/${{ env.VM_USER }}/course-project-zada 
+
+            git pull origin main
+
+            docker pull ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:latest
+            docker pull ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:latest
+
+            docker compose down 
+            docker compose up -d 
+
+            docker compose ps
