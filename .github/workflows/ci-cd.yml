@@ -12,9 +12,8 @@ env:
   REPOSITORY: ${{ github.repository }}
   FRONTEND_IMAGE_NAME: 5g00dm04-3008/zada-frontend
   BACKEND_IMAGE_NAME: 5g00dm04-3008/zada-backend
-  # 1. ПЕРЕМЕННЫЕ ДЛЯ РАЗВЕРТЫВАНИЯ
-  VM_HOST: 172.16.7.59 # IP-адрес вашего сервера
-  VM_USER: zack # Имя пользователя для SSH
+  VM_HOST: 193.167.167.59
+  VM_USER: zack
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
