@@ -1,7 +1,8 @@
 import request from "supertest";
-import { describe, it, afterEach, expect, vi } from "vitest";
+import { describe, it, afterEach, expect, vi, beforeEach } from "vitest";
 
 import app from "../src/app.js";
+import pool from "../src/db/index.js";
 
 describe("GET /api/v1", () => {
   it("responds with a json message", () =>
@@ -67,4 +68,63 @@ describe("Invalid route", () => {
         expect(res.body).toHaveProperty("message");
         expect(res.body.message).toMatch(/Not Found/);
       }));
+});
+
+describe("Health Check: GET /api/v1/health", () => {
+  it("responds with 200 OK and status", async () => {
+    const res = await request(app)
+      .get("/api/v1/health")
+      .set("Accept", "application/json")
+      .expect("Content-Type", /json/)
+      .expect(200);
+
+    expect(res.body).toHaveProperty("status", "ok");
+    expect(res.body).toHaveProperty("timestamp");
+    expect(typeof res.body.timestamp).toBe("string");
+  });
+});
+
+describe("Readiness Check: GET /api/v1/ready", () => {
+  beforeEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it("responds with 200 OK when database is connected", async () => {
+    // Mock pool.query to return successfully
+    vi.spyOn(pool, "query").mockResolvedValueOnce({ rows: [{ "?column?": 1 }] });
+
+    const res = await request(app)
+      .get("/api/v1/ready")
+      .set("Accept", "application/json")
+      .expect("Content-Type", /json/)
+      .expect(200);
+
+    expect(res.body).toHaveProperty("status", "ready");
+    expect(res.body).toHaveProperty("database", "connected");
+    expect(res.body).toHaveProperty("timestamp");
+    expect(typeof res.body.timestamp).toBe("string");
+  });
+
+  it("responds with 503 Service Unavailable when database is down", async () => {
+    // Mock pool.query to throw an error
+    vi.spyOn(pool, "query").mockRejectedValueOnce(
+      new Error("Connection refused"),
+    );
+
+    const res = await request(app)
+      .get("/api/v1/ready")
+      .set("Accept", "application/json")
+      .expect("Content-Type", /json/)
+      .expect(503);
+
+    expect(res.body).toHaveProperty("status", "not ready");
+    expect(res.body).toHaveProperty("database", "disconnected");
+    expect(res.body).toHaveProperty("error");
+    expect(res.body).toHaveProperty("timestamp");
+    expect(typeof res.body.timestamp).toBe("string");
+  });
 });
