@@ -14,7 +14,9 @@ services:
     restart: always
 
   backend:
-    image: ${BACKEND_IMAGE} 
+    build:
+      context: ./backend
+    image: ${BACKEND_IMAGE:-course-project-zada-backend:latest}
     ports:
       - "3000:3000"
     env_file:
