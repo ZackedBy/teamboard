@@ -8,6 +8,9 @@ const pool = new pg.Pool({
     host: env.DB_HOST,
     port: env.DB_PORT,
     database: env.DB_NAME,
+    connectionTimeoutMillis: 5000, // 5 second connection timeout
+    idleTimeoutMillis: 30000,
+    max: 20,
 });
 
 /**

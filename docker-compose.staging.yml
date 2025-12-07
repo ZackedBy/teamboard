@@ -12,6 +12,11 @@ services:
     ports:
       - "5432:5432" 
     restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   backend:
     build:
@@ -29,7 +34,8 @@ services:
       - DB_PORT=5432
     restart: always
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
 
   frontend:
     image: ${FRONTEND_IMAGE}
