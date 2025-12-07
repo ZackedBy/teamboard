@@ -7,8 +7,19 @@ set -e  # Exit on error
 
 # Configuration
 DB_CONTAINER="${DB_CONTAINER:-course-project-zada-postgres-1}"
-DB_NAME="${POSTGRES_DB:-teamboard}"
-DB_USER="${POSTGRES_USER:-postgres}"
+
+# Get actual values from container environment if not set
+if [ -z "${POSTGRES_DB}" ]; then
+    DB_NAME=$(docker exec "${DB_CONTAINER}" sh -c 'echo $POSTGRES_DB' 2>/dev/null || echo "teamboard")
+else
+    DB_NAME="${POSTGRES_DB}"
+fi
+
+if [ -z "${POSTGRES_USER}" ]; then
+    DB_USER=$(docker exec "${DB_CONTAINER}" sh -c 'echo $POSTGRES_USER' 2>/dev/null || echo "postgres")
+else
+    DB_USER="${POSTGRES_USER}"
+fi
 
 # Check if backup file is provided
 if [ -z "$1" ]; then

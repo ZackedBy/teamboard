@@ -7,8 +7,19 @@ set -e  # Exit on error
 
 # Configuration
 DB_CONTAINER="${DB_CONTAINER:-course-project-zada-postgres-1}"
-DB_NAME="${POSTGRES_DB:-teamboard}"
-DB_USER="${POSTGRES_USER:-postgres}"
+
+# Get actual values from container environment if not set
+if [ -z "${POSTGRES_DB}" ]; then
+    DB_NAME=$(docker exec "${DB_CONTAINER}" sh -c 'echo $POSTGRES_DB' 2>/dev/null || echo "teamboard")
+else
+    DB_NAME="${POSTGRES_DB}"
+fi
+
+if [ -z "${POSTGRES_USER}" ]; then
+    DB_USER=$(docker exec "${DB_CONTAINER}" sh -c 'echo $POSTGRES_USER' 2>/dev/null || echo "postgres")
+else
+    DB_USER="${POSTGRES_USER}"
+fi
 BACKUP_DIR="${1:-./backups}"
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 BACKUP_FILE="${BACKUP_DIR}/teamboard_backup_${TIMESTAMP}.sql"
@@ -43,38 +54,15 @@ for i in {1..30}; do
     sleep 1
 done
 
-# Try to determine the actual database user
-# PostgreSQL Docker image creates a user based on POSTGRES_USER env var
-# If postgres user doesn't exist, try to find the actual user
-ACTUAL_USER="${DB_USER}"
-if ! docker exec "${DB_CONTAINER}" psql -U "${DB_USER}" -d postgres -c "SELECT 1;" > /dev/null 2>&1; then
-    echo "WARNING: User ${DB_USER} doesn't exist. Trying to find actual user..."
-    # Try common alternatives or check environment
-    POSTGRES_USER_ENV=$(docker exec "${DB_CONTAINER}" sh -c 'echo $POSTGRES_USER' 2>/dev/null || echo "")
-    if [ -n "${POSTGRES_USER_ENV}" ]; then
-        ACTUAL_USER="${POSTGRES_USER_ENV}"
-        echo "Found user from environment: ${ACTUAL_USER}"
-    else
-        # Try connecting without user (uses default)
-        if docker exec "${DB_CONTAINER}" psql -d postgres -c "SELECT current_user;" > /dev/null 2>&1; then
-            ACTUAL_USER=$(docker exec "${DB_CONTAINER}" psql -d postgres -t -c "SELECT current_user;" 2>/dev/null | tr -d ' ')
-            echo "Found user from connection: ${ACTUAL_USER}"
-        else
-            echo "ERROR: Cannot determine database user. Please check database initialization."
-            exit 1
-        fi
-    fi
-fi
-
 # Check if database exists, create if needed
-if ! docker exec "${DB_CONTAINER}" psql -U "${ACTUAL_USER}" -lqt 2>/dev/null | cut -d \| -f 1 | grep -qw "${DB_NAME}"; then
+if ! docker exec "${DB_CONTAINER}" psql -U "${DB_USER}" -lqt 2>/dev/null | cut -d \| -f 1 | grep -qw "${DB_NAME}"; then
     echo "WARNING: Database ${DB_NAME} does not exist yet. Creating it..."
-    docker exec "${DB_CONTAINER}" psql -U "${ACTUAL_USER}" -d postgres -c "CREATE DATABASE ${DB_NAME};" 2>/dev/null || true
+    docker exec "${DB_CONTAINER}" psql -U "${DB_USER}" -d postgres -c "CREATE DATABASE ${DB_NAME};" 2>/dev/null || true
 fi
 
 # Perform backup using pg_dump
-echo "Creating database backup with user: ${ACTUAL_USER}..."
-if docker exec "${DB_CONTAINER}" pg_dump -U "${ACTUAL_USER}" -d "${DB_NAME}" > "${BACKUP_FILE}" 2>&1; then
+echo "Creating database backup with user: ${DB_USER}..."
+if docker exec "${DB_CONTAINER}" pg_dump -U "${DB_USER}" -d "${DB_NAME}" > "${BACKUP_FILE}" 2>&1; then
     # Compress the backup
     echo "Compressing backup..."
     gzip -f "${BACKUP_FILE}"
