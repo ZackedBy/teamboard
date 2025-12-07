@@ -1,0 +1,84 @@
+
+Report Summary
+
+┌────────────────────────────────────────────────────┬────────┬─────────────────┬─────────┬───────────────────┐
+│                       Target                       │  Type  │ Vulnerabilities │ Secrets │ Misconfigurations │
+├────────────────────────────────────────────────────┼────────┼─────────────────┼─────────┼───────────────────┤
+│ course-project-zada-frontend:local (alpine 3.20.5) │ alpine │       18        │    -    │         -         │
+└────────────────────────────────────────────────────┴────────┴─────────────────┴─────────┴───────────────────┘
+Legend:
+- '-': Not scanned
+- '0': Clean (no security findings detected)
+
+
+course-project-zada-frontend:local (alpine 3.20.5)
+==================================================
+Total: 18 (UNKNOWN: 2, LOW: 5, MEDIUM: 9, HIGH: 2, CRITICAL: 0)
+
+┌───────────────┬────────────────┬──────────┬────────┬───────────────────┬───────────────┬──────────────────────────────────────────────────────────────┐
+│    Library    │ Vulnerability  │ Severity │ Status │ Installed Version │ Fixed Version │                            Title                             │
+├───────────────┼────────────────┼──────────┼────────┼───────────────────┼───────────────┼──────────────────────────────────────────────────────────────┤
+│ busybox       │ CVE-2024-58251 │ MEDIUM   │ fixed  │ 1.36.1-r29        │ 1.36.1-r31    │ In netstat in BusyBox through 1.37.0, local users can launch │
+│               │                │          │        │                   │               │ of networ...                                                 │
+│               │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2024-58251                   │
+│               ├────────────────┼──────────┤        │                   │               ├──────────────────────────────────────────────────────────────┤
+│               │ CVE-2025-46394 │ LOW      │        │                   │               │ In tar in BusyBox through 1.37.0, a TAR archive can have     │
+│               │                │          │        │                   │               │ filenames...                                                 │
+│               │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2025-46394                   │
+├───────────────┼────────────────┼──────────┤        │                   │               ├──────────────────────────────────────────────────────────────┤
+│ busybox-binsh │ CVE-2024-58251 │ MEDIUM   │        │                   │               │ In netstat in BusyBox through 1.37.0, local users can launch │
+│               │                │          │        │                   │               │ of networ...                                                 │
+│               │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2024-58251                   │
+│               ├────────────────┼──────────┤        │                   │               ├──────────────────────────────────────────────────────────────┤
+│               │ CVE-2025-46394 │ LOW      │        │                   │               │ In tar in BusyBox through 1.37.0, a TAR archive can have     │
+│               │                │          │        │                   │               │ filenames...                                                 │
+│               │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2025-46394                   │
+├───────────────┼────────────────┼──────────┤        ├───────────────────┼───────────────┼──────────────────────────────────────────────────────────────┤
+│ libcrypto3    │ CVE-2024-12797 │ HIGH     │        │ 3.3.2-r1          │ 3.3.3-r0      │ openssl: RFC7250 handshakes with unauthenticated servers     │
+│               │                │          │        │                   │               │ don't abort as expected                                      │
+│               │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2024-12797                   │
+│               ├────────────────┼──────────┤        │                   ├───────────────┼──────────────────────────────────────────────────────────────┤
+│               │ CVE-2024-13176 │ MEDIUM   │        │                   │ 3.3.2-r2      │ openssl: Timing side-channel in ECDSA signature computation  │
+│               │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2024-13176                   │
+│               ├────────────────┤          │        │                   ├───────────────┼──────────────────────────────────────────────────────────────┤
+│               │ CVE-2025-9230  │          │        │                   │ 3.3.5-r0      │ openssl: Out-of-bounds read & write in RFC 3211 KEK Unwrap   │
+│               │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2025-9230                    │
+│               ├────────────────┤          │        │                   │               ├──────────────────────────────────────────────────────────────┤
+│               │ CVE-2025-9231  │          │        │                   │               │ openssl: Timing side-channel in SM2 algorithm on 64 bit ARM  │
+│               │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2025-9231                    │
+│               ├────────────────┼──────────┤        │                   │               ├──────────────────────────────────────────────────────────────┤
+│               │ CVE-2025-9232  │ LOW      │        │                   │               │ openssl: Out-of-bounds read in HTTP client no_proxy handling │
+│               │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2025-9232                    │
+├───────────────┼────────────────┼──────────┤        │                   ├───────────────┼──────────────────────────────────────────────────────────────┤
+│ libssl3       │ CVE-2024-12797 │ HIGH     │        │                   │ 3.3.3-r0      │ openssl: RFC7250 handshakes with unauthenticated servers     │
+│               │                │          │        │                   │               │ don't abort as expected                                      │
+│               │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2024-12797                   │
+│               ├────────────────┼──────────┤        │                   ├───────────────┼──────────────────────────────────────────────────────────────┤
+│               │ CVE-2024-13176 │ MEDIUM   │        │                   │ 3.3.2-r2      │ openssl: Timing side-channel in ECDSA signature computation  │
+│               │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2024-13176                   │
+│               ├────────────────┤          │        │                   ├───────────────┼──────────────────────────────────────────────────────────────┤
+│               │ CVE-2025-9230  │          │        │                   │ 3.3.5-r0      │ openssl: Out-of-bounds read & write in RFC 3211 KEK Unwrap   │
+│               │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2025-9230                    │
+│               ├────────────────┤          │        │                   │               ├──────────────────────────────────────────────────────────────┤
+│               │ CVE-2025-9231  │          │        │                   │               │ openssl: Timing side-channel in SM2 algorithm on 64 bit ARM  │
+│               │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2025-9231                    │
+│               ├────────────────┼──────────┤        │                   │               ├──────────────────────────────────────────────────────────────┤
+│               │ CVE-2025-9232  │ LOW      │        │                   │               │ openssl: Out-of-bounds read in HTTP client no_proxy handling │
+│               │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2025-9232                    │
+├───────────────┼────────────────┼──────────┤        ├───────────────────┼───────────────┼──────────────────────────────────────────────────────────────┤
+│ musl          │ CVE-2025-26519 │ UNKNOWN  │        │ 1.2.5-r0          │ 1.2.5-r1      │ musl libc 0.9.13 through 1.2.5 before 1.2.6 has an           │
+│               │                │          │        │                   │               │ out-of-bounds write ......                                   │
+│               │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2025-26519                   │
+├───────────────┤                │          │        │                   │               │                                                              │
+│ musl-utils    │                │          │        │                   │               │                                                              │
+│               │                │          │        │                   │               │                                                              │
+│               │                │          │        │                   │               │                                                              │
+├───────────────┼────────────────┼──────────┤        ├───────────────────┼───────────────┼──────────────────────────────────────────────────────────────┤
+│ ssl_client    │ CVE-2024-58251 │ MEDIUM   │        │ 1.36.1-r29        │ 1.36.1-r31    │ In netstat in BusyBox through 1.37.0, local users can launch │
+│               │                │          │        │                   │               │ of networ...                                                 │
+│               │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2024-58251                   │
+│               ├────────────────┼──────────┤        │                   │               ├──────────────────────────────────────────────────────────────┤
+│               │ CVE-2025-46394 │ LOW      │        │                   │               │ In tar in BusyBox through 1.37.0, a TAR archive can have     │
+│               │                │          │        │                   │               │ filenames...                                                 │
+│               │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2025-46394                   │
+└───────────────┴────────────────┴──────────┴────────┴───────────────────┴───────────────┴──────────────────────────────────────────────────────────────┘

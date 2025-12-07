@@ -14,7 +14,11 @@ const envSchema = z.object({
   POSTGRES_DB: z.string().optional(),
   POSTGRES_USER: z.string().optional(),
   POSTGRES_PASSWORD: z.string().optional(),
-  JWT_SECRET: z.string().default("your-secret-key-change-in-production"),
+  JWT_SECRET: z
+    .string()
+    .min(32, "JWT_SECRET must be at least 32 characters long")
+    .default("your-secret-key-change-in-production"),
+  ALLOWED_ORIGINS: z.string().optional(),
 });
 
 // Парсим один раз и экспортируем. Если ошибка - процесс упадет.
@@ -23,6 +27,21 @@ let parsedEnv;
 try {
   // eslint-disable-next-line node/no-process-env
   parsedEnv = envSchema.parse(process.env);
+
+  // Security check: In production, JWT_SECRET must be explicitly set
+  if (
+    parsedEnv.NODE_ENV === "production" &&
+    parsedEnv.JWT_SECRET === "your-secret-key-change-in-production"
+  ) {
+    console.error(
+      "❌ SECURITY ERROR: JWT_SECRET must be explicitly set in production.",
+    );
+    console.error(
+      "   The default value 'your-secret-key-change-in-production' is not allowed.",
+    );
+    console.error("   Please set JWT_SECRET environment variable to a strong secret (min 32 characters).");
+    process.exit(1);
+  }
 } catch (error) {
   if (error instanceof z.ZodError) {
     console.error(

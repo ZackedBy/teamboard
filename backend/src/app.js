@@ -5,7 +5,8 @@ import morgan from "morgan";
 
 import api from "./api/index.js";
 import { checkDbConnection } from "./database.js";
-import healthRouter from "./api/health.js"; // Health check router
+import healthRouter from "./api/health.js";
+import { env } from "./env.js";
 
 import * as middlewares from "./middlewares.js";
 
@@ -13,7 +14,30 @@ const app = express();
 
 app.use(morgan("dev"));
 app.use(helmet());
-app.use(cors());
+
+// Configure CORS with allowed origins
+const allowedOrigins = env.ALLOWED_ORIGINS
+  ? env.ALLOWED_ORIGINS.split(",").map((origin) => origin.trim())
+  : env.NODE_ENV === "production"
+    ? []
+    : ["http://localhost:80", "http://localhost:3000", "http://127.0.0.1:80"];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (mobile apps, Postman, etc.)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.length === 0 || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  }),
+);
+
 app.use(express.json());
 
 // Health check endpoints at root level

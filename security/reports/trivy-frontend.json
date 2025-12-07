@@ -1,0 +1,2743 @@
+{
+  "SchemaVersion": 2,
+  "ReportID": "019af9c5-28f6-7b98-a5cc-248e74e30bc3",
+  "CreatedAt": "2025-12-07T19:03:59.22276+02:00",
+  "ArtifactID": "sha256:ce682033ffcfebe810b99f952778679a1d874824bb3f7b324a135ab880ec73a6",
+  "ArtifactName": "course-project-zada-frontend:local",
+  "ArtifactType": "container_image",
+  "Metadata": {
+    "Size": 14253056,
+    "OS": {
+      "Family": "alpine",
+      "Name": "3.20.5"
+    },
+    "ImageID": "sha256:7a9ae96ff644b739b22a99647a875191a8f75b52a37665db87c53698bafad2b8",
+    "DiffIDs": [
+      "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c",
+      "sha256:b2910501c84396134537ff442a4e2222ab6486c6016ea4c1016ed96337ef64ef",
+      "sha256:cbb38b57f14055b3acc7a4bae43e5a41bcd7621c1f56f3f920abb89a65c3c025",
+      "sha256:e1482d48072939900a66dbbec794450822aff9176d11302592f230249da91238",
+      "sha256:3bc38db2acdbab2b44537e4a354dbcb05ed3bbbcb54674993471ee0c7232f041",
+      "sha256:20ca17bb1caf19cc991d7b4bc6915b25c9fbe1e1b297f04712ec692b53017c9a",
+      "sha256:856b39837f15b572e89d179002698b4f4e7447d91740590718368b7ebec9ff63",
+      "sha256:603aa6ec4ba88ddbb5b0089da3183e9d5353358e512de786399ce76ed0e8b6ac",
+      "sha256:0b4f2cfcd875ff7af214509d4034e4d694bf3e6947467ee7bd3d2d190b2c14d3"
+    ],
+    "RepoTags": [
+      "course-project-zada-frontend:local"
+    ],
+    "Reference": "course-project-zada-frontend:local",
+    "ImageConfig": {
+      "architecture": "arm64",
+      "created": "2025-12-07T17:03:41.033966341Z",
+      "history": [
+        {
+          "created": "2024-11-26T18:42:08Z",
+          "created_by": "ADD alpine-minirootfs-3.20.5-aarch64.tar.gz / # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-11-26T18:42:08Z",
+          "created_by": "CMD [\"/bin/sh\"]",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-11-26T18:42:08Z",
+          "created_by": "LABEL maintainer=NGINX Docker Maintainers \u003cdocker-maint@nginx.com\u003e",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-11-26T18:42:08Z",
+          "created_by": "ENV NGINX_VERSION=1.27.3",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-11-26T18:42:08Z",
+          "created_by": "ENV PKG_RELEASE=1",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-11-26T18:42:08Z",
+          "created_by": "ENV DYNPKG_RELEASE=1",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-11-26T18:42:08Z",
+          "created_by": "RUN /bin/sh -c set -x     \u0026\u0026 addgroup -g 101 -S nginx     \u0026\u0026 adduser -S -D -H -u 101 -h /var/cache/nginx -s /sbin/nologin -G nginx -g nginx nginx     \u0026\u0026 apkArch=\"$(cat /etc/apk/arch)\"     \u0026\u0026 nginxPackages=\"         nginx=${NGINX_VERSION}-r${PKG_RELEASE}     \"     \u0026\u0026 apk add --no-cache --virtual .checksum-deps         openssl     \u0026\u0026 case \"$apkArch\" in         x86_64|aarch64)             set -x             \u0026\u0026 KEY_SHA512=\"e09fa32f0a0eab2b879ccbbc4d0e4fb9751486eedda75e35fac65802cc9faa266425edf83e261137a2f4d16281ce2c1a5f4502930fe75154723da014214f0655\"             \u0026\u0026 wget -O /tmp/nginx_signing.rsa.pub https://nginx.org/keys/nginx_signing.rsa.pub             \u0026\u0026 if echo \"$KEY_SHA512 */tmp/nginx_signing.rsa.pub\" | sha512sum -c -; then                 echo \"key verification succeeded!\";                 mv /tmp/nginx_signing.rsa.pub /etc/apk/keys/;             else                 echo \"key verification failed!\";                 exit 1;             fi             \u0026\u0026 apk add -X \"https://nginx.org/packages/mainline/alpine/v$(egrep -o '^[0-9]+\\.[0-9]+' /etc/alpine-release)/main\" --no-cache $nginxPackages             ;;         *)             set -x             \u0026\u0026 tempDir=\"$(mktemp -d)\"             \u0026\u0026 chown nobody:nobody $tempDir             \u0026\u0026 apk add --no-cache --virtual .build-deps                 gcc                 libc-dev                 make                 openssl-dev                 pcre2-dev                 zlib-dev                 linux-headers                 bash                 alpine-sdk                 findutils                 curl             \u0026\u0026 su nobody -s /bin/sh -c \"                 export HOME=${tempDir}                 \u0026\u0026 cd ${tempDir}                 \u0026\u0026 curl -f -L -O https://github.com/nginx/pkg-oss/archive/${NGINX_VERSION}-${PKG_RELEASE}.tar.gz                 \u0026\u0026 PKGOSSCHECKSUM=\\\"5617feecfb441cd972b9ac51a2fd78384a3d2bde2f399163be0746d44ec8f7d8c47234af4f6b0012667c3d0446cced521f55f8f71254415e3766c2e3802bf960 *${NGINX_VERSION}-${PKG_RELEASE}.tar.gz\\\"                 \u0026\u0026 if [ \\\"\\$(openssl sha512 -r ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz)\\\" = \\\"\\$PKGOSSCHECKSUM\\\" ]; then                     echo \\\"pkg-oss tarball checksum verification succeeded!\\\";                 else                     echo \\\"pkg-oss tarball checksum verification failed!\\\";                     exit 1;                 fi                 \u0026\u0026 tar xzvf ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz                 \u0026\u0026 cd pkg-oss-${NGINX_VERSION}-${PKG_RELEASE}                 \u0026\u0026 cd alpine                 \u0026\u0026 make base                 \u0026\u0026 apk index --allow-untrusted -o ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz ${tempDir}/packages/alpine/${apkArch}/*.apk                 \u0026\u0026 abuild-sign -k ${tempDir}/.abuild/abuild-key.rsa ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz                 \"             \u0026\u0026 cp ${tempDir}/.abuild/abuild-key.rsa.pub /etc/apk/keys/             \u0026\u0026 apk del --no-network .build-deps             \u0026\u0026 apk add -X ${tempDir}/packages/alpine/ --no-cache $nginxPackages             ;;     esac     \u0026\u0026 apk del --no-network .checksum-deps     \u0026\u0026 if [ -n \"$tempDir\" ]; then rm -rf \"$tempDir\"; fi     \u0026\u0026 if [ -f \"/etc/apk/keys/abuild-key.rsa.pub\" ]; then rm -f /etc/apk/keys/abuild-key.rsa.pub; fi     \u0026\u0026 apk add --no-cache --virtual .gettext gettext     \u0026\u0026 mv /usr/bin/envsubst /tmp/         \u0026\u0026 runDeps=\"$(         scanelf --needed --nobanner /tmp/envsubst             | awk '{ gsub(/,/, \"\\nso:\", $2); print \"so:\" $2 }'             | sort -u             | xargs -r apk info --installed             | sort -u     )\"     \u0026\u0026 apk add --no-cache $runDeps     \u0026\u0026 apk del --no-network .gettext     \u0026\u0026 mv /tmp/envsubst /usr/local/bin/     \u0026\u0026 apk add --no-cache tzdata     \u0026\u0026 ln -sf /dev/stdout /var/log/nginx/access.log     \u0026\u0026 ln -sf /dev/stderr /var/log/nginx/error.log     \u0026\u0026 mkdir /docker-entrypoint.d # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-11-26T18:42:08Z",
+          "created_by": "COPY docker-entrypoint.sh / # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-11-26T18:42:08Z",
+          "created_by": "COPY 10-listen-on-ipv6-by-default.sh /docker-entrypoint.d # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-11-26T18:42:08Z",
+          "created_by": "COPY 15-local-resolvers.envsh /docker-entrypoint.d # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-11-26T18:42:08Z",
+          "created_by": "COPY 20-envsubst-on-templates.sh /docker-entrypoint.d # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-11-26T18:42:08Z",
+          "created_by": "COPY 30-tune-worker-processes.sh /docker-entrypoint.d # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-11-26T18:42:08Z",
+          "created_by": "ENTRYPOINT [\"/docker-entrypoint.sh\"]",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-11-26T18:42:08Z",
+          "created_by": "EXPOSE map[80/tcp:{}]",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-11-26T18:42:08Z",
+          "created_by": "STOPSIGNAL SIGQUIT",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-11-26T18:42:08Z",
+          "created_by": "CMD [\"nginx\" \"-g\" \"daemon off;\"]",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2025-12-07T17:03:40Z",
+          "created_by": "COPY /app/dist /usr/share/nginx/html # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2025-12-07T17:03:41Z",
+          "created_by": "RUN /bin/sh -c echo 'server {     listen 80;     server_name localhost;     root /usr/share/nginx/html;     index index.html;     location / {         try_files $uri $uri/ /index.html;     } }' \u003e /etc/nginx/conf.d/default.conf # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2025-12-07T17:03:41Z",
+          "created_by": "EXPOSE map[80/tcp:{}]",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2025-12-07T17:03:41Z",
+          "created_by": "CMD [\"nginx\" \"-g\" \"daemon off;\"]",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        }
+      ],
+      "os": "linux",
+      "rootfs": {
+        "type": "layers",
+        "diff_ids": [
+          "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c",
+          "sha256:b2910501c84396134537ff442a4e2222ab6486c6016ea4c1016ed96337ef64ef",
+          "sha256:cbb38b57f14055b3acc7a4bae43e5a41bcd7621c1f56f3f920abb89a65c3c025",
+          "sha256:e1482d48072939900a66dbbec794450822aff9176d11302592f230249da91238",
+          "sha256:3bc38db2acdbab2b44537e4a354dbcb05ed3bbbcb54674993471ee0c7232f041",
+          "sha256:20ca17bb1caf19cc991d7b4bc6915b25c9fbe1e1b297f04712ec692b53017c9a",
+          "sha256:856b39837f15b572e89d179002698b4f4e7447d91740590718368b7ebec9ff63",
+          "sha256:603aa6ec4ba88ddbb5b0089da3183e9d5353358e512de786399ce76ed0e8b6ac",
+          "sha256:0b4f2cfcd875ff7af214509d4034e4d694bf3e6947467ee7bd3d2d190b2c14d3"
+        ]
+      },
+      "config": {
+        "Cmd": [
+          "nginx",
+          "-g",
+          "daemon off;"
+        ],
+        "Entrypoint": [
+          "/docker-entrypoint.sh"
+        ],
+        "Env": [
+          "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+          "NGINX_VERSION=1.27.3",
+          "PKG_RELEASE=1",
+          "DYNPKG_RELEASE=1"
+        ],
+        "Labels": {
+          "maintainer": "NGINX Docker Maintainers \u003cdocker-maint@nginx.com\u003e"
+        },
+        "WorkingDir": "/",
+        "ExposedPorts": {
+          "80/tcp": {}
+        },
+        "ArgsEscaped": true,
+        "StopSignal": "SIGQUIT"
+      }
+    },
+    "Layers": [
+      {
+        "Size": 9112576,
+        "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+      },
+      {
+        "Size": 4835840,
+        "DiffID": "sha256:b2910501c84396134537ff442a4e2222ab6486c6016ea4c1016ed96337ef64ef"
+      },
+      {
+        "Size": 3584,
+        "DiffID": "sha256:cbb38b57f14055b3acc7a4bae43e5a41bcd7621c1f56f3f920abb89a65c3c025"
+      },
+      {
+        "Size": 4608,
+        "DiffID": "sha256:e1482d48072939900a66dbbec794450822aff9176d11302592f230249da91238"
+      },
+      {
+        "Size": 2560,
+        "DiffID": "sha256:3bc38db2acdbab2b44537e4a354dbcb05ed3bbbcb54674993471ee0c7232f041"
+      },
+      {
+        "Size": 5120,
+        "DiffID": "sha256:20ca17bb1caf19cc991d7b4bc6915b25c9fbe1e1b297f04712ec692b53017c9a"
+      },
+      {
+        "Size": 7168,
+        "DiffID": "sha256:856b39837f15b572e89d179002698b4f4e7447d91740590718368b7ebec9ff63"
+      },
+      {
+        "Size": 278016,
+        "DiffID": "sha256:603aa6ec4ba88ddbb5b0089da3183e9d5353358e512de786399ce76ed0e8b6ac"
+      },
+      {
+        "Size": 3584,
+        "DiffID": "sha256:0b4f2cfcd875ff7af214509d4034e4d694bf3e6947467ee7bd3d2d190b2c14d3"
+      }
+    ]
+  },
+  "Results": [
+    {
+      "Target": "course-project-zada-frontend:local (alpine 3.20.5)",
+      "Class": "os-pkgs",
+      "Type": "alpine",
+      "Packages": [
+        {
+          "ID": "alpine-baselayout@3.6.5-r0",
+          "Name": "alpine-baselayout",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/alpine-baselayout@3.6.5-r0?arch=aarch64\u0026distro=3.20.5",
+            "UID": "9ccc0952cc74eb29"
+          },
+          "Version": "3.6.5-r0",
+          "Arch": "aarch64",
+          "SrcName": "alpine-baselayout",
+          "SrcVersion": "3.6.5-r0",
+          "Licenses": [
+            "GPL-2.0-only"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "DependsOn": [
+            "alpine-baselayout-data@3.6.5-r0",
+            "busybox-binsh@1.36.1-r29"
+          ],
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "Digest": "sha1:47d64fd2db2f23c4fc83d44b7139429ec16df25e",
+          "InstalledFiles": [
+            "etc/motd",
+            "etc/crontabs/root",
+            "etc/modprobe.d/aliases.conf",
+            "etc/modprobe.d/blacklist.conf",
+            "etc/modprobe.d/i386.conf",
+            "etc/modprobe.d/kms.conf",
+            "etc/profile.d/20locale.sh",
+            "etc/profile.d/README",
+            "etc/profile.d/color_prompt.sh.disabled",
+            "lib/sysctl.d/00-alpine.conf",
+            "var/run",
+            "var/spool/mail",
+            "var/spool/cron/crontabs"
+          ]
+        },
+        {
+          "ID": "alpine-baselayout-data@3.6.5-r0",
+          "Name": "alpine-baselayout-data",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/alpine-baselayout-data@3.6.5-r0?arch=aarch64\u0026distro=3.20.5",
+            "UID": "ddb982fc0f6cd664"
+          },
+          "Version": "3.6.5-r0",
+          "Arch": "aarch64",
+          "SrcName": "alpine-baselayout",
+          "SrcVersion": "3.6.5-r0",
+          "Licenses": [
+            "GPL-2.0-only"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "Digest": "sha1:081aa6aeda9b8c8c37a64c576794e191fda43f18",
+          "InstalledFiles": [
+            "etc/fstab",
+            "etc/group",
+            "etc/hostname",
+            "etc/hosts",
+            "etc/inittab",
+            "etc/modules",
+            "etc/mtab",
+            "etc/nsswitch.conf",
+            "etc/passwd",
+            "etc/profile",
+            "etc/protocols",
+            "etc/services",
+            "etc/shadow",
+            "etc/shells",
+            "etc/sysctl.conf"
+          ]
+        },
+        {
+          "ID": "alpine-keys@2.4-r1",
+          "Name": "alpine-keys",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/alpine-keys@2.4-r1?arch=aarch64\u0026distro=3.20.5",
+            "UID": "a87b0e192c7c5757"
+          },
+          "Version": "2.4-r1",
+          "Arch": "aarch64",
+          "SrcName": "alpine-keys",
+          "SrcVersion": "2.4-r1",
+          "Licenses": [
+            "MIT"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "Digest": "sha1:ea0224f242596e3931a50cc7eea5044fffe69388",
+          "InstalledFiles": [
+            "etc/apk/keys/alpine-devel@lists.alpinelinux.org-524d27bb.rsa.pub",
+            "etc/apk/keys/alpine-devel@lists.alpinelinux.org-58199dcc.rsa.pub",
+            "etc/apk/keys/alpine-devel@lists.alpinelinux.org-616a9724.rsa.pub",
+            "etc/apk/keys/alpine-devel@lists.alpinelinux.org-616adfeb.rsa.pub",
+            "etc/apk/keys/alpine-devel@lists.alpinelinux.org-616ae350.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-4a6a0840.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-5243ef4b.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-524d27bb.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-5261cecb.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-58199dcc.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-58cbb476.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-58e4f17d.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-5e69ca50.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-60ac2099.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-6165ee59.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-61666e3f.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-616a9724.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-616abc23.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-616ac3bc.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-616adfeb.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-616ae350.rsa.pub",
+            "usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-616db30d.rsa.pub",
+            "usr/share/apk/keys/aarch64/alpine-devel@lists.alpinelinux.org-58199dcc.rsa.pub",
+            "usr/share/apk/keys/aarch64/alpine-devel@lists.alpinelinux.org-616ae350.rsa.pub",
+            "usr/share/apk/keys/armhf/alpine-devel@lists.alpinelinux.org-524d27bb.rsa.pub",
+            "usr/share/apk/keys/armhf/alpine-devel@lists.alpinelinux.org-616a9724.rsa.pub",
+            "usr/share/apk/keys/armv7/alpine-devel@lists.alpinelinux.org-524d27bb.rsa.pub",
+            "usr/share/apk/keys/armv7/alpine-devel@lists.alpinelinux.org-616adfeb.rsa.pub",
+            "usr/share/apk/keys/mips64/alpine-devel@lists.alpinelinux.org-5e69ca50.rsa.pub",
+            "usr/share/apk/keys/ppc64le/alpine-devel@lists.alpinelinux.org-58cbb476.rsa.pub",
+            "usr/share/apk/keys/ppc64le/alpine-devel@lists.alpinelinux.org-616abc23.rsa.pub",
+            "usr/share/apk/keys/riscv64/alpine-devel@lists.alpinelinux.org-60ac2099.rsa.pub",
+            "usr/share/apk/keys/riscv64/alpine-devel@lists.alpinelinux.org-616db30d.rsa.pub",
+            "usr/share/apk/keys/s390x/alpine-devel@lists.alpinelinux.org-58e4f17d.rsa.pub",
+            "usr/share/apk/keys/s390x/alpine-devel@lists.alpinelinux.org-616ac3bc.rsa.pub",
+            "usr/share/apk/keys/x86/alpine-devel@lists.alpinelinux.org-4a6a0840.rsa.pub",
+            "usr/share/apk/keys/x86/alpine-devel@lists.alpinelinux.org-5243ef4b.rsa.pub",
+            "usr/share/apk/keys/x86/alpine-devel@lists.alpinelinux.org-61666e3f.rsa.pub",
+            "usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-4a6a0840.rsa.pub",
+            "usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-5261cecb.rsa.pub",
+            "usr/share/apk/keys/x86_64/alpine-devel@lists.alpinelinux.org-6165ee59.rsa.pub"
+          ]
+        },
+        {
+          "ID": "apk-tools@2.14.4-r1",
+          "Name": "apk-tools",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/apk-tools@2.14.4-r1?arch=aarch64\u0026distro=3.20.5",
+            "UID": "d037e5648fe247cc"
+          },
+          "Version": "2.14.4-r1",
+          "Arch": "aarch64",
+          "SrcName": "apk-tools",
+          "SrcVersion": "2.14.4-r1",
+          "Licenses": [
+            "GPL-2.0-only"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "DependsOn": [
+            "ca-certificates-bundle@20241121-r1",
+            "libcrypto3@3.3.2-r1",
+            "libssl3@3.3.2-r1",
+            "musl@1.2.5-r0",
+            "zlib@1.3.1-r1"
+          ],
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "Digest": "sha1:7bcaaa432047577b6366886d63ba53daa46b9dd7",
+          "InstalledFiles": [
+            "lib/libapk.so.2.14.0",
+            "sbin/apk"
+          ]
+        },
+        {
+          "ID": "busybox@1.36.1-r29",
+          "Name": "busybox",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/busybox@1.36.1-r29?arch=aarch64\u0026distro=3.20.5",
+            "UID": "a54f1d363766d1e0"
+          },
+          "Version": "1.36.1-r29",
+          "Arch": "aarch64",
+          "SrcName": "busybox",
+          "SrcVersion": "1.36.1-r29",
+          "Licenses": [
+            "GPL-2.0-only"
+          ],
+          "Maintainer": "Sören Tempel \u003csoeren+alpine@soeren-tempel.net\u003e",
+          "DependsOn": [
+            "musl@1.2.5-r0"
+          ],
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "Digest": "sha1:3d9dd3fb81e4f5e9bb2d430e9fef598203ac7c80",
+          "InstalledFiles": [
+            "bin/busybox",
+            "etc/securetty",
+            "etc/busybox-paths.d/busybox",
+            "etc/logrotate.d/acpid",
+            "etc/network/if-up.d/dad",
+            "etc/udhcpc/udhcpc.conf",
+            "usr/share/udhcpc/default.script"
+          ]
+        },
+        {
+          "ID": "busybox-binsh@1.36.1-r29",
+          "Name": "busybox-binsh",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/busybox-binsh@1.36.1-r29?arch=aarch64\u0026distro=3.20.5",
+            "UID": "446bd501c01671cd"
+          },
+          "Version": "1.36.1-r29",
+          "Arch": "aarch64",
+          "SrcName": "busybox",
+          "SrcVersion": "1.36.1-r29",
+          "Licenses": [
+            "GPL-2.0-only"
+          ],
+          "Maintainer": "Sören Tempel \u003csoeren+alpine@soeren-tempel.net\u003e",
+          "DependsOn": [
+            "busybox@1.36.1-r29"
+          ],
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "Digest": "sha1:795085214c067660e425304e2217f296dd6f06e2",
+          "InstalledFiles": [
+            "bin/sh"
+          ]
+        },
+        {
+          "ID": "ca-certificates-bundle@20241121-r1",
+          "Name": "ca-certificates-bundle",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/ca-certificates-bundle@20241121-r1?arch=aarch64\u0026distro=3.20.5",
+            "UID": "513cf164d1d217f0"
+          },
+          "Version": "20241121-r1",
+          "Arch": "aarch64",
+          "SrcName": "ca-certificates",
+          "SrcVersion": "20241121-r1",
+          "Licenses": [
+            "MPL-2.0",
+            "MIT"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "Digest": "sha1:d5dc47c8069db5a2ee1a014ba7c84d68c1ed77ff",
+          "InstalledFiles": [
+            "etc/ssl/cert.pem",
+            "etc/ssl/certs/ca-certificates.crt",
+            "etc/ssl1.1/cert.pem",
+            "etc/ssl1.1/certs"
+          ]
+        },
+        {
+          "ID": "libcrypto3@3.3.2-r1",
+          "Name": "libcrypto3",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/libcrypto3@3.3.2-r1?arch=aarch64\u0026distro=3.20.5",
+            "UID": "8047a5402fafc5d4"
+          },
+          "Version": "3.3.2-r1",
+          "Arch": "aarch64",
+          "SrcName": "openssl",
+          "SrcVersion": "3.3.2-r1",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "DependsOn": [
+            "musl@1.2.5-r0"
+          ],
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "Digest": "sha1:66af026d106cbcf2ac35f20d96d9abaa62101380",
+          "InstalledFiles": [
+            "etc/ssl/ct_log_list.cnf",
+            "etc/ssl/ct_log_list.cnf.dist",
+            "etc/ssl/openssl.cnf",
+            "etc/ssl/openssl.cnf.dist",
+            "lib/libcrypto.so.3",
+            "usr/lib/libcrypto.so.3",
+            "usr/lib/engines-3/afalg.so",
+            "usr/lib/engines-3/capi.so",
+            "usr/lib/engines-3/loader_attic.so",
+            "usr/lib/engines-3/padlock.so",
+            "usr/lib/ossl-modules/legacy.so"
+          ]
+        },
+        {
+          "ID": "libintl@0.22.5-r0",
+          "Name": "libintl",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/libintl@0.22.5-r0?arch=aarch64\u0026distro=3.20.5",
+            "UID": "cc308261378e980c"
+          },
+          "Version": "0.22.5-r0",
+          "Arch": "aarch64",
+          "SrcName": "gettext",
+          "SrcVersion": "0.22.5-r0",
+          "Licenses": [
+            "LGPL-2.1-or-later"
+          ],
+          "Maintainer": "Carlo Landmeter \u003cclandmeter@alpinelinux.org\u003e",
+          "DependsOn": [
+            "musl@1.2.5-r0"
+          ],
+          "Layer": {
+            "DiffID": "sha256:b2910501c84396134537ff442a4e2222ab6486c6016ea4c1016ed96337ef64ef"
+          },
+          "Digest": "sha1:59c23a217b2fc3a17d15e5435969829a333e6d93",
+          "InstalledFiles": [
+            "usr/lib/libintl.so.8",
+            "usr/lib/libintl.so.8.4.0"
+          ]
+        },
+        {
+          "ID": "libssl3@3.3.2-r1",
+          "Name": "libssl3",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/libssl3@3.3.2-r1?arch=aarch64\u0026distro=3.20.5",
+            "UID": "7edffecdd39a1032"
+          },
+          "Version": "3.3.2-r1",
+          "Arch": "aarch64",
+          "SrcName": "openssl",
+          "SrcVersion": "3.3.2-r1",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "DependsOn": [
+            "libcrypto3@3.3.2-r1",
+            "musl@1.2.5-r0"
+          ],
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "Digest": "sha1:c137026786d0e524bb02a20e3736235fb4b29bba",
+          "InstalledFiles": [
+            "lib/libssl.so.3",
+            "usr/lib/libssl.so.3"
+          ]
+        },
+        {
+          "ID": "musl@1.2.5-r0",
+          "Name": "musl",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/musl@1.2.5-r0?arch=aarch64\u0026distro=3.20.5",
+            "UID": "8e186e37b55d287d"
+          },
+          "Version": "1.2.5-r0",
+          "Arch": "aarch64",
+          "SrcName": "musl",
+          "SrcVersion": "1.2.5-r0",
+          "Licenses": [
+            "MIT"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "Digest": "sha1:b1d943abdafd90a5481993600d7ea690f64c6871",
+          "InstalledFiles": [
+            "lib/ld-musl-aarch64.so.1",
+            "lib/libc.musl-aarch64.so.1"
+          ]
+        },
+        {
+          "ID": "musl-utils@1.2.5-r0",
+          "Name": "musl-utils",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/musl-utils@1.2.5-r0?arch=aarch64\u0026distro=3.20.5",
+            "UID": "bc5dd271d4e7954e"
+          },
+          "Version": "1.2.5-r0",
+          "Arch": "aarch64",
+          "SrcName": "musl",
+          "SrcVersion": "1.2.5-r0",
+          "Licenses": [
+            "MIT",
+            "BSD-2-Clause",
+            "GPL-2.0-or-later"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "DependsOn": [
+            "musl@1.2.5-r0",
+            "scanelf@1.3.7-r2"
+          ],
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "Digest": "sha1:0505941c718ba5c5cc7918ca88e09e2bbfd18967",
+          "InstalledFiles": [
+            "sbin/ldconfig",
+            "usr/bin/getconf",
+            "usr/bin/getent",
+            "usr/bin/iconv",
+            "usr/bin/ldd"
+          ]
+        },
+        {
+          "ID": "nginx@1.27.3-r1",
+          "Name": "nginx",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/nginx@1.27.3-r1?arch=aarch64\u0026distro=3.20.5",
+            "UID": "fecd8b00640d7409"
+          },
+          "Version": "1.27.3-r1",
+          "Arch": "aarch64",
+          "SrcName": "nginx",
+          "SrcVersion": "1.27.3-r1",
+          "Licenses": [
+            "2-clause",
+            "BSD-3-Clause",
+            "license"
+          ],
+          "Maintainer": "NGINX Packaging \u003cnginx-packaging@f5.com\u003e",
+          "DependsOn": [
+            "busybox-binsh@1.36.1-r29",
+            "libcrypto3@3.3.2-r1",
+            "libssl3@3.3.2-r1",
+            "musl@1.2.5-r0",
+            "pcre2@10.43-r0",
+            "zlib@1.3.1-r1"
+          ],
+          "Layer": {
+            "DiffID": "sha256:b2910501c84396134537ff442a4e2222ab6486c6016ea4c1016ed96337ef64ef"
+          },
+          "Digest": "sha1:3650ceb4a6487c4a540ba9fdeef4d8cf0088202d",
+          "InstalledFiles": [
+            "etc/init.d/nginx",
+            "etc/init.d/nginx-debug",
+            "etc/logrotate.d/nginx",
+            "etc/nginx/fastcgi.conf",
+            "etc/nginx/fastcgi_params",
+            "etc/nginx/mime.types",
+            "etc/nginx/modules",
+            "etc/nginx/nginx.conf",
+            "etc/nginx/scgi_params",
+            "etc/nginx/uwsgi_params",
+            "etc/nginx/conf.d/default.conf",
+            "usr/sbin/nginx",
+            "usr/sbin/nginx-debug",
+            "usr/share/licenses/nginx/COPYRIGHT",
+            "usr/share/man/man8/nginx.8.gz",
+            "usr/share/nginx/html/50x.html",
+            "usr/share/nginx/html/index.html"
+          ]
+        },
+        {
+          "ID": "pcre2@10.43-r0",
+          "Name": "pcre2",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/pcre2@10.43-r0?arch=aarch64\u0026distro=3.20.5",
+            "UID": "a0b080a82d9f45e8"
+          },
+          "Version": "10.43-r0",
+          "Arch": "aarch64",
+          "SrcName": "pcre2",
+          "SrcVersion": "10.43-r0",
+          "Licenses": [
+            "BSD-3-Clause"
+          ],
+          "Maintainer": "Jakub Jirutka \u003cjakub@jirutka.cz\u003e",
+          "DependsOn": [
+            "musl@1.2.5-r0"
+          ],
+          "Layer": {
+            "DiffID": "sha256:b2910501c84396134537ff442a4e2222ab6486c6016ea4c1016ed96337ef64ef"
+          },
+          "Digest": "sha1:29b630fa80ba242dbffd7abcad851823e3decd7b",
+          "InstalledFiles": [
+            "usr/lib/libpcre2-8.so.0",
+            "usr/lib/libpcre2-8.so.0.12.0",
+            "usr/lib/libpcre2-posix.so.3",
+            "usr/lib/libpcre2-posix.so.3.0.5"
+          ]
+        },
+        {
+          "ID": "scanelf@1.3.7-r2",
+          "Name": "scanelf",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/scanelf@1.3.7-r2?arch=aarch64\u0026distro=3.20.5",
+            "UID": "44f5a45cc122889f"
+          },
+          "Version": "1.3.7-r2",
+          "Arch": "aarch64",
+          "SrcName": "pax-utils",
+          "SrcVersion": "1.3.7-r2",
+          "Licenses": [
+            "GPL-2.0-only"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "DependsOn": [
+            "musl@1.2.5-r0"
+          ],
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "Digest": "sha1:68ed2a9d1ad4c2095f16ebc46a37d694f5140179",
+          "InstalledFiles": [
+            "usr/bin/scanelf"
+          ]
+        },
+        {
+          "ID": "ssl_client@1.36.1-r29",
+          "Name": "ssl_client",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/ssl_client@1.36.1-r29?arch=aarch64\u0026distro=3.20.5",
+            "UID": "4b05144ab7215309"
+          },
+          "Version": "1.36.1-r29",
+          "Arch": "aarch64",
+          "SrcName": "busybox",
+          "SrcVersion": "1.36.1-r29",
+          "Licenses": [
+            "GPL-2.0-only"
+          ],
+          "Maintainer": "Sören Tempel \u003csoeren+alpine@soeren-tempel.net\u003e",
+          "DependsOn": [
+            "libcrypto3@3.3.2-r1",
+            "libssl3@3.3.2-r1",
+            "musl@1.2.5-r0"
+          ],
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "Digest": "sha1:b73ce8cd557068800dbe17ce32e0bfd6439b5c24",
+          "InstalledFiles": [
+            "usr/bin/ssl_client"
+          ]
+        },
+        {
+          "ID": "tzdata@2024b-r0",
+          "Name": "tzdata",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/tzdata@2024b-r0?arch=aarch64\u0026distro=3.20.5",
+            "UID": "1684d414a47b5b49"
+          },
+          "Version": "2024b-r0",
+          "Arch": "aarch64",
+          "SrcName": "tzdata",
+          "SrcVersion": "2024b-r0",
+          "Licenses": [
+            "Public-Domain"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "Layer": {
+            "DiffID": "sha256:b2910501c84396134537ff442a4e2222ab6486c6016ea4c1016ed96337ef64ef"
+          },
+          "Digest": "sha1:32fda80c87ad3969f3e13d511a11834265b7d22a",
+          "InstalledFiles": [
+            "usr/share/zoneinfo/CET",
+            "usr/share/zoneinfo/CST6CDT",
+            "usr/share/zoneinfo/Cuba",
+            "usr/share/zoneinfo/EET",
+            "usr/share/zoneinfo/EST",
+            "usr/share/zoneinfo/EST5EDT",
+            "usr/share/zoneinfo/Egypt",
+            "usr/share/zoneinfo/Eire",
+            "usr/share/zoneinfo/Factory",
+            "usr/share/zoneinfo/GB",
+            "usr/share/zoneinfo/GB-Eire",
+            "usr/share/zoneinfo/GMT",
+            "usr/share/zoneinfo/GMT+0",
+            "usr/share/zoneinfo/GMT-0",
+            "usr/share/zoneinfo/GMT0",
+            "usr/share/zoneinfo/Greenwich",
+            "usr/share/zoneinfo/HST",
+            "usr/share/zoneinfo/Hongkong",
+            "usr/share/zoneinfo/Iceland",
+            "usr/share/zoneinfo/Iran",
+            "usr/share/zoneinfo/Israel",
+            "usr/share/zoneinfo/Jamaica",
+            "usr/share/zoneinfo/Japan",
+            "usr/share/zoneinfo/Kwajalein",
+            "usr/share/zoneinfo/Libya",
+            "usr/share/zoneinfo/MET",
+            "usr/share/zoneinfo/MST",
+            "usr/share/zoneinfo/MST7MDT",
+            "usr/share/zoneinfo/NZ",
+            "usr/share/zoneinfo/NZ-CHAT",
+            "usr/share/zoneinfo/Navajo",
+            "usr/share/zoneinfo/PRC",
+            "usr/share/zoneinfo/PST8PDT",
+            "usr/share/zoneinfo/Poland",
+            "usr/share/zoneinfo/Portugal",
+            "usr/share/zoneinfo/ROC",
+            "usr/share/zoneinfo/ROK",
+            "usr/share/zoneinfo/Singapore",
+            "usr/share/zoneinfo/Turkey",
+            "usr/share/zoneinfo/UCT",
+            "usr/share/zoneinfo/UTC",
+            "usr/share/zoneinfo/Universal",
+            "usr/share/zoneinfo/W-SU",
+            "usr/share/zoneinfo/WET",
+            "usr/share/zoneinfo/Zulu",
+            "usr/share/zoneinfo/iso3166.tab",
+            "usr/share/zoneinfo/leap-seconds.list",
+            "usr/share/zoneinfo/posixrules",
+            "usr/share/zoneinfo/zone.tab",
+            "usr/share/zoneinfo/zone1970.tab",
+            "usr/share/zoneinfo/Africa/Abidjan",
+            "usr/share/zoneinfo/Africa/Accra",
+            "usr/share/zoneinfo/Africa/Addis_Ababa",
+            "usr/share/zoneinfo/Africa/Algiers",
+            "usr/share/zoneinfo/Africa/Asmara",
+            "usr/share/zoneinfo/Africa/Asmera",
+            "usr/share/zoneinfo/Africa/Bamako",
+            "usr/share/zoneinfo/Africa/Bangui",
+            "usr/share/zoneinfo/Africa/Banjul",
+            "usr/share/zoneinfo/Africa/Bissau",
+            "usr/share/zoneinfo/Africa/Blantyre",
+            "usr/share/zoneinfo/Africa/Brazzaville",
+            "usr/share/zoneinfo/Africa/Bujumbura",
+            "usr/share/zoneinfo/Africa/Cairo",
+            "usr/share/zoneinfo/Africa/Casablanca",
+            "usr/share/zoneinfo/Africa/Ceuta",
+            "usr/share/zoneinfo/Africa/Conakry",
+            "usr/share/zoneinfo/Africa/Dakar",
+            "usr/share/zoneinfo/Africa/Dar_es_Salaam",
+            "usr/share/zoneinfo/Africa/Djibouti",
+            "usr/share/zoneinfo/Africa/Douala",
+            "usr/share/zoneinfo/Africa/El_Aaiun",
+            "usr/share/zoneinfo/Africa/Freetown",
+            "usr/share/zoneinfo/Africa/Gaborone",
+            "usr/share/zoneinfo/Africa/Harare",
+            "usr/share/zoneinfo/Africa/Johannesburg",
+            "usr/share/zoneinfo/Africa/Juba",
+            "usr/share/zoneinfo/Africa/Kampala",
+            "usr/share/zoneinfo/Africa/Khartoum",
+            "usr/share/zoneinfo/Africa/Kigali",
+            "usr/share/zoneinfo/Africa/Kinshasa",
+            "usr/share/zoneinfo/Africa/Lagos",
+            "usr/share/zoneinfo/Africa/Libreville",
+            "usr/share/zoneinfo/Africa/Lome",
+            "usr/share/zoneinfo/Africa/Luanda",
+            "usr/share/zoneinfo/Africa/Lubumbashi",
+            "usr/share/zoneinfo/Africa/Lusaka",
+            "usr/share/zoneinfo/Africa/Malabo",
+            "usr/share/zoneinfo/Africa/Maputo",
+            "usr/share/zoneinfo/Africa/Maseru",
+            "usr/share/zoneinfo/Africa/Mbabane",
+            "usr/share/zoneinfo/Africa/Mogadishu",
+            "usr/share/zoneinfo/Africa/Monrovia",
+            "usr/share/zoneinfo/Africa/Nairobi",
+            "usr/share/zoneinfo/Africa/Ndjamena",
+            "usr/share/zoneinfo/Africa/Niamey",
+            "usr/share/zoneinfo/Africa/Nouakchott",
+            "usr/share/zoneinfo/Africa/Ouagadougou",
+            "usr/share/zoneinfo/Africa/Porto-Novo",
+            "usr/share/zoneinfo/Africa/Sao_Tome",
+            "usr/share/zoneinfo/Africa/Timbuktu",
+            "usr/share/zoneinfo/Africa/Tripoli",
+            "usr/share/zoneinfo/Africa/Tunis",
+            "usr/share/zoneinfo/Africa/Windhoek",
+            "usr/share/zoneinfo/America/Adak",
+            "usr/share/zoneinfo/America/Anchorage",
+            "usr/share/zoneinfo/America/Anguilla",
+            "usr/share/zoneinfo/America/Antigua",
+            "usr/share/zoneinfo/America/Araguaina",
+            "usr/share/zoneinfo/America/Aruba",
+            "usr/share/zoneinfo/America/Asuncion",
+            "usr/share/zoneinfo/America/Atikokan",
+            "usr/share/zoneinfo/America/Atka",
+            "usr/share/zoneinfo/America/Bahia",
+            "usr/share/zoneinfo/America/Bahia_Banderas",
+            "usr/share/zoneinfo/America/Barbados",
+            "usr/share/zoneinfo/America/Belem",
+            "usr/share/zoneinfo/America/Belize",
+            "usr/share/zoneinfo/America/Blanc-Sablon",
+            "usr/share/zoneinfo/America/Boa_Vista",
+            "usr/share/zoneinfo/America/Bogota",
+            "usr/share/zoneinfo/America/Boise",
+            "usr/share/zoneinfo/America/Buenos_Aires",
+            "usr/share/zoneinfo/America/Cambridge_Bay",
+            "usr/share/zoneinfo/America/Campo_Grande",
+            "usr/share/zoneinfo/America/Cancun",
+            "usr/share/zoneinfo/America/Caracas",
+            "usr/share/zoneinfo/America/Catamarca",
+            "usr/share/zoneinfo/America/Cayenne",
+            "usr/share/zoneinfo/America/Cayman",
+            "usr/share/zoneinfo/America/Chicago",
+            "usr/share/zoneinfo/America/Chihuahua",
+            "usr/share/zoneinfo/America/Ciudad_Juarez",
+            "usr/share/zoneinfo/America/Coral_Harbour",
+            "usr/share/zoneinfo/America/Cordoba",
+            "usr/share/zoneinfo/America/Costa_Rica",
+            "usr/share/zoneinfo/America/Creston",
+            "usr/share/zoneinfo/America/Cuiaba",
+            "usr/share/zoneinfo/America/Curacao",
+            "usr/share/zoneinfo/America/Danmarkshavn",
+            "usr/share/zoneinfo/America/Dawson",
+            "usr/share/zoneinfo/America/Dawson_Creek",
+            "usr/share/zoneinfo/America/Denver",
+            "usr/share/zoneinfo/America/Detroit",
+            "usr/share/zoneinfo/America/Dominica",
+            "usr/share/zoneinfo/America/Edmonton",
+            "usr/share/zoneinfo/America/Eirunepe",
+            "usr/share/zoneinfo/America/El_Salvador",
+            "usr/share/zoneinfo/America/Ensenada",
+            "usr/share/zoneinfo/America/Fort_Nelson",
+            "usr/share/zoneinfo/America/Fort_Wayne",
+            "usr/share/zoneinfo/America/Fortaleza",
+            "usr/share/zoneinfo/America/Glace_Bay",
+            "usr/share/zoneinfo/America/Godthab",
+            "usr/share/zoneinfo/America/Goose_Bay",
+            "usr/share/zoneinfo/America/Grand_Turk",
+            "usr/share/zoneinfo/America/Grenada",
+            "usr/share/zoneinfo/America/Guadeloupe",
+            "usr/share/zoneinfo/America/Guatemala",
+            "usr/share/zoneinfo/America/Guayaquil",
+            "usr/share/zoneinfo/America/Guyana",
+            "usr/share/zoneinfo/America/Halifax",
+            "usr/share/zoneinfo/America/Havana",
+            "usr/share/zoneinfo/America/Hermosillo",
+            "usr/share/zoneinfo/America/Indianapolis",
+            "usr/share/zoneinfo/America/Inuvik",
+            "usr/share/zoneinfo/America/Iqaluit",
+            "usr/share/zoneinfo/America/Jamaica",
+            "usr/share/zoneinfo/America/Jujuy",
+            "usr/share/zoneinfo/America/Juneau",
+            "usr/share/zoneinfo/America/Knox_IN",
+            "usr/share/zoneinfo/America/Kralendijk",
+            "usr/share/zoneinfo/America/La_Paz",
+            "usr/share/zoneinfo/America/Lima",
+            "usr/share/zoneinfo/America/Los_Angeles",
+            "usr/share/zoneinfo/America/Louisville",
+            "usr/share/zoneinfo/America/Lower_Princes",
+            "usr/share/zoneinfo/America/Maceio",
+            "usr/share/zoneinfo/America/Managua",
+            "usr/share/zoneinfo/America/Manaus",
+            "usr/share/zoneinfo/America/Marigot",
+            "usr/share/zoneinfo/America/Martinique",
+            "usr/share/zoneinfo/America/Matamoros",
+            "usr/share/zoneinfo/America/Mazatlan",
+            "usr/share/zoneinfo/America/Mendoza",
+            "usr/share/zoneinfo/America/Menominee",
+            "usr/share/zoneinfo/America/Merida",
+            "usr/share/zoneinfo/America/Metlakatla",
+            "usr/share/zoneinfo/America/Mexico_City",
+            "usr/share/zoneinfo/America/Miquelon",
+            "usr/share/zoneinfo/America/Moncton",
+            "usr/share/zoneinfo/America/Monterrey",
+            "usr/share/zoneinfo/America/Montevideo",
+            "usr/share/zoneinfo/America/Montreal",
+            "usr/share/zoneinfo/America/Montserrat",
+            "usr/share/zoneinfo/America/Nassau",
+            "usr/share/zoneinfo/America/New_York",
+            "usr/share/zoneinfo/America/Nipigon",
+            "usr/share/zoneinfo/America/Nome",
+            "usr/share/zoneinfo/America/Noronha",
+            "usr/share/zoneinfo/America/Nuuk",
+            "usr/share/zoneinfo/America/Ojinaga",
+            "usr/share/zoneinfo/America/Panama",
+            "usr/share/zoneinfo/America/Pangnirtung",
+            "usr/share/zoneinfo/America/Paramaribo",
+            "usr/share/zoneinfo/America/Phoenix",
+            "usr/share/zoneinfo/America/Port-au-Prince",
+            "usr/share/zoneinfo/America/Port_of_Spain",
+            "usr/share/zoneinfo/America/Porto_Acre",
+            "usr/share/zoneinfo/America/Porto_Velho",
+            "usr/share/zoneinfo/America/Puerto_Rico",
+            "usr/share/zoneinfo/America/Punta_Arenas",
+            "usr/share/zoneinfo/America/Rainy_River",
+            "usr/share/zoneinfo/America/Rankin_Inlet",
+            "usr/share/zoneinfo/America/Recife",
+            "usr/share/zoneinfo/America/Regina",
+            "usr/share/zoneinfo/America/Resolute",
+            "usr/share/zoneinfo/America/Rio_Branco",
+            "usr/share/zoneinfo/America/Rosario",
+            "usr/share/zoneinfo/America/Santa_Isabel",
+            "usr/share/zoneinfo/America/Santarem",
+            "usr/share/zoneinfo/America/Santiago",
+            "usr/share/zoneinfo/America/Santo_Domingo",
+            "usr/share/zoneinfo/America/Sao_Paulo",
+            "usr/share/zoneinfo/America/Scoresbysund",
+            "usr/share/zoneinfo/America/Shiprock",
+            "usr/share/zoneinfo/America/Sitka",
+            "usr/share/zoneinfo/America/St_Barthelemy",
+            "usr/share/zoneinfo/America/St_Johns",
+            "usr/share/zoneinfo/America/St_Kitts",
+            "usr/share/zoneinfo/America/St_Lucia",
+            "usr/share/zoneinfo/America/St_Thomas",
+            "usr/share/zoneinfo/America/St_Vincent",
+            "usr/share/zoneinfo/America/Swift_Current",
+            "usr/share/zoneinfo/America/Tegucigalpa",
+            "usr/share/zoneinfo/America/Thule",
+            "usr/share/zoneinfo/America/Thunder_Bay",
+            "usr/share/zoneinfo/America/Tijuana",
+            "usr/share/zoneinfo/America/Toronto",
+            "usr/share/zoneinfo/America/Tortola",
+            "usr/share/zoneinfo/America/Vancouver",
+            "usr/share/zoneinfo/America/Virgin",
+            "usr/share/zoneinfo/America/Whitehorse",
+            "usr/share/zoneinfo/America/Winnipeg",
+            "usr/share/zoneinfo/America/Yakutat",
+            "usr/share/zoneinfo/America/Yellowknife",
+            "usr/share/zoneinfo/America/Argentina/Buenos_Aires",
+            "usr/share/zoneinfo/America/Argentina/Catamarca",
+            "usr/share/zoneinfo/America/Argentina/ComodRivadavia",
+            "usr/share/zoneinfo/America/Argentina/Cordoba",
+            "usr/share/zoneinfo/America/Argentina/Jujuy",
+            "usr/share/zoneinfo/America/Argentina/La_Rioja",
+            "usr/share/zoneinfo/America/Argentina/Mendoza",
+            "usr/share/zoneinfo/America/Argentina/Rio_Gallegos",
+            "usr/share/zoneinfo/America/Argentina/Salta",
+            "usr/share/zoneinfo/America/Argentina/San_Juan",
+            "usr/share/zoneinfo/America/Argentina/San_Luis",
+            "usr/share/zoneinfo/America/Argentina/Tucuman",
+            "usr/share/zoneinfo/America/Argentina/Ushuaia",
+            "usr/share/zoneinfo/America/Indiana/Indianapolis",
+            "usr/share/zoneinfo/America/Indiana/Knox",
+            "usr/share/zoneinfo/America/Indiana/Marengo",
+            "usr/share/zoneinfo/America/Indiana/Petersburg",
+            "usr/share/zoneinfo/America/Indiana/Tell_City",
+            "usr/share/zoneinfo/America/Indiana/Vevay",
+            "usr/share/zoneinfo/America/Indiana/Vincennes",
+            "usr/share/zoneinfo/America/Indiana/Winamac",
+            "usr/share/zoneinfo/America/Kentucky/Louisville",
+            "usr/share/zoneinfo/America/Kentucky/Monticello",
+            "usr/share/zoneinfo/America/North_Dakota/Beulah",
+            "usr/share/zoneinfo/America/North_Dakota/Center",
+            "usr/share/zoneinfo/America/North_Dakota/New_Salem",
+            "usr/share/zoneinfo/Antarctica/Casey",
+            "usr/share/zoneinfo/Antarctica/Davis",
+            "usr/share/zoneinfo/Antarctica/DumontDUrville",
+            "usr/share/zoneinfo/Antarctica/Macquarie",
+            "usr/share/zoneinfo/Antarctica/Mawson",
+            "usr/share/zoneinfo/Antarctica/McMurdo",
+            "usr/share/zoneinfo/Antarctica/Palmer",
+            "usr/share/zoneinfo/Antarctica/Rothera",
+            "usr/share/zoneinfo/Antarctica/South_Pole",
+            "usr/share/zoneinfo/Antarctica/Syowa",
+            "usr/share/zoneinfo/Antarctica/Troll",
+            "usr/share/zoneinfo/Antarctica/Vostok",
+            "usr/share/zoneinfo/Arctic/Longyearbyen",
+            "usr/share/zoneinfo/Asia/Aden",
+            "usr/share/zoneinfo/Asia/Almaty",
+            "usr/share/zoneinfo/Asia/Amman",
+            "usr/share/zoneinfo/Asia/Anadyr",
+            "usr/share/zoneinfo/Asia/Aqtau",
+            "usr/share/zoneinfo/Asia/Aqtobe",
+            "usr/share/zoneinfo/Asia/Ashgabat",
+            "usr/share/zoneinfo/Asia/Ashkhabad",
+            "usr/share/zoneinfo/Asia/Atyrau",
+            "usr/share/zoneinfo/Asia/Baghdad",
+            "usr/share/zoneinfo/Asia/Bahrain",
+            "usr/share/zoneinfo/Asia/Baku",
+            "usr/share/zoneinfo/Asia/Bangkok",
+            "usr/share/zoneinfo/Asia/Barnaul",
+            "usr/share/zoneinfo/Asia/Beirut",
+            "usr/share/zoneinfo/Asia/Bishkek",
+            "usr/share/zoneinfo/Asia/Brunei",
+            "usr/share/zoneinfo/Asia/Calcutta",
+            "usr/share/zoneinfo/Asia/Chita",
+            "usr/share/zoneinfo/Asia/Choibalsan",
+            "usr/share/zoneinfo/Asia/Chongqing",
+            "usr/share/zoneinfo/Asia/Chungking",
+            "usr/share/zoneinfo/Asia/Colombo",
+            "usr/share/zoneinfo/Asia/Dacca",
+            "usr/share/zoneinfo/Asia/Damascus",
+            "usr/share/zoneinfo/Asia/Dhaka",
+            "usr/share/zoneinfo/Asia/Dili",
+            "usr/share/zoneinfo/Asia/Dubai",
+            "usr/share/zoneinfo/Asia/Dushanbe",
+            "usr/share/zoneinfo/Asia/Famagusta",
+            "usr/share/zoneinfo/Asia/Gaza",
+            "usr/share/zoneinfo/Asia/Harbin",
+            "usr/share/zoneinfo/Asia/Hebron",
+            "usr/share/zoneinfo/Asia/Ho_Chi_Minh",
+            "usr/share/zoneinfo/Asia/Hong_Kong",
+            "usr/share/zoneinfo/Asia/Hovd",
+            "usr/share/zoneinfo/Asia/Irkutsk",
+            "usr/share/zoneinfo/Asia/Istanbul",
+            "usr/share/zoneinfo/Asia/Jakarta",
+            "usr/share/zoneinfo/Asia/Jayapura",
+            "usr/share/zoneinfo/Asia/Jerusalem",
+            "usr/share/zoneinfo/Asia/Kabul",
+            "usr/share/zoneinfo/Asia/Kamchatka",
+            "usr/share/zoneinfo/Asia/Karachi",
+            "usr/share/zoneinfo/Asia/Kashgar",
+            "usr/share/zoneinfo/Asia/Kathmandu",
+            "usr/share/zoneinfo/Asia/Katmandu",
+            "usr/share/zoneinfo/Asia/Khandyga",
+            "usr/share/zoneinfo/Asia/Kolkata",
+            "usr/share/zoneinfo/Asia/Krasnoyarsk",
+            "usr/share/zoneinfo/Asia/Kuala_Lumpur",
+            "usr/share/zoneinfo/Asia/Kuching",
+            "usr/share/zoneinfo/Asia/Kuwait",
+            "usr/share/zoneinfo/Asia/Macao",
+            "usr/share/zoneinfo/Asia/Macau",
+            "usr/share/zoneinfo/Asia/Magadan",
+            "usr/share/zoneinfo/Asia/Makassar",
+            "usr/share/zoneinfo/Asia/Manila",
+            "usr/share/zoneinfo/Asia/Muscat",
+            "usr/share/zoneinfo/Asia/Nicosia",
+            "usr/share/zoneinfo/Asia/Novokuznetsk",
+            "usr/share/zoneinfo/Asia/Novosibirsk",
+            "usr/share/zoneinfo/Asia/Omsk",
+            "usr/share/zoneinfo/Asia/Oral",
+            "usr/share/zoneinfo/Asia/Phnom_Penh",
+            "usr/share/zoneinfo/Asia/Pontianak",
+            "usr/share/zoneinfo/Asia/Pyongyang",
+            "usr/share/zoneinfo/Asia/Qatar",
+            "usr/share/zoneinfo/Asia/Qostanay",
+            "usr/share/zoneinfo/Asia/Qyzylorda",
+            "usr/share/zoneinfo/Asia/Rangoon",
+            "usr/share/zoneinfo/Asia/Riyadh",
+            "usr/share/zoneinfo/Asia/Saigon",
+            "usr/share/zoneinfo/Asia/Sakhalin",
+            "usr/share/zoneinfo/Asia/Samarkand",
+            "usr/share/zoneinfo/Asia/Seoul",
+            "usr/share/zoneinfo/Asia/Shanghai",
+            "usr/share/zoneinfo/Asia/Singapore",
+            "usr/share/zoneinfo/Asia/Srednekolymsk",
+            "usr/share/zoneinfo/Asia/Taipei",
+            "usr/share/zoneinfo/Asia/Tashkent",
+            "usr/share/zoneinfo/Asia/Tbilisi",
+            "usr/share/zoneinfo/Asia/Tehran",
+            "usr/share/zoneinfo/Asia/Tel_Aviv",
+            "usr/share/zoneinfo/Asia/Thimbu",
+            "usr/share/zoneinfo/Asia/Thimphu",
+            "usr/share/zoneinfo/Asia/Tokyo",
+            "usr/share/zoneinfo/Asia/Tomsk",
+            "usr/share/zoneinfo/Asia/Ujung_Pandang",
+            "usr/share/zoneinfo/Asia/Ulaanbaatar",
+            "usr/share/zoneinfo/Asia/Ulan_Bator",
+            "usr/share/zoneinfo/Asia/Urumqi",
+            "usr/share/zoneinfo/Asia/Ust-Nera",
+            "usr/share/zoneinfo/Asia/Vientiane",
+            "usr/share/zoneinfo/Asia/Vladivostok",
+            "usr/share/zoneinfo/Asia/Yakutsk",
+            "usr/share/zoneinfo/Asia/Yangon",
+            "usr/share/zoneinfo/Asia/Yekaterinburg",
+            "usr/share/zoneinfo/Asia/Yerevan",
+            "usr/share/zoneinfo/Atlantic/Azores",
+            "usr/share/zoneinfo/Atlantic/Bermuda",
+            "usr/share/zoneinfo/Atlantic/Canary",
+            "usr/share/zoneinfo/Atlantic/Cape_Verde",
+            "usr/share/zoneinfo/Atlantic/Faeroe",
+            "usr/share/zoneinfo/Atlantic/Faroe",
+            "usr/share/zoneinfo/Atlantic/Jan_Mayen",
+            "usr/share/zoneinfo/Atlantic/Madeira",
+            "usr/share/zoneinfo/Atlantic/Reykjavik",
+            "usr/share/zoneinfo/Atlantic/South_Georgia",
+            "usr/share/zoneinfo/Atlantic/St_Helena",
+            "usr/share/zoneinfo/Atlantic/Stanley",
+            "usr/share/zoneinfo/Australia/ACT",
+            "usr/share/zoneinfo/Australia/Adelaide",
+            "usr/share/zoneinfo/Australia/Brisbane",
+            "usr/share/zoneinfo/Australia/Broken_Hill",
+            "usr/share/zoneinfo/Australia/Canberra",
+            "usr/share/zoneinfo/Australia/Currie",
+            "usr/share/zoneinfo/Australia/Darwin",
+            "usr/share/zoneinfo/Australia/Eucla",
+            "usr/share/zoneinfo/Australia/Hobart",
+            "usr/share/zoneinfo/Australia/LHI",
+            "usr/share/zoneinfo/Australia/Lindeman",
+            "usr/share/zoneinfo/Australia/Lord_Howe",
+            "usr/share/zoneinfo/Australia/Melbourne",
+            "usr/share/zoneinfo/Australia/NSW",
+            "usr/share/zoneinfo/Australia/North",
+            "usr/share/zoneinfo/Australia/Perth",
+            "usr/share/zoneinfo/Australia/Queensland",
+            "usr/share/zoneinfo/Australia/South",
+            "usr/share/zoneinfo/Australia/Sydney",
+            "usr/share/zoneinfo/Australia/Tasmania",
+            "usr/share/zoneinfo/Australia/Victoria",
+            "usr/share/zoneinfo/Australia/West",
+            "usr/share/zoneinfo/Australia/Yancowinna",
+            "usr/share/zoneinfo/Brazil/Acre",
+            "usr/share/zoneinfo/Brazil/DeNoronha",
+            "usr/share/zoneinfo/Brazil/East",
+            "usr/share/zoneinfo/Brazil/West",
+            "usr/share/zoneinfo/Canada/Atlantic",
+            "usr/share/zoneinfo/Canada/Central",
+            "usr/share/zoneinfo/Canada/Eastern",
+            "usr/share/zoneinfo/Canada/Mountain",
+            "usr/share/zoneinfo/Canada/Newfoundland",
+            "usr/share/zoneinfo/Canada/Pacific",
+            "usr/share/zoneinfo/Canada/Saskatchewan",
+            "usr/share/zoneinfo/Canada/Yukon",
+            "usr/share/zoneinfo/Chile/Continental",
+            "usr/share/zoneinfo/Chile/EasterIsland",
+            "usr/share/zoneinfo/Etc/GMT",
+            "usr/share/zoneinfo/Etc/GMT+0",
+            "usr/share/zoneinfo/Etc/GMT+1",
+            "usr/share/zoneinfo/Etc/GMT+10",
+            "usr/share/zoneinfo/Etc/GMT+11",
+            "usr/share/zoneinfo/Etc/GMT+12",
+            "usr/share/zoneinfo/Etc/GMT+2",
+            "usr/share/zoneinfo/Etc/GMT+3",
+            "usr/share/zoneinfo/Etc/GMT+4",
+            "usr/share/zoneinfo/Etc/GMT+5",
+            "usr/share/zoneinfo/Etc/GMT+6",
+            "usr/share/zoneinfo/Etc/GMT+7",
+            "usr/share/zoneinfo/Etc/GMT+8",
+            "usr/share/zoneinfo/Etc/GMT+9",
+            "usr/share/zoneinfo/Etc/GMT-0",
+            "usr/share/zoneinfo/Etc/GMT-1",
+            "usr/share/zoneinfo/Etc/GMT-10",
+            "usr/share/zoneinfo/Etc/GMT-11",
+            "usr/share/zoneinfo/Etc/GMT-12",
+            "usr/share/zoneinfo/Etc/GMT-13",
+            "usr/share/zoneinfo/Etc/GMT-14",
+            "usr/share/zoneinfo/Etc/GMT-2",
+            "usr/share/zoneinfo/Etc/GMT-3",
+            "usr/share/zoneinfo/Etc/GMT-4",
+            "usr/share/zoneinfo/Etc/GMT-5",
+            "usr/share/zoneinfo/Etc/GMT-6",
+            "usr/share/zoneinfo/Etc/GMT-7",
+            "usr/share/zoneinfo/Etc/GMT-8",
+            "usr/share/zoneinfo/Etc/GMT-9",
+            "usr/share/zoneinfo/Etc/GMT0",
+            "usr/share/zoneinfo/Etc/Greenwich",
+            "usr/share/zoneinfo/Etc/UCT",
+            "usr/share/zoneinfo/Etc/UTC",
+            "usr/share/zoneinfo/Etc/Universal",
+            "usr/share/zoneinfo/Etc/Zulu",
+            "usr/share/zoneinfo/Europe/Amsterdam",
+            "usr/share/zoneinfo/Europe/Andorra",
+            "usr/share/zoneinfo/Europe/Astrakhan",
+            "usr/share/zoneinfo/Europe/Athens",
+            "usr/share/zoneinfo/Europe/Belfast",
+            "usr/share/zoneinfo/Europe/Belgrade",
+            "usr/share/zoneinfo/Europe/Berlin",
+            "usr/share/zoneinfo/Europe/Bratislava",
+            "usr/share/zoneinfo/Europe/Brussels",
+            "usr/share/zoneinfo/Europe/Bucharest",
+            "usr/share/zoneinfo/Europe/Budapest",
+            "usr/share/zoneinfo/Europe/Busingen",
+            "usr/share/zoneinfo/Europe/Chisinau",
+            "usr/share/zoneinfo/Europe/Copenhagen",
+            "usr/share/zoneinfo/Europe/Dublin",
+            "usr/share/zoneinfo/Europe/Gibraltar",
+            "usr/share/zoneinfo/Europe/Guernsey",
+            "usr/share/zoneinfo/Europe/Helsinki",
+            "usr/share/zoneinfo/Europe/Isle_of_Man",
+            "usr/share/zoneinfo/Europe/Istanbul",
+            "usr/share/zoneinfo/Europe/Jersey",
+            "usr/share/zoneinfo/Europe/Kaliningrad",
+            "usr/share/zoneinfo/Europe/Kiev",
+            "usr/share/zoneinfo/Europe/Kirov",
+            "usr/share/zoneinfo/Europe/Kyiv",
+            "usr/share/zoneinfo/Europe/Lisbon",
+            "usr/share/zoneinfo/Europe/Ljubljana",
+            "usr/share/zoneinfo/Europe/London",
+            "usr/share/zoneinfo/Europe/Luxembourg",
+            "usr/share/zoneinfo/Europe/Madrid",
+            "usr/share/zoneinfo/Europe/Malta",
+            "usr/share/zoneinfo/Europe/Mariehamn",
+            "usr/share/zoneinfo/Europe/Minsk",
+            "usr/share/zoneinfo/Europe/Monaco",
+            "usr/share/zoneinfo/Europe/Moscow",
+            "usr/share/zoneinfo/Europe/Nicosia",
+            "usr/share/zoneinfo/Europe/Oslo",
+            "usr/share/zoneinfo/Europe/Paris",
+            "usr/share/zoneinfo/Europe/Podgorica",
+            "usr/share/zoneinfo/Europe/Prague",
+            "usr/share/zoneinfo/Europe/Riga",
+            "usr/share/zoneinfo/Europe/Rome",
+            "usr/share/zoneinfo/Europe/Samara",
+            "usr/share/zoneinfo/Europe/San_Marino",
+            "usr/share/zoneinfo/Europe/Sarajevo",
+            "usr/share/zoneinfo/Europe/Saratov",
+            "usr/share/zoneinfo/Europe/Simferopol",
+            "usr/share/zoneinfo/Europe/Skopje",
+            "usr/share/zoneinfo/Europe/Sofia",
+            "usr/share/zoneinfo/Europe/Stockholm",
+            "usr/share/zoneinfo/Europe/Tallinn",
+            "usr/share/zoneinfo/Europe/Tirane",
+            "usr/share/zoneinfo/Europe/Tiraspol",
+            "usr/share/zoneinfo/Europe/Ulyanovsk",
+            "usr/share/zoneinfo/Europe/Uzhgorod",
+            "usr/share/zoneinfo/Europe/Vaduz",
+            "usr/share/zoneinfo/Europe/Vatican",
+            "usr/share/zoneinfo/Europe/Vienna",
+            "usr/share/zoneinfo/Europe/Vilnius",
+            "usr/share/zoneinfo/Europe/Volgograd",
+            "usr/share/zoneinfo/Europe/Warsaw",
+            "usr/share/zoneinfo/Europe/Zagreb",
+            "usr/share/zoneinfo/Europe/Zaporozhye",
+            "usr/share/zoneinfo/Europe/Zurich",
+            "usr/share/zoneinfo/Indian/Antananarivo",
+            "usr/share/zoneinfo/Indian/Chagos",
+            "usr/share/zoneinfo/Indian/Christmas",
+            "usr/share/zoneinfo/Indian/Cocos",
+            "usr/share/zoneinfo/Indian/Comoro",
+            "usr/share/zoneinfo/Indian/Kerguelen",
+            "usr/share/zoneinfo/Indian/Mahe",
+            "usr/share/zoneinfo/Indian/Maldives",
+            "usr/share/zoneinfo/Indian/Mauritius",
+            "usr/share/zoneinfo/Indian/Mayotte",
+            "usr/share/zoneinfo/Indian/Reunion",
+            "usr/share/zoneinfo/Mexico/BajaNorte",
+            "usr/share/zoneinfo/Mexico/BajaSur",
+            "usr/share/zoneinfo/Mexico/General",
+            "usr/share/zoneinfo/Pacific/Apia",
+            "usr/share/zoneinfo/Pacific/Auckland",
+            "usr/share/zoneinfo/Pacific/Bougainville",
+            "usr/share/zoneinfo/Pacific/Chatham",
+            "usr/share/zoneinfo/Pacific/Chuuk",
+            "usr/share/zoneinfo/Pacific/Easter",
+            "usr/share/zoneinfo/Pacific/Efate",
+            "usr/share/zoneinfo/Pacific/Enderbury",
+            "usr/share/zoneinfo/Pacific/Fakaofo",
+            "usr/share/zoneinfo/Pacific/Fiji",
+            "usr/share/zoneinfo/Pacific/Funafuti",
+            "usr/share/zoneinfo/Pacific/Galapagos",
+            "usr/share/zoneinfo/Pacific/Gambier",
+            "usr/share/zoneinfo/Pacific/Guadalcanal",
+            "usr/share/zoneinfo/Pacific/Guam",
+            "usr/share/zoneinfo/Pacific/Honolulu",
+            "usr/share/zoneinfo/Pacific/Johnston",
+            "usr/share/zoneinfo/Pacific/Kanton",
+            "usr/share/zoneinfo/Pacific/Kiritimati",
+            "usr/share/zoneinfo/Pacific/Kosrae",
+            "usr/share/zoneinfo/Pacific/Kwajalein",
+            "usr/share/zoneinfo/Pacific/Majuro",
+            "usr/share/zoneinfo/Pacific/Marquesas",
+            "usr/share/zoneinfo/Pacific/Midway",
+            "usr/share/zoneinfo/Pacific/Nauru",
+            "usr/share/zoneinfo/Pacific/Niue",
+            "usr/share/zoneinfo/Pacific/Norfolk",
+            "usr/share/zoneinfo/Pacific/Noumea",
+            "usr/share/zoneinfo/Pacific/Pago_Pago",
+            "usr/share/zoneinfo/Pacific/Palau",
+            "usr/share/zoneinfo/Pacific/Pitcairn",
+            "usr/share/zoneinfo/Pacific/Pohnpei",
+            "usr/share/zoneinfo/Pacific/Ponape",
+            "usr/share/zoneinfo/Pacific/Port_Moresby",
+            "usr/share/zoneinfo/Pacific/Rarotonga",
+            "usr/share/zoneinfo/Pacific/Saipan",
+            "usr/share/zoneinfo/Pacific/Samoa",
+            "usr/share/zoneinfo/Pacific/Tahiti",
+            "usr/share/zoneinfo/Pacific/Tarawa",
+            "usr/share/zoneinfo/Pacific/Tongatapu",
+            "usr/share/zoneinfo/Pacific/Truk",
+            "usr/share/zoneinfo/Pacific/Wake",
+            "usr/share/zoneinfo/Pacific/Wallis",
+            "usr/share/zoneinfo/Pacific/Yap",
+            "usr/share/zoneinfo/US/Alaska",
+            "usr/share/zoneinfo/US/Aleutian",
+            "usr/share/zoneinfo/US/Arizona",
+            "usr/share/zoneinfo/US/Central",
+            "usr/share/zoneinfo/US/East-Indiana",
+            "usr/share/zoneinfo/US/Eastern",
+            "usr/share/zoneinfo/US/Hawaii",
+            "usr/share/zoneinfo/US/Indiana-Starke",
+            "usr/share/zoneinfo/US/Michigan",
+            "usr/share/zoneinfo/US/Mountain",
+            "usr/share/zoneinfo/US/Pacific",
+            "usr/share/zoneinfo/US/Samoa"
+          ]
+        },
+        {
+          "ID": "zlib@1.3.1-r1",
+          "Name": "zlib",
+          "Identifier": {
+            "PURL": "pkg:apk/alpine/zlib@1.3.1-r1?arch=aarch64\u0026distro=3.20.5",
+            "UID": "bc92897a55cff828"
+          },
+          "Version": "1.3.1-r1",
+          "Arch": "aarch64",
+          "SrcName": "zlib",
+          "SrcVersion": "1.3.1-r1",
+          "Licenses": [
+            "Zlib"
+          ],
+          "Maintainer": "Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+          "DependsOn": [
+            "musl@1.2.5-r0"
+          ],
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "Digest": "sha1:e054f0fbf2b2af73b398b8ba3869eb9766a84b31",
+          "InstalledFiles": [
+            "lib/libz.so.1",
+            "lib/libz.so.1.3.1"
+          ]
+        }
+      ],
+      "Vulnerabilities": [
+        {
+          "VulnerabilityID": "CVE-2024-58251",
+          "PkgID": "busybox@1.36.1-r29",
+          "PkgName": "busybox",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/busybox@1.36.1-r29?arch=aarch64\u0026distro=3.20.5",
+            "UID": "a54f1d363766d1e0"
+          },
+          "InstalledVersion": "1.36.1-r29",
+          "FixedVersion": "1.36.1-r31",
+          "Status": "fixed",
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-58251",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Fingerprint": "sha256:66d05dc85e33ca01e99fb7a14a56f25f99a5af9fca4a02be51439bbd53884d9c",
+          "Title": "In netstat in BusyBox through 1.37.0, local users can launch of networ ...",
+          "Description": "In netstat in BusyBox through 1.37.0, local users can launch of network application with an argv[0] containing an ANSI terminal escape sequence, leading to a denial of service (terminal locked up) when netstat is used by a victim.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-150"
+          ],
+          "VendorSeverity": {
+            "ubuntu": 2
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2025/04/23/6",
+            "https://bugs.busybox.net/show_bug.cgi?id=15922",
+            "https://www.busybox.net",
+            "https://www.busybox.net/downloads/",
+            "https://www.cve.org/CVERecord?id=CVE-2024-58251"
+          ],
+          "PublishedDate": "2025-04-23T18:16:03.057Z",
+          "LastModifiedDate": "2025-04-29T13:52:47.47Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2025-46394",
+          "PkgID": "busybox@1.36.1-r29",
+          "PkgName": "busybox",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/busybox@1.36.1-r29?arch=aarch64\u0026distro=3.20.5",
+            "UID": "a54f1d363766d1e0"
+          },
+          "InstalledVersion": "1.36.1-r29",
+          "FixedVersion": "1.36.1-r31",
+          "Status": "fixed",
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2025-46394",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Fingerprint": "sha256:def85fd234a4dbf8e19b0fcb89084b6a505d936fd7d77619388d69d5d626c669",
+          "Title": "In tar in BusyBox through 1.37.0, a TAR archive can have filenames hid ...",
+          "Description": "In tar in BusyBox through 1.37.0, a TAR archive can have filenames hidden from a listing through the use of terminal escape sequences.",
+          "Severity": "LOW",
+          "CweIDs": [
+            "CWE-451"
+          ],
+          "VendorSeverity": {
+            "nvd": 1,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:N",
+              "V3Score": 3.3
+            }
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2025/04/23/5",
+            "http://www.openwall.com/lists/oss-security/2025/04/24/3",
+            "https://bugs.busybox.net/show_bug.cgi?id=16018",
+            "https://lists.busybox.net/pipermail/busybox/2024-July/090806.html",
+            "https://lists.busybox.net/pipermail/busybox/2024-July/090814.html",
+            "https://www.busybox.net",
+            "https://www.busybox.net/downloads/",
+            "https://www.cve.org/CVERecord?id=CVE-2025-46394",
+            "https://www.openwall.com/lists/oss-security/2025/04/23/1"
+          ],
+          "PublishedDate": "2025-04-23T16:15:48.713Z",
+          "LastModifiedDate": "2025-09-24T14:38:22.127Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-58251",
+          "PkgID": "busybox-binsh@1.36.1-r29",
+          "PkgName": "busybox-binsh",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/busybox-binsh@1.36.1-r29?arch=aarch64\u0026distro=3.20.5",
+            "UID": "446bd501c01671cd"
+          },
+          "InstalledVersion": "1.36.1-r29",
+          "FixedVersion": "1.36.1-r31",
+          "Status": "fixed",
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-58251",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Fingerprint": "sha256:7fdb5c12359155873912d583687d9067f97222212ef3752199515e5306df0c8e",
+          "Title": "In netstat in BusyBox through 1.37.0, local users can launch of networ ...",
+          "Description": "In netstat in BusyBox through 1.37.0, local users can launch of network application with an argv[0] containing an ANSI terminal escape sequence, leading to a denial of service (terminal locked up) when netstat is used by a victim.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-150"
+          ],
+          "VendorSeverity": {
+            "ubuntu": 2
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2025/04/23/6",
+            "https://bugs.busybox.net/show_bug.cgi?id=15922",
+            "https://www.busybox.net",
+            "https://www.busybox.net/downloads/",
+            "https://www.cve.org/CVERecord?id=CVE-2024-58251"
+          ],
+          "PublishedDate": "2025-04-23T18:16:03.057Z",
+          "LastModifiedDate": "2025-04-29T13:52:47.47Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2025-46394",
+          "PkgID": "busybox-binsh@1.36.1-r29",
+          "PkgName": "busybox-binsh",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/busybox-binsh@1.36.1-r29?arch=aarch64\u0026distro=3.20.5",
+            "UID": "446bd501c01671cd"
+          },
+          "InstalledVersion": "1.36.1-r29",
+          "FixedVersion": "1.36.1-r31",
+          "Status": "fixed",
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2025-46394",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Fingerprint": "sha256:ad51e988b45c1d7d2f3403efaf1e204931989d026a132473800b5e5366805558",
+          "Title": "In tar in BusyBox through 1.37.0, a TAR archive can have filenames hid ...",
+          "Description": "In tar in BusyBox through 1.37.0, a TAR archive can have filenames hidden from a listing through the use of terminal escape sequences.",
+          "Severity": "LOW",
+          "CweIDs": [
+            "CWE-451"
+          ],
+          "VendorSeverity": {
+            "nvd": 1,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:N",
+              "V3Score": 3.3
+            }
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2025/04/23/5",
+            "http://www.openwall.com/lists/oss-security/2025/04/24/3",
+            "https://bugs.busybox.net/show_bug.cgi?id=16018",
+            "https://lists.busybox.net/pipermail/busybox/2024-July/090806.html",
+            "https://lists.busybox.net/pipermail/busybox/2024-July/090814.html",
+            "https://www.busybox.net",
+            "https://www.busybox.net/downloads/",
+            "https://www.cve.org/CVERecord?id=CVE-2025-46394",
+            "https://www.openwall.com/lists/oss-security/2025/04/23/1"
+          ],
+          "PublishedDate": "2025-04-23T16:15:48.713Z",
+          "LastModifiedDate": "2025-09-24T14:38:22.127Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-12797",
+          "PkgID": "libcrypto3@3.3.2-r1",
+          "PkgName": "libcrypto3",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/libcrypto3@3.3.2-r1?arch=aarch64\u0026distro=3.20.5",
+            "UID": "8047a5402fafc5d4"
+          },
+          "InstalledVersion": "3.3.2-r1",
+          "FixedVersion": "3.3.3-r0",
+          "Status": "fixed",
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-12797",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Fingerprint": "sha256:abdbc8f1e865304c56761f9cffcffb54b6c02eaa9410908bba27e40ce5c14243",
+          "Title": "openssl: RFC7250 handshakes with unauthenticated servers don't abort as expected",
+          "Description": "Issue summary: Clients using RFC7250 Raw Public Keys (RPKs) to authenticate a\nserver may fail to notice that the server was not authenticated, because\nhandshakes don't abort as expected when the SSL_VERIFY_PEER verification mode\nis set.\n\nImpact summary: TLS and DTLS connections using raw public keys may be\nvulnerable to man-in-middle attacks when server authentication failure is not\ndetected by clients.\n\nRPKs are disabled by default in both TLS clients and TLS servers.  The issue\nonly arises when TLS clients explicitly enable RPK use by the server, and the\nserver, likewise, enables sending of an RPK instead of an X.509 certificate\nchain.  The affected clients are those that then rely on the handshake to\nfail when the server's RPK fails to match one of the expected public keys,\nby setting the verification mode to SSL_VERIFY_PEER.\n\nClients that enable server-side raw public keys can still find out that raw\npublic key verification failed by calling SSL_get_verify_result(), and those\nthat do, and take appropriate action, are not affected.  This issue was\nintroduced in the initial implementation of RPK support in OpenSSL 3.2.\n\nThe FIPS modules in 3.4, 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-392"
+          ],
+          "VendorSeverity": {
+            "alma": 3,
+            "azure": 3,
+            "cbl-mariner": 3,
+            "ghsa": 1,
+            "oracle-oval": 3,
+            "redhat": 3,
+            "rocky": 3,
+            "ubuntu": 3
+          },
+          "CVSS": {
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N",
+              "V3Score": 7.4
+            }
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2025/02/11/3",
+            "http://www.openwall.com/lists/oss-security/2025/02/11/4",
+            "https://access.redhat.com/errata/RHSA-2025:1330",
+            "https://access.redhat.com/security/cve/CVE-2024-12797",
+            "https://bugzilla.redhat.com/2342757",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2342757",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-12797",
+            "https://errata.almalinux.org/9/ALSA-2025-1330.html",
+            "https://errata.rockylinux.org/RLSA-2025:1330",
+            "https://github.com/openssl/openssl/commit/738d4f9fdeaad57660dcba50a619fafced3fd5e9",
+            "https://github.com/openssl/openssl/commit/798779d43494549b611233f92652f0da5328fbe7",
+            "https://github.com/openssl/openssl/commit/87ebd203feffcf92ad5889df92f90bb0ee10a699",
+            "https://github.com/pyca/cryptography",
+            "https://github.com/pyca/cryptography/security/advisories/GHSA-79v4-65xg-pq4g",
+            "https://linux.oracle.com/cve/CVE-2024-12797.html",
+            "https://linux.oracle.com/errata/ELSA-2025-1330.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2024-12797",
+            "https://openssl-library.org/news/secadv/20250211.txt",
+            "https://security.netapp.com/advisory/ntap-20250214-0001/",
+            "https://ubuntu.com/security/notices/USN-7264-1",
+            "https://www.cve.org/CVERecord?id=CVE-2024-12797"
+          ],
+          "PublishedDate": "2025-02-11T16:15:38.827Z",
+          "LastModifiedDate": "2025-02-18T14:15:27.107Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-13176",
+          "PkgID": "libcrypto3@3.3.2-r1",
+          "PkgName": "libcrypto3",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/libcrypto3@3.3.2-r1?arch=aarch64\u0026distro=3.20.5",
+            "UID": "8047a5402fafc5d4"
+          },
+          "InstalledVersion": "3.3.2-r1",
+          "FixedVersion": "3.3.2-r2",
+          "Status": "fixed",
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-13176",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Fingerprint": "sha256:809bb586220423c8d2650ac9d2f66be6bda74e7e047694dceff7581baa3d2e7e",
+          "Title": "openssl: Timing side-channel in ECDSA signature computation",
+          "Description": "Issue summary: A timing side-channel which could potentially allow recovering\nthe private key exists in the ECDSA signature computation.\n\nImpact summary: A timing side-channel in ECDSA signature computations\ncould allow recovering the private key by an attacker. However, measuring\nthe timing would require either local access to the signing application or\na very fast network connection with low latency.\n\nThere is a timing signal of around 300 nanoseconds when the top word of\nthe inverted ECDSA nonce value is zero. This can happen with significant\nprobability only for some of the supported elliptic curves. In particular\nthe NIST P-521 curve is affected. To be able to measure this leak, the attacker\nprocess must either be located in the same physical computer or must\nhave a very fast network connection with low latency. For that reason\nthe severity of this vulnerability is Low.\n\nThe FIPS modules in 3.4, 3.3, 3.2, 3.1 and 3.0 are affected by this issue.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-385"
+          ],
+          "VendorSeverity": {
+            "alma": 2,
+            "amazon": 2,
+            "azure": 2,
+            "cbl-mariner": 2,
+            "oracle-oval": 2,
+            "redhat": 1,
+            "rocky": 2,
+            "ubuntu": 1
+          },
+          "CVSS": {
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:N/A:N",
+              "V3Score": 4.7
+            }
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2025/01/20/2",
+            "https://access.redhat.com/errata/RHSA-2025:16046",
+            "https://access.redhat.com/security/cve/CVE-2024-13176",
+            "https://bugzilla.redhat.com/2359885",
+            "https://bugzilla.redhat.com/2359888",
+            "https://bugzilla.redhat.com/2359892",
+            "https://bugzilla.redhat.com/2359894",
+            "https://bugzilla.redhat.com/2359895",
+            "https://bugzilla.redhat.com/2359899",
+            "https://bugzilla.redhat.com/2359900",
+            "https://bugzilla.redhat.com/2359902",
+            "https://bugzilla.redhat.com/2359903",
+            "https://bugzilla.redhat.com/2359911",
+            "https://bugzilla.redhat.com/2359918",
+            "https://bugzilla.redhat.com/2359920",
+            "https://bugzilla.redhat.com/2359924",
+            "https://bugzilla.redhat.com/2359928",
+            "https://bugzilla.redhat.com/2359930",
+            "https://bugzilla.redhat.com/2359932",
+            "https://bugzilla.redhat.com/2359934",
+            "https://bugzilla.redhat.com/2359938",
+            "https://bugzilla.redhat.com/2359940",
+            "https://bugzilla.redhat.com/2359943",
+            "https://bugzilla.redhat.com/2359944",
+            "https://bugzilla.redhat.com/2359945",
+            "https://bugzilla.redhat.com/2359947",
+            "https://bugzilla.redhat.com/2359950",
+            "https://bugzilla.redhat.com/2359963",
+            "https://bugzilla.redhat.com/2359964",
+            "https://bugzilla.redhat.com/2359972",
+            "https://bugzilla.redhat.com/2370920",
+            "https://bugzilla.redhat.com/2380264",
+            "https://bugzilla.redhat.com/2380273",
+            "https://bugzilla.redhat.com/2380274",
+            "https://bugzilla.redhat.com/2380278",
+            "https://bugzilla.redhat.com/2380280",
+            "https://bugzilla.redhat.com/2380283",
+            "https://bugzilla.redhat.com/2380284",
+            "https://bugzilla.redhat.com/2380290",
+            "https://bugzilla.redhat.com/2380291",
+            "https://bugzilla.redhat.com/2380295",
+            "https://bugzilla.redhat.com/2380298",
+            "https://bugzilla.redhat.com/2380306",
+            "https://bugzilla.redhat.com/2380308",
+            "https://bugzilla.redhat.com/2380309",
+            "https://bugzilla.redhat.com/2380310",
+            "https://bugzilla.redhat.com/2380312",
+            "https://bugzilla.redhat.com/2380313",
+            "https://bugzilla.redhat.com/2380320",
+            "https://bugzilla.redhat.com/2380321",
+            "https://bugzilla.redhat.com/2380322",
+            "https://bugzilla.redhat.com/2380326",
+            "https://bugzilla.redhat.com/2380327",
+            "https://bugzilla.redhat.com/2380334",
+            "https://bugzilla.redhat.com/2380335",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2338999",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359885",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359888",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359892",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359894",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359895",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359899",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359900",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359902",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359903",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359911",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359918",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359920",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359924",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359928",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359930",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359932",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359934",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359938",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359940",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359943",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359944",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359945",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359947",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359950",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359963",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359964",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359972",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2370920",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380264",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380273",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380274",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380278",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380280",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380283",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380284",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380290",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380291",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380295",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380298",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380306",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380308",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380309",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380310",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380312",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380313",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380320",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380321",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380322",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380326",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380327",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380334",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380335",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-13176",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-21574",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-21575",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-21577",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-21579",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-21580",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-21581",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-21584",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-21585",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-21588",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30681",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30682",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30683",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30684",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30685",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30687",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30688",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30689",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30693",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30695",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30696",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30699",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30703",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30704",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30705",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30715",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30721",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30722",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50077",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50078",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50079",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50080",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50081",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50082",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50083",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50084",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50085",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50086",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50087",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50088",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50091",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50092",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50093",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50094",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50096",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50097",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50098",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50099",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50100",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50101",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50102",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50104",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-5399",
+            "https://errata.almalinux.org/9/ALSA-2025-16046.html",
+            "https://errata.rockylinux.org/RLSA-2025:15699",
+            "https://github.com/openssl/openssl/commit/07272b05b04836a762b4baa874958af51d513844",
+            "https://github.com/openssl/openssl/commit/2af62e74fb59bc469506bc37eb2990ea408d9467",
+            "https://github.com/openssl/openssl/commit/392dcb336405a0c94486aa6655057f59fd3a0902",
+            "https://github.com/openssl/openssl/commit/4b1cb94a734a7d4ec363ac0a215a25c181e11f65",
+            "https://github.com/openssl/openssl/commit/77c608f4c8857e63e98e66444e2e761c9627916f",
+            "https://github.openssl.org/openssl/extended-releases/commit/0d5fd1ab987f7571e2c955d8d8b638fc0fb54ded",
+            "https://github.openssl.org/openssl/extended-releases/commit/a2639000db19878d5d89586ae7b725080592ae86",
+            "https://linux.oracle.com/cve/CVE-2024-13176.html",
+            "https://linux.oracle.com/errata/ELSA-2025-16046.html",
+            "https://lists.debian.org/debian-lts-announce/2025/05/msg00028.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2024-13176",
+            "https://openssl-library.org/news/secadv/20250120.txt",
+            "https://security.netapp.com/advisory/ntap-20250124-0005/",
+            "https://security.netapp.com/advisory/ntap-20250418-0010/",
+            "https://security.netapp.com/advisory/ntap-20250502-0006/",
+            "https://ubuntu.com/security/notices/USN-7264-1",
+            "https://ubuntu.com/security/notices/USN-7278-1",
+            "https://ubuntu.com/security/notices/USN-7894-1",
+            "https://www.cve.org/CVERecord?id=CVE-2024-13176",
+            "https://www.oracle.com/security-alerts/cpuapr2025.html#AppendixMSQL"
+          ],
+          "PublishedDate": "2025-01-20T14:15:26.247Z",
+          "LastModifiedDate": "2025-11-03T20:16:08.203Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2025-9230",
+          "PkgID": "libcrypto3@3.3.2-r1",
+          "PkgName": "libcrypto3",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/libcrypto3@3.3.2-r1?arch=aarch64\u0026distro=3.20.5",
+            "UID": "8047a5402fafc5d4"
+          },
+          "InstalledVersion": "3.3.2-r1",
+          "FixedVersion": "3.3.5-r0",
+          "Status": "fixed",
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2025-9230",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Fingerprint": "sha256:a002b3be724e54fc68cda2b1469873ac3bd7da8d9b377a2617ab985c24512d3f",
+          "Title": "openssl: Out-of-bounds read \u0026 write in RFC 3211 KEK Unwrap",
+          "Description": "Issue summary: An application trying to decrypt CMS messages encrypted using\npassword based encryption can trigger an out-of-bounds read and write.\n\nImpact summary: This out-of-bounds read may trigger a crash which leads to\nDenial of Service for an application. The out-of-bounds write can cause\na memory corruption which can have various consequences including\na Denial of Service or Execution of attacker-supplied code.\n\nAlthough the consequences of a successful exploit of this vulnerability\ncould be severe, the probability that the attacker would be able to\nperform it is low. Besides, password based (PWRI) encryption support in CMS\nmessages is very rarely used. For that reason the issue was assessed as\nModerate severity according to our Security Policy.\n\nThe FIPS modules in 3.5, 3.4, 3.3, 3.2, 3.1 and 3.0 are not affected by this\nissue, as the CMS implementation is outside the OpenSSL FIPS module\nboundary.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-125",
+            "CWE-787"
+          ],
+          "VendorSeverity": {
+            "alma": 2,
+            "amazon": 2,
+            "azure": 3,
+            "cbl-mariner": 3,
+            "oracle-oval": 2,
+            "photon": 3,
+            "redhat": 2,
+            "rocky": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:L",
+              "V3Score": 5.6
+            }
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2025/09/30/5",
+            "https://access.redhat.com/errata/RHSA-2025:21255",
+            "https://access.redhat.com/security/cve/CVE-2025-9230",
+            "https://bugzilla.redhat.com/2396054",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2396054",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-9230",
+            "https://errata.almalinux.org/9/ALSA-2025-21255.html",
+            "https://errata.rockylinux.org/RLSA-2025:21255",
+            "https://github.com/openssl/openssl/commit/5965ea5dd6960f36d8b7f74f8eac67a8eb8f2b45",
+            "https://github.com/openssl/openssl/commit/9e91358f365dee6c446dcdcdb01c04d2743fd280",
+            "https://github.com/openssl/openssl/commit/a79c4ce559c6a3a8fd4109e9f33c1185d5bf2def",
+            "https://github.com/openssl/openssl/commit/b5282d677551afda7d20e9c00e09561b547b2dfd",
+            "https://github.com/openssl/openssl/commit/bae259a211ada6315dc50900686daaaaaa55f482",
+            "https://github.openssl.org/openssl/extended-releases/commit/c2b96348bfa662f25f4fabf81958ae822063dae3",
+            "https://github.openssl.org/openssl/extended-releases/commit/dfbaf161d8dafc1132dd88cd48ad990ed9b4c8ba",
+            "https://linux.oracle.com/cve/CVE-2025-9230.html",
+            "https://linux.oracle.com/errata/ELSA-2025-28020.html",
+            "https://lists.debian.org/debian-lts-announce/2025/10/msg00001.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2025-9230",
+            "https://openssl-library.org/news/secadv/20250930.txt",
+            "https://ubuntu.com/security/notices/USN-7786-1",
+            "https://www.cve.org/CVERecord?id=CVE-2025-9230"
+          ],
+          "PublishedDate": "2025-09-30T14:15:41.05Z",
+          "LastModifiedDate": "2025-11-04T22:16:45.36Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2025-9231",
+          "PkgID": "libcrypto3@3.3.2-r1",
+          "PkgName": "libcrypto3",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/libcrypto3@3.3.2-r1?arch=aarch64\u0026distro=3.20.5",
+            "UID": "8047a5402fafc5d4"
+          },
+          "InstalledVersion": "3.3.2-r1",
+          "FixedVersion": "3.3.5-r0",
+          "Status": "fixed",
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2025-9231",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Fingerprint": "sha256:5f5e9004b7351b4e893797a3f09beb260b594fcafa951275984f860333e9cb3c",
+          "Title": "openssl: Timing side-channel in SM2 algorithm on 64 bit ARM",
+          "Description": "Issue summary: A timing side-channel which could potentially allow remote\nrecovery of the private key exists in the SM2 algorithm implementation on 64 bit\nARM platforms.\n\nImpact summary: A timing side-channel in SM2 signature computations on 64 bit\nARM platforms could allow recovering the private key by an attacker..\n\nWhile remote key recovery over a network was not attempted by the reporter,\ntiming measurements revealed a timing signal which may allow such an attack.\n\nOpenSSL does not directly support certificates with SM2 keys in TLS, and so\nthis CVE is not relevant in most TLS contexts.  However, given that it is\npossible to add support for such certificates via a custom provider, coupled\nwith the fact that in such a custom provider context the private key may be\nrecoverable via remote timing measurements, we consider this to be a Moderate\nseverity issue.\n\nThe FIPS modules in 3.5, 3.4, 3.3, 3.2, 3.1 and 3.0 are not affected by this\nissue, as SM2 is not an approved algorithm.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-385"
+          ],
+          "VendorSeverity": {
+            "amazon": 2,
+            "redhat": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N",
+              "V3Score": 5.9
+            }
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2025/09/30/5",
+            "https://access.redhat.com/security/cve/CVE-2025-9231",
+            "https://github.com/openssl/openssl/commit/567f64386e43683888212226824b6a179885a0fe",
+            "https://github.com/openssl/openssl/commit/cba616c26ac8e7b37de5e77762e505ba5ca51698",
+            "https://github.com/openssl/openssl/commit/eed5adc9f969d77c94f213767acbb41ff923b6f4",
+            "https://github.com/openssl/openssl/commit/fc47a2ec078912b3e914fab5734535e76c4820c2",
+            "https://nvd.nist.gov/vuln/detail/CVE-2025-9231",
+            "https://openssl-library.org/news/secadv/20250930.txt",
+            "https://ubuntu.com/security/notices/USN-7786-1",
+            "https://www.cve.org/CVERecord?id=CVE-2025-9231"
+          ],
+          "PublishedDate": "2025-09-30T14:15:41.19Z",
+          "LastModifiedDate": "2025-11-04T22:16:45.49Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2025-9232",
+          "PkgID": "libcrypto3@3.3.2-r1",
+          "PkgName": "libcrypto3",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/libcrypto3@3.3.2-r1?arch=aarch64\u0026distro=3.20.5",
+            "UID": "8047a5402fafc5d4"
+          },
+          "InstalledVersion": "3.3.2-r1",
+          "FixedVersion": "3.3.5-r0",
+          "Status": "fixed",
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2025-9232",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Fingerprint": "sha256:d2d9442e6b2de51e5b13e436b382046cca92e592fffbebce0c39d376a9bb64ac",
+          "Title": "openssl: Out-of-bounds read in HTTP client no_proxy handling",
+          "Description": "Issue summary: An application using the OpenSSL HTTP client API functions may\ntrigger an out-of-bounds read if the 'no_proxy' environment variable is set and\nthe host portion of the authority component of the HTTP URL is an IPv6 address.\n\nImpact summary: An out-of-bounds read can trigger a crash which leads to\nDenial of Service for an application.\n\nThe OpenSSL HTTP client API functions can be used directly by applications\nbut they are also used by the OCSP client functions and CMP (Certificate\nManagement Protocol) client implementation in OpenSSL. However the URLs used\nby these implementations are unlikely to be controlled by an attacker.\n\nIn this vulnerable code the out of bounds read can only trigger a crash.\nFurthermore the vulnerability requires an attacker-controlled URL to be\npassed from an application to the OpenSSL function and the user has to have\na 'no_proxy' environment variable set. For the aforementioned reasons the\nissue was assessed as Low severity.\n\nThe vulnerable code was introduced in the following patch releases:\n3.0.16, 3.1.8, 3.2.4, 3.3.3, 3.4.0 and 3.5.0.\n\nThe FIPS modules in 3.5, 3.4, 3.3, 3.2, 3.1 and 3.0 are not affected by this\nissue, as the HTTP client implementation is outside the OpenSSL FIPS module\nboundary.",
+          "Severity": "LOW",
+          "CweIDs": [
+            "CWE-125"
+          ],
+          "VendorSeverity": {
+            "azure": 2,
+            "photon": 2,
+            "redhat": 1,
+            "ubuntu": 1
+          },
+          "CVSS": {
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:N/I:N/A:L",
+              "V3Score": 3.1
+            }
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2025/09/30/5",
+            "https://access.redhat.com/security/cve/CVE-2025-9232",
+            "https://github.com/openssl/openssl/commit/2b4ec20e47959170422922eaff25346d362dcb35",
+            "https://github.com/openssl/openssl/commit/654dc11d23468a74fc8ea4672b702dd3feb7be4b",
+            "https://github.com/openssl/openssl/commit/7cf21a30513c9e43c4bc3836c237cf086e194af3",
+            "https://github.com/openssl/openssl/commit/89e790ac431125a4849992858490bed6b225eadf",
+            "https://github.com/openssl/openssl/commit/bbf38c034cdabd0a13330abcc4855c866f53d2e0",
+            "https://nvd.nist.gov/vuln/detail/CVE-2025-9232",
+            "https://openssl-library.org/news/secadv/20250930.txt",
+            "https://ubuntu.com/security/notices/USN-7786-1",
+            "https://ubuntu.com/security/notices/USN-7894-1",
+            "https://www.cve.org/CVERecord?id=CVE-2025-9232"
+          ],
+          "PublishedDate": "2025-09-30T14:15:41.313Z",
+          "LastModifiedDate": "2025-11-04T22:16:45.63Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-12797",
+          "PkgID": "libssl3@3.3.2-r1",
+          "PkgName": "libssl3",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/libssl3@3.3.2-r1?arch=aarch64\u0026distro=3.20.5",
+            "UID": "7edffecdd39a1032"
+          },
+          "InstalledVersion": "3.3.2-r1",
+          "FixedVersion": "3.3.3-r0",
+          "Status": "fixed",
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-12797",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Fingerprint": "sha256:9b53fd66049e1d37a9df567128a31b7fe0163f13bbd9a4d26d6a5d93b23fd4c6",
+          "Title": "openssl: RFC7250 handshakes with unauthenticated servers don't abort as expected",
+          "Description": "Issue summary: Clients using RFC7250 Raw Public Keys (RPKs) to authenticate a\nserver may fail to notice that the server was not authenticated, because\nhandshakes don't abort as expected when the SSL_VERIFY_PEER verification mode\nis set.\n\nImpact summary: TLS and DTLS connections using raw public keys may be\nvulnerable to man-in-middle attacks when server authentication failure is not\ndetected by clients.\n\nRPKs are disabled by default in both TLS clients and TLS servers.  The issue\nonly arises when TLS clients explicitly enable RPK use by the server, and the\nserver, likewise, enables sending of an RPK instead of an X.509 certificate\nchain.  The affected clients are those that then rely on the handshake to\nfail when the server's RPK fails to match one of the expected public keys,\nby setting the verification mode to SSL_VERIFY_PEER.\n\nClients that enable server-side raw public keys can still find out that raw\npublic key verification failed by calling SSL_get_verify_result(), and those\nthat do, and take appropriate action, are not affected.  This issue was\nintroduced in the initial implementation of RPK support in OpenSSL 3.2.\n\nThe FIPS modules in 3.4, 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-392"
+          ],
+          "VendorSeverity": {
+            "alma": 3,
+            "azure": 3,
+            "cbl-mariner": 3,
+            "ghsa": 1,
+            "oracle-oval": 3,
+            "redhat": 3,
+            "rocky": 3,
+            "ubuntu": 3
+          },
+          "CVSS": {
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N",
+              "V3Score": 7.4
+            }
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2025/02/11/3",
+            "http://www.openwall.com/lists/oss-security/2025/02/11/4",
+            "https://access.redhat.com/errata/RHSA-2025:1330",
+            "https://access.redhat.com/security/cve/CVE-2024-12797",
+            "https://bugzilla.redhat.com/2342757",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2342757",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-12797",
+            "https://errata.almalinux.org/9/ALSA-2025-1330.html",
+            "https://errata.rockylinux.org/RLSA-2025:1330",
+            "https://github.com/openssl/openssl/commit/738d4f9fdeaad57660dcba50a619fafced3fd5e9",
+            "https://github.com/openssl/openssl/commit/798779d43494549b611233f92652f0da5328fbe7",
+            "https://github.com/openssl/openssl/commit/87ebd203feffcf92ad5889df92f90bb0ee10a699",
+            "https://github.com/pyca/cryptography",
+            "https://github.com/pyca/cryptography/security/advisories/GHSA-79v4-65xg-pq4g",
+            "https://linux.oracle.com/cve/CVE-2024-12797.html",
+            "https://linux.oracle.com/errata/ELSA-2025-1330.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2024-12797",
+            "https://openssl-library.org/news/secadv/20250211.txt",
+            "https://security.netapp.com/advisory/ntap-20250214-0001/",
+            "https://ubuntu.com/security/notices/USN-7264-1",
+            "https://www.cve.org/CVERecord?id=CVE-2024-12797"
+          ],
+          "PublishedDate": "2025-02-11T16:15:38.827Z",
+          "LastModifiedDate": "2025-02-18T14:15:27.107Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-13176",
+          "PkgID": "libssl3@3.3.2-r1",
+          "PkgName": "libssl3",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/libssl3@3.3.2-r1?arch=aarch64\u0026distro=3.20.5",
+            "UID": "7edffecdd39a1032"
+          },
+          "InstalledVersion": "3.3.2-r1",
+          "FixedVersion": "3.3.2-r2",
+          "Status": "fixed",
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-13176",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Fingerprint": "sha256:fd18807789ff0f928ebaf3b3ba3056b336e028b497bb7cec01305dfe5cac5260",
+          "Title": "openssl: Timing side-channel in ECDSA signature computation",
+          "Description": "Issue summary: A timing side-channel which could potentially allow recovering\nthe private key exists in the ECDSA signature computation.\n\nImpact summary: A timing side-channel in ECDSA signature computations\ncould allow recovering the private key by an attacker. However, measuring\nthe timing would require either local access to the signing application or\na very fast network connection with low latency.\n\nThere is a timing signal of around 300 nanoseconds when the top word of\nthe inverted ECDSA nonce value is zero. This can happen with significant\nprobability only for some of the supported elliptic curves. In particular\nthe NIST P-521 curve is affected. To be able to measure this leak, the attacker\nprocess must either be located in the same physical computer or must\nhave a very fast network connection with low latency. For that reason\nthe severity of this vulnerability is Low.\n\nThe FIPS modules in 3.4, 3.3, 3.2, 3.1 and 3.0 are affected by this issue.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-385"
+          ],
+          "VendorSeverity": {
+            "alma": 2,
+            "amazon": 2,
+            "azure": 2,
+            "cbl-mariner": 2,
+            "oracle-oval": 2,
+            "redhat": 1,
+            "rocky": 2,
+            "ubuntu": 1
+          },
+          "CVSS": {
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:N/A:N",
+              "V3Score": 4.7
+            }
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2025/01/20/2",
+            "https://access.redhat.com/errata/RHSA-2025:16046",
+            "https://access.redhat.com/security/cve/CVE-2024-13176",
+            "https://bugzilla.redhat.com/2359885",
+            "https://bugzilla.redhat.com/2359888",
+            "https://bugzilla.redhat.com/2359892",
+            "https://bugzilla.redhat.com/2359894",
+            "https://bugzilla.redhat.com/2359895",
+            "https://bugzilla.redhat.com/2359899",
+            "https://bugzilla.redhat.com/2359900",
+            "https://bugzilla.redhat.com/2359902",
+            "https://bugzilla.redhat.com/2359903",
+            "https://bugzilla.redhat.com/2359911",
+            "https://bugzilla.redhat.com/2359918",
+            "https://bugzilla.redhat.com/2359920",
+            "https://bugzilla.redhat.com/2359924",
+            "https://bugzilla.redhat.com/2359928",
+            "https://bugzilla.redhat.com/2359930",
+            "https://bugzilla.redhat.com/2359932",
+            "https://bugzilla.redhat.com/2359934",
+            "https://bugzilla.redhat.com/2359938",
+            "https://bugzilla.redhat.com/2359940",
+            "https://bugzilla.redhat.com/2359943",
+            "https://bugzilla.redhat.com/2359944",
+            "https://bugzilla.redhat.com/2359945",
+            "https://bugzilla.redhat.com/2359947",
+            "https://bugzilla.redhat.com/2359950",
+            "https://bugzilla.redhat.com/2359963",
+            "https://bugzilla.redhat.com/2359964",
+            "https://bugzilla.redhat.com/2359972",
+            "https://bugzilla.redhat.com/2370920",
+            "https://bugzilla.redhat.com/2380264",
+            "https://bugzilla.redhat.com/2380273",
+            "https://bugzilla.redhat.com/2380274",
+            "https://bugzilla.redhat.com/2380278",
+            "https://bugzilla.redhat.com/2380280",
+            "https://bugzilla.redhat.com/2380283",
+            "https://bugzilla.redhat.com/2380284",
+            "https://bugzilla.redhat.com/2380290",
+            "https://bugzilla.redhat.com/2380291",
+            "https://bugzilla.redhat.com/2380295",
+            "https://bugzilla.redhat.com/2380298",
+            "https://bugzilla.redhat.com/2380306",
+            "https://bugzilla.redhat.com/2380308",
+            "https://bugzilla.redhat.com/2380309",
+            "https://bugzilla.redhat.com/2380310",
+            "https://bugzilla.redhat.com/2380312",
+            "https://bugzilla.redhat.com/2380313",
+            "https://bugzilla.redhat.com/2380320",
+            "https://bugzilla.redhat.com/2380321",
+            "https://bugzilla.redhat.com/2380322",
+            "https://bugzilla.redhat.com/2380326",
+            "https://bugzilla.redhat.com/2380327",
+            "https://bugzilla.redhat.com/2380334",
+            "https://bugzilla.redhat.com/2380335",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2338999",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359885",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359888",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359892",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359894",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359895",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359899",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359900",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359902",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359903",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359911",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359918",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359920",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359924",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359928",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359930",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359932",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359934",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359938",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359940",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359943",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359944",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359945",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359947",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359950",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359963",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359964",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2359972",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2370920",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380264",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380273",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380274",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380278",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380280",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380283",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380284",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380290",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380291",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380295",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380298",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380306",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380308",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380309",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380310",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380312",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380313",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380320",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380321",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380322",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380326",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380327",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380334",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2380335",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-13176",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-21574",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-21575",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-21577",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-21579",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-21580",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-21581",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-21584",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-21585",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-21588",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30681",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30682",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30683",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30684",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30685",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30687",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30688",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30689",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30693",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30695",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30696",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30699",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30703",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30704",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30705",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30715",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30721",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-30722",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50077",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50078",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50079",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50080",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50081",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50082",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50083",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50084",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50085",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50086",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50087",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50088",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50091",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50092",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50093",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50094",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50096",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50097",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50098",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50099",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50100",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50101",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50102",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-50104",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-5399",
+            "https://errata.almalinux.org/9/ALSA-2025-16046.html",
+            "https://errata.rockylinux.org/RLSA-2025:15699",
+            "https://github.com/openssl/openssl/commit/07272b05b04836a762b4baa874958af51d513844",
+            "https://github.com/openssl/openssl/commit/2af62e74fb59bc469506bc37eb2990ea408d9467",
+            "https://github.com/openssl/openssl/commit/392dcb336405a0c94486aa6655057f59fd3a0902",
+            "https://github.com/openssl/openssl/commit/4b1cb94a734a7d4ec363ac0a215a25c181e11f65",
+            "https://github.com/openssl/openssl/commit/77c608f4c8857e63e98e66444e2e761c9627916f",
+            "https://github.openssl.org/openssl/extended-releases/commit/0d5fd1ab987f7571e2c955d8d8b638fc0fb54ded",
+            "https://github.openssl.org/openssl/extended-releases/commit/a2639000db19878d5d89586ae7b725080592ae86",
+            "https://linux.oracle.com/cve/CVE-2024-13176.html",
+            "https://linux.oracle.com/errata/ELSA-2025-16046.html",
+            "https://lists.debian.org/debian-lts-announce/2025/05/msg00028.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2024-13176",
+            "https://openssl-library.org/news/secadv/20250120.txt",
+            "https://security.netapp.com/advisory/ntap-20250124-0005/",
+            "https://security.netapp.com/advisory/ntap-20250418-0010/",
+            "https://security.netapp.com/advisory/ntap-20250502-0006/",
+            "https://ubuntu.com/security/notices/USN-7264-1",
+            "https://ubuntu.com/security/notices/USN-7278-1",
+            "https://ubuntu.com/security/notices/USN-7894-1",
+            "https://www.cve.org/CVERecord?id=CVE-2024-13176",
+            "https://www.oracle.com/security-alerts/cpuapr2025.html#AppendixMSQL"
+          ],
+          "PublishedDate": "2025-01-20T14:15:26.247Z",
+          "LastModifiedDate": "2025-11-03T20:16:08.203Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2025-9230",
+          "PkgID": "libssl3@3.3.2-r1",
+          "PkgName": "libssl3",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/libssl3@3.3.2-r1?arch=aarch64\u0026distro=3.20.5",
+            "UID": "7edffecdd39a1032"
+          },
+          "InstalledVersion": "3.3.2-r1",
+          "FixedVersion": "3.3.5-r0",
+          "Status": "fixed",
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2025-9230",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Fingerprint": "sha256:55fcad501d3e1a4136849eb07f778bf04c89b5dae30c7a641fced70731eaa819",
+          "Title": "openssl: Out-of-bounds read \u0026 write in RFC 3211 KEK Unwrap",
+          "Description": "Issue summary: An application trying to decrypt CMS messages encrypted using\npassword based encryption can trigger an out-of-bounds read and write.\n\nImpact summary: This out-of-bounds read may trigger a crash which leads to\nDenial of Service for an application. The out-of-bounds write can cause\na memory corruption which can have various consequences including\na Denial of Service or Execution of attacker-supplied code.\n\nAlthough the consequences of a successful exploit of this vulnerability\ncould be severe, the probability that the attacker would be able to\nperform it is low. Besides, password based (PWRI) encryption support in CMS\nmessages is very rarely used. For that reason the issue was assessed as\nModerate severity according to our Security Policy.\n\nThe FIPS modules in 3.5, 3.4, 3.3, 3.2, 3.1 and 3.0 are not affected by this\nissue, as the CMS implementation is outside the OpenSSL FIPS module\nboundary.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-125",
+            "CWE-787"
+          ],
+          "VendorSeverity": {
+            "alma": 2,
+            "amazon": 2,
+            "azure": 3,
+            "cbl-mariner": 3,
+            "oracle-oval": 2,
+            "photon": 3,
+            "redhat": 2,
+            "rocky": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:L",
+              "V3Score": 5.6
+            }
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2025/09/30/5",
+            "https://access.redhat.com/errata/RHSA-2025:21255",
+            "https://access.redhat.com/security/cve/CVE-2025-9230",
+            "https://bugzilla.redhat.com/2396054",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2396054",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-9230",
+            "https://errata.almalinux.org/9/ALSA-2025-21255.html",
+            "https://errata.rockylinux.org/RLSA-2025:21255",
+            "https://github.com/openssl/openssl/commit/5965ea5dd6960f36d8b7f74f8eac67a8eb8f2b45",
+            "https://github.com/openssl/openssl/commit/9e91358f365dee6c446dcdcdb01c04d2743fd280",
+            "https://github.com/openssl/openssl/commit/a79c4ce559c6a3a8fd4109e9f33c1185d5bf2def",
+            "https://github.com/openssl/openssl/commit/b5282d677551afda7d20e9c00e09561b547b2dfd",
+            "https://github.com/openssl/openssl/commit/bae259a211ada6315dc50900686daaaaaa55f482",
+            "https://github.openssl.org/openssl/extended-releases/commit/c2b96348bfa662f25f4fabf81958ae822063dae3",
+            "https://github.openssl.org/openssl/extended-releases/commit/dfbaf161d8dafc1132dd88cd48ad990ed9b4c8ba",
+            "https://linux.oracle.com/cve/CVE-2025-9230.html",
+            "https://linux.oracle.com/errata/ELSA-2025-28020.html",
+            "https://lists.debian.org/debian-lts-announce/2025/10/msg00001.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2025-9230",
+            "https://openssl-library.org/news/secadv/20250930.txt",
+            "https://ubuntu.com/security/notices/USN-7786-1",
+            "https://www.cve.org/CVERecord?id=CVE-2025-9230"
+          ],
+          "PublishedDate": "2025-09-30T14:15:41.05Z",
+          "LastModifiedDate": "2025-11-04T22:16:45.36Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2025-9231",
+          "PkgID": "libssl3@3.3.2-r1",
+          "PkgName": "libssl3",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/libssl3@3.3.2-r1?arch=aarch64\u0026distro=3.20.5",
+            "UID": "7edffecdd39a1032"
+          },
+          "InstalledVersion": "3.3.2-r1",
+          "FixedVersion": "3.3.5-r0",
+          "Status": "fixed",
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2025-9231",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Fingerprint": "sha256:fdeef7f5dad33f2ddb000e8f8e3c8ec9b225f17c626c697be7fd5fa98031f1aa",
+          "Title": "openssl: Timing side-channel in SM2 algorithm on 64 bit ARM",
+          "Description": "Issue summary: A timing side-channel which could potentially allow remote\nrecovery of the private key exists in the SM2 algorithm implementation on 64 bit\nARM platforms.\n\nImpact summary: A timing side-channel in SM2 signature computations on 64 bit\nARM platforms could allow recovering the private key by an attacker..\n\nWhile remote key recovery over a network was not attempted by the reporter,\ntiming measurements revealed a timing signal which may allow such an attack.\n\nOpenSSL does not directly support certificates with SM2 keys in TLS, and so\nthis CVE is not relevant in most TLS contexts.  However, given that it is\npossible to add support for such certificates via a custom provider, coupled\nwith the fact that in such a custom provider context the private key may be\nrecoverable via remote timing measurements, we consider this to be a Moderate\nseverity issue.\n\nThe FIPS modules in 3.5, 3.4, 3.3, 3.2, 3.1 and 3.0 are not affected by this\nissue, as SM2 is not an approved algorithm.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-385"
+          ],
+          "VendorSeverity": {
+            "amazon": 2,
+            "redhat": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N",
+              "V3Score": 5.9
+            }
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2025/09/30/5",
+            "https://access.redhat.com/security/cve/CVE-2025-9231",
+            "https://github.com/openssl/openssl/commit/567f64386e43683888212226824b6a179885a0fe",
+            "https://github.com/openssl/openssl/commit/cba616c26ac8e7b37de5e77762e505ba5ca51698",
+            "https://github.com/openssl/openssl/commit/eed5adc9f969d77c94f213767acbb41ff923b6f4",
+            "https://github.com/openssl/openssl/commit/fc47a2ec078912b3e914fab5734535e76c4820c2",
+            "https://nvd.nist.gov/vuln/detail/CVE-2025-9231",
+            "https://openssl-library.org/news/secadv/20250930.txt",
+            "https://ubuntu.com/security/notices/USN-7786-1",
+            "https://www.cve.org/CVERecord?id=CVE-2025-9231"
+          ],
+          "PublishedDate": "2025-09-30T14:15:41.19Z",
+          "LastModifiedDate": "2025-11-04T22:16:45.49Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2025-9232",
+          "PkgID": "libssl3@3.3.2-r1",
+          "PkgName": "libssl3",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/libssl3@3.3.2-r1?arch=aarch64\u0026distro=3.20.5",
+            "UID": "7edffecdd39a1032"
+          },
+          "InstalledVersion": "3.3.2-r1",
+          "FixedVersion": "3.3.5-r0",
+          "Status": "fixed",
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2025-9232",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Fingerprint": "sha256:0a158df50df48d374a6dbf559b317e351e3995520734f69f9d53d12328c0f062",
+          "Title": "openssl: Out-of-bounds read in HTTP client no_proxy handling",
+          "Description": "Issue summary: An application using the OpenSSL HTTP client API functions may\ntrigger an out-of-bounds read if the 'no_proxy' environment variable is set and\nthe host portion of the authority component of the HTTP URL is an IPv6 address.\n\nImpact summary: An out-of-bounds read can trigger a crash which leads to\nDenial of Service for an application.\n\nThe OpenSSL HTTP client API functions can be used directly by applications\nbut they are also used by the OCSP client functions and CMP (Certificate\nManagement Protocol) client implementation in OpenSSL. However the URLs used\nby these implementations are unlikely to be controlled by an attacker.\n\nIn this vulnerable code the out of bounds read can only trigger a crash.\nFurthermore the vulnerability requires an attacker-controlled URL to be\npassed from an application to the OpenSSL function and the user has to have\na 'no_proxy' environment variable set. For the aforementioned reasons the\nissue was assessed as Low severity.\n\nThe vulnerable code was introduced in the following patch releases:\n3.0.16, 3.1.8, 3.2.4, 3.3.3, 3.4.0 and 3.5.0.\n\nThe FIPS modules in 3.5, 3.4, 3.3, 3.2, 3.1 and 3.0 are not affected by this\nissue, as the HTTP client implementation is outside the OpenSSL FIPS module\nboundary.",
+          "Severity": "LOW",
+          "CweIDs": [
+            "CWE-125"
+          ],
+          "VendorSeverity": {
+            "azure": 2,
+            "photon": 2,
+            "redhat": 1,
+            "ubuntu": 1
+          },
+          "CVSS": {
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:N/I:N/A:L",
+              "V3Score": 3.1
+            }
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2025/09/30/5",
+            "https://access.redhat.com/security/cve/CVE-2025-9232",
+            "https://github.com/openssl/openssl/commit/2b4ec20e47959170422922eaff25346d362dcb35",
+            "https://github.com/openssl/openssl/commit/654dc11d23468a74fc8ea4672b702dd3feb7be4b",
+            "https://github.com/openssl/openssl/commit/7cf21a30513c9e43c4bc3836c237cf086e194af3",
+            "https://github.com/openssl/openssl/commit/89e790ac431125a4849992858490bed6b225eadf",
+            "https://github.com/openssl/openssl/commit/bbf38c034cdabd0a13330abcc4855c866f53d2e0",
+            "https://nvd.nist.gov/vuln/detail/CVE-2025-9232",
+            "https://openssl-library.org/news/secadv/20250930.txt",
+            "https://ubuntu.com/security/notices/USN-7786-1",
+            "https://ubuntu.com/security/notices/USN-7894-1",
+            "https://www.cve.org/CVERecord?id=CVE-2025-9232"
+          ],
+          "PublishedDate": "2025-09-30T14:15:41.313Z",
+          "LastModifiedDate": "2025-11-04T22:16:45.63Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2025-26519",
+          "PkgID": "musl@1.2.5-r0",
+          "PkgName": "musl",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/musl@1.2.5-r0?arch=aarch64\u0026distro=3.20.5",
+            "UID": "8e186e37b55d287d"
+          },
+          "InstalledVersion": "1.2.5-r0",
+          "FixedVersion": "1.2.5-r1",
+          "Status": "fixed",
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2025-26519",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Fingerprint": "sha256:6ba02294e7314c739a45da3721725bd112b0013e72eb869f275196436e3cc278",
+          "Title": "musl libc 0.9.13 through 1.2.5 before 1.2.6 has an out-of-bounds write ...",
+          "Description": "musl libc 0.9.13 through 1.2.5 before 1.2.6 has an out-of-bounds write vulnerability when an attacker can trigger iconv conversion of untrusted EUC-KR text to UTF-8.",
+          "Severity": "UNKNOWN",
+          "CweIDs": [
+            "CWE-787"
+          ],
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2025/02/13/2",
+            "http://www.openwall.com/lists/oss-security/2025/02/13/3",
+            "http://www.openwall.com/lists/oss-security/2025/02/13/4",
+            "http://www.openwall.com/lists/oss-security/2025/02/13/5",
+            "http://www.openwall.com/lists/oss-security/2025/02/14/5",
+            "http://www.openwall.com/lists/oss-security/2025/02/14/6",
+            "https://git.musl-libc.org/cgit/musl/commit/?id=c47ad25ea3b484e10326f933e927c0bc8cded3da",
+            "https://git.musl-libc.org/cgit/musl/commit/?id=e5adcd97b5196e29991b524237381a0202a60659",
+            "https://www.openwall.com/lists/oss-security/2025/02/13/2"
+          ],
+          "PublishedDate": "2025-02-14T04:15:09.05Z",
+          "LastModifiedDate": "2025-02-14T17:15:23.09Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2025-26519",
+          "PkgID": "musl-utils@1.2.5-r0",
+          "PkgName": "musl-utils",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/musl-utils@1.2.5-r0?arch=aarch64\u0026distro=3.20.5",
+            "UID": "bc5dd271d4e7954e"
+          },
+          "InstalledVersion": "1.2.5-r0",
+          "FixedVersion": "1.2.5-r1",
+          "Status": "fixed",
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2025-26519",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Fingerprint": "sha256:f1d8b0e04e21808f025a2b0f2dc45611d2d41348dae773c9154016cc18b971ff",
+          "Title": "musl libc 0.9.13 through 1.2.5 before 1.2.6 has an out-of-bounds write ...",
+          "Description": "musl libc 0.9.13 through 1.2.5 before 1.2.6 has an out-of-bounds write vulnerability when an attacker can trigger iconv conversion of untrusted EUC-KR text to UTF-8.",
+          "Severity": "UNKNOWN",
+          "CweIDs": [
+            "CWE-787"
+          ],
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2025/02/13/2",
+            "http://www.openwall.com/lists/oss-security/2025/02/13/3",
+            "http://www.openwall.com/lists/oss-security/2025/02/13/4",
+            "http://www.openwall.com/lists/oss-security/2025/02/13/5",
+            "http://www.openwall.com/lists/oss-security/2025/02/14/5",
+            "http://www.openwall.com/lists/oss-security/2025/02/14/6",
+            "https://git.musl-libc.org/cgit/musl/commit/?id=c47ad25ea3b484e10326f933e927c0bc8cded3da",
+            "https://git.musl-libc.org/cgit/musl/commit/?id=e5adcd97b5196e29991b524237381a0202a60659",
+            "https://www.openwall.com/lists/oss-security/2025/02/13/2"
+          ],
+          "PublishedDate": "2025-02-14T04:15:09.05Z",
+          "LastModifiedDate": "2025-02-14T17:15:23.09Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-58251",
+          "PkgID": "ssl_client@1.36.1-r29",
+          "PkgName": "ssl_client",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/ssl_client@1.36.1-r29?arch=aarch64\u0026distro=3.20.5",
+            "UID": "4b05144ab7215309"
+          },
+          "InstalledVersion": "1.36.1-r29",
+          "FixedVersion": "1.36.1-r31",
+          "Status": "fixed",
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-58251",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Fingerprint": "sha256:820332ff8033292352ff4545d35f80964d16b71406633d463d63ea03cf6b3d1c",
+          "Title": "In netstat in BusyBox through 1.37.0, local users can launch of networ ...",
+          "Description": "In netstat in BusyBox through 1.37.0, local users can launch of network application with an argv[0] containing an ANSI terminal escape sequence, leading to a denial of service (terminal locked up) when netstat is used by a victim.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-150"
+          ],
+          "VendorSeverity": {
+            "ubuntu": 2
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2025/04/23/6",
+            "https://bugs.busybox.net/show_bug.cgi?id=15922",
+            "https://www.busybox.net",
+            "https://www.busybox.net/downloads/",
+            "https://www.cve.org/CVERecord?id=CVE-2024-58251"
+          ],
+          "PublishedDate": "2025-04-23T18:16:03.057Z",
+          "LastModifiedDate": "2025-04-29T13:52:47.47Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2025-46394",
+          "PkgID": "ssl_client@1.36.1-r29",
+          "PkgName": "ssl_client",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/ssl_client@1.36.1-r29?arch=aarch64\u0026distro=3.20.5",
+            "UID": "4b05144ab7215309"
+          },
+          "InstalledVersion": "1.36.1-r29",
+          "FixedVersion": "1.36.1-r31",
+          "Status": "fixed",
+          "Layer": {
+            "DiffID": "sha256:534a70dc82967ee32184e13d28ea485e909b20d3f13d553122bab3e4de03b50c"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2025-46394",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Fingerprint": "sha256:6dac111f05d93dd8ecf7abf68f7cf302b14c42f17ff0abf1f1a096b0dac580f9",
+          "Title": "In tar in BusyBox through 1.37.0, a TAR archive can have filenames hid ...",
+          "Description": "In tar in BusyBox through 1.37.0, a TAR archive can have filenames hidden from a listing through the use of terminal escape sequences.",
+          "Severity": "LOW",
+          "CweIDs": [
+            "CWE-451"
+          ],
+          "VendorSeverity": {
+            "nvd": 1,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:N",
+              "V3Score": 3.3
+            }
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2025/04/23/5",
+            "http://www.openwall.com/lists/oss-security/2025/04/24/3",
+            "https://bugs.busybox.net/show_bug.cgi?id=16018",
+            "https://lists.busybox.net/pipermail/busybox/2024-July/090806.html",
+            "https://lists.busybox.net/pipermail/busybox/2024-July/090814.html",
+            "https://www.busybox.net",
+            "https://www.busybox.net/downloads/",
+            "https://www.cve.org/CVERecord?id=CVE-2025-46394",
+            "https://www.openwall.com/lists/oss-security/2025/04/23/1"
+          ],
+          "PublishedDate": "2025-04-23T16:15:48.713Z",
+          "LastModifiedDate": "2025-09-24T14:38:22.127Z"
+        }
+      ]
+    }
+  ]
+}
