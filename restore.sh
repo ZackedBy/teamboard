@@ -1,14 +1,8 @@
 #!/bin/bash
-# Database Restore Script
-# Restores PostgreSQL database from a backup file
-# Usage: ./restore.sh <backup_file.sql[.gz]>
+set -e
 
-set -e  # Exit on error
-
-# Configuration
 DB_CONTAINER="${DB_CONTAINER:-course-project-zada-postgres-1}"
 
-# Get actual values from container environment if not set
 if [ -z "${POSTGRES_DB}" ]; then
     DB_NAME=$(docker exec "${DB_CONTAINER}" sh -c 'echo $POSTGRES_DB' 2>/dev/null || echo "teamboard")
 else
@@ -21,7 +15,6 @@ else
     DB_USER="${POSTGRES_USER}"
 fi
 
-# Check if backup file is provided
 if [ -z "$1" ]; then
     echo "ERROR: Backup file not specified!"
     echo "Usage: ./restore.sh <backup_file.sql[.gz]>"
@@ -33,7 +26,6 @@ fi
 
 BACKUP_FILE="$1"
 
-# Check if backup file exists
 if [ ! -f "${BACKUP_FILE}" ]; then
     echo "ERROR: Backup file not found: ${BACKUP_FILE}"
     exit 1
@@ -46,13 +38,11 @@ echo "Database: ${DB_NAME}"
 echo "Backup file: ${BACKUP_FILE}"
 echo ""
 
-# Check if container is running
 if ! docker ps --format '{{.Names}}' | grep -q "^${DB_CONTAINER}$"; then
     echo "ERROR: Container ${DB_CONTAINER} is not running!"
     exit 1
 fi
 
-# Confirm before proceeding
 read -p "⚠️  WARNING: This will overwrite the current database. Continue? (yes/no): " confirm
 if [ "${confirm}" != "yes" ]; then
     echo "Restore cancelled."
@@ -69,7 +59,6 @@ docker exec "${DB_CONTAINER}" psql -U "${DB_USER}" -d postgres -c "CREATE DATABA
 
 echo "Restoring database from backup..."
 
-# Check if backup is compressed
 if [[ "${BACKUP_FILE}" == *.gz ]]; then
     echo "Decompressing and restoring..."
     gunzip -c "${BACKUP_FILE}" | docker exec -i "${DB_CONTAINER}" psql -U "${DB_USER}" -d "${DB_NAME}"
