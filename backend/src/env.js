@@ -1,4 +1,4 @@
-import { z } from "zod/v4";
+import { z } from "zod"; // ИСПРАВЛЕНО: убрал /v4, обычно используется просто "zod"
 
 const envSchema = z.object({
   NODE_ENV: z
@@ -17,14 +17,17 @@ const envSchema = z.object({
   JWT_SECRET: z.string().default("your-secret-key-change-in-production"),
 });
 
+// Парсим один раз и экспортируем. Если ошибка - процесс упадет.
+let parsedEnv;
+
 try {
   // eslint-disable-next-line node/no-process-env
-  envSchema.parse(process.env);
+  parsedEnv = envSchema.parse(process.env);
 } catch (error) {
   if (error instanceof z.ZodError) {
     console.error(
       "Missing environment variables:",
-      error.issues.flatMap((issue) => issue.path),
+      error.issues.map((issue) => `${issue.path.join('.')}: ${issue.message}`).join(', '),
     );
   } else {
     console.error(error);
@@ -32,5 +35,4 @@ try {
   process.exit(1);
 }
 
-// eslint-disable-next-line node/no-process-env
-export const env = envSchema.parse(process.env);
+export const env = parsedEnv;
