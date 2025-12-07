@@ -12,9 +12,8 @@ env:
   REPOSITORY: ${{ github.repository }}
   FRONTEND_IMAGE_NAME: 5g00dm04-3008/zada-frontend
   BACKEND_IMAGE_NAME: 5g00dm04-3008/zada-backend
-  # 1. DEPLOYMENT VARIABLES
-  VM_HOST: 193.167.167.59 # Your server IP address
-  VM_USER: zack # SSH username
+  # 1. DEPLOYMENT VARIABLES (по гайду: используй secrets для IP/user)
+  # Добавь в GitHub Secrets: REMOTE_SERVER=193.167.167.59, REMOTE_USER=deploy
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -83,6 +82,20 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # --- START: .env File Creation (Per Instructions) ---
+      # Create .env for Frontend (Vite)
+      - name: Copy staging .env to frontend folder
+        working-directory: ./frontend
+        # This secret must contain VITE_API_URL=http://localhost:3000 (или staging)
+        run: echo "${{ secrets.FRONTEND_STAGING_ENV }}" > .env
+
+      # Create .env for Backend (Node.js)
+      - name: Copy staging .env to backend folder
+        working-directory: ./backend
+        # This secret must contain NODE_ENV=production + DB vars
+        run: echo "${{ secrets.BACKEND_STAGING_ENV }}" > .env
+      # --- END: .env File Creation ---
+
       - name: Build and push Docker Frontend image
         uses: docker/build-push-action@v5.0.0
         with:
@@ -99,34 +112,89 @@ jobs:
           push: true
           tags: "${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:latest"
 
-  # 4. NEW JOB: DEPLOYMENT (VM Deployment)
+  # 4. UPDATED JOB: DEPLOYMENT (с VPN, rsync, deploy user)
   deploy:
     runs-on: ubuntu-latest
-    needs: build # Depends on successful image build
+    needs: build
+    continue-on-error: true
     steps:
-      - name: Deploy via SSH and Docker Compose
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ env.VM_HOST }}
-          username: ${{ env.VM_USER }}
-          # Uses private key stored in GitHub Secrets
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          timeout: 120s # Increased timeout
-          script: |
-            # 1. Navigate to the project directory on the VM
-            # IMPORTANT: Ensure the folder name matches the repository name after cloning
-            cd /home/${{ env.VM_USER }}/course-project-zada 
+      - name: Checkout code
+        uses: actions/checkout@v5
 
-            # 2. Update local code from GitHub
-            git pull origin main
+      # VPN Setup
+      - name: Install OpenVPN
+        run: sudo apt update && sudo apt install -y openvpn openvpn-systemd-resolved
 
-            # 3. Force pull new Docker images (from GitHub Container Registry)
-            docker pull ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:latest
-            docker pull ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:latest
+      - name: Setup VPN config
+        run: |
+          echo "${{ secrets.VPN_PASSWORD }}" > secret.txt
+          echo "${{ secrets.VPN_CONFIG }}" > config.ovpn
 
-            # 4. Restart containers 
-            docker compose down 
-            docker compose up -d 
+      - name: Connect VPN
+        run: |
+          sudo openvpn --config config.ovpn --daemon --persist-tun --persist-key --log /tmp/vpn.log
+          sleep 15  # Больше времени на init
 
-            # 5. Check container status
-            docker compose ps
+      # Debug: Logs + TCP-test (игнор ping)
+      - name: Debug VPN & Test TCP
+        timeout-minutes: 3
+        run: |
+          echo "=== VPN LOGS ==="
+          tail -n 50 /tmp/vpn.log || echo "Check journal: journalctl -u openvpn"
+          echo "=== TUN0 STATUS ==="
+          ip addr show tun0
+          echo "=== RELEVANT ROUTES (172.16) ==="
+          ip route show | grep 172.16
+          # Ping gateway (должен пройти)
+          echo "=== PING GATEWAY (10.120.0.13) ==="
+          ping -c 3 10.120.0.13 || echo "Gateway fail (check .ovpn)"
+          # Ping private VM (может block, но ok)
+          echo "=== PING PRIVATE VM (172.16.7.59) ==="
+          ping -c 3 172.16.7.59 || echo "ICMP blocked (normal for TUNI) - check TCP"
+          # TCP test: nc to SSH (ключевой!)
+          echo "=== TCP TEST: SSH PORT 22 ==="
+          nc -zv -w10 172.16.7.59 22 && echo "✅ SSH PORT REACHABLE! Proceed." || echo "❌ SSH unreachable - firewall?"
+          # Bonus: Если nc ok, quick SSH test (no auth)
+          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o BatchMode=yes deploy@172.16.7.59 "echo 'SSH works!'" 2>&1 || echo "Auth fail expected, but connect ok?"
+
+      # SSH Setup
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_KEY_PRIVATE }}" | base64 -d > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H 172.16.7.59 >> ~/.ssh/known_hosts || echo "Keyscan fail - ignore"
+
+      # Rsync + Deploy (private IP)
+      - name: Install rsync
+        run: sudo apt install -y rsync
+
+      - name: Create and sync stage_stack
+        run: |
+          mkdir -p stage_stack
+          cp docker-compose.staging.yml stage_stack/docker-compose.yml
+          echo "BACKEND_IMAGE=${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:latest" >> stage_stack/.env
+          echo "FRONTEND_IMAGE=${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:latest" >> stage_stack/.env
+          echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> stage_stack/.env
+          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> stage_stack/.env
+          echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> stage_stack/.env
+          echo "${{ secrets.BACKEND_STAGING_ENV }}" >> stage_stack/.env
+          echo "${{ secrets.FRONTEND_STAGING_ENV }}" >> stage_stack/.env
+          rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" stage_stack/ ${{ secrets.REMOTE_USER }}@172.16.7.59:stage_stack/
+
+      - name: Deploy via SSH
+        run: |
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -o ConnectTimeout=30 -o ConnectionAttempts=3 ${{ secrets.REMOTE_USER }}@172.16.7.59 "
+          echo '${{ secrets.GITHUB_TOKEN }}' | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin;
+          cd /home/${{ secrets.REMOTE_USER }}/stage_stack;
+          docker compose down || true;
+          docker compose pull;
+          docker compose up -d;
+          sleep 30;
+          docker compose ps;
+          docker compose logs --tail=20;
+          "
+
+      - name: Kill VPN
+        if: always()
+        run: sudo pkill openvpn || true

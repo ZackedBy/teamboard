@@ -1,50 +1,77 @@
-services:
-  frontend:
-    build:
-      context: ./frontend
-      args:
-        - VITE_API_BASE_URL=http://localhost:3000/api/v1
-    ports:
-      - "80:80"
-    restart: always
-    depends_on:
-      - backend
+version: '3.8'
 
+services:
+  # Backend API Service
   backend:
+    # For local development: build from source
+    # For production: use pre-built image from registry
     build:
       context: ./backend
+    image: ${BACKEND_IMAGE:-course-project-zada-backend:latest}
+    
+    # Frontend will communicate with the backend on port 3000
     ports:
       - "3000:3000"
-    restart: always
+      
+    # Environment variables can be loaded from .env file or defined inline
+    # Prefer .env file for production, inline for local development
+    env_file:
+      - .env
     environment:
       - PORT=3000
-      - NODE_ENV=production
-      - DB_HOST=db
-      - DB_PORT=5432
-      - DB_NAME=teamboard
-      - DB_USER=postgres
-      - DB_PASSWORD=postgres
-      - JWT_SECRET=your-super-secret-jwt-key-change-in-production
+      - NODE_ENV=${NODE_ENV:-development}
+      - DB_HOST=${DB_HOST:-db}
+      - DB_PORT=${DB_PORT:-5432}
+      - DB_NAME=${DB_NAME:-teamboard}
+      - DB_USER=${DB_USER:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-postgres}
+      - JWT_SECRET=${JWT_SECRET:-your-super-secret-jwt-key-change-in-production}
+    
+    restart: always
     depends_on:
       db:
         condition: service_healthy
 
+  # Frontend Web Service
+  frontend:
+    # For local development: build from source
+    # For production: use pre-built image from registry
+    build:
+      context: ./frontend
+      args:
+        - VITE_API_BASE_URL=${VITE_API_BASE_URL:-http://localhost:3000/api/v1}
+    image: ${FRONTEND_IMAGE:-course-project-zada-frontend:latest}
+    
+    # Exposes the frontend on the default HTTP port 80
+    ports:
+      - "80:80"
+      
+    # Environment variables can be loaded from .env file
+    env_file:
+      - .env
+      
+    restart: always
+    depends_on:
+      - backend
+
+  # Database Service (PostgreSQL - Required for TeamBoard)
   db:
     image: postgres:16-alpine
-    environment:
-      - POSTGRES_DB=teamboard
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    ports:
-      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-teamboard}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - "${DB_PORT:-5433}:5432"
     restart: always
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
       interval: 5s
       timeout: 5s
       retries: 5
 
+# Define named volumes for persistent data (like database storage)
 volumes:
   postgres_data:
