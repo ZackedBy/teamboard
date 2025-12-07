@@ -29,9 +29,29 @@ if ! docker ps --format '{{.Names}}' | grep -q "^${DB_CONTAINER}$"; then
     exit 1
 fi
 
+# Wait for database to be ready
+echo "Waiting for database to be ready..."
+for i in {1..30}; do
+    if docker exec "${DB_CONTAINER}" pg_isready -U "${DB_USER}" > /dev/null 2>&1; then
+        echo "Database is ready!"
+        break
+    fi
+    if [ $i -eq 30 ]; then
+        echo "ERROR: Database is not ready after 30 seconds!"
+        exit 1
+    fi
+    sleep 1
+done
+
+# Check if database exists
+if ! docker exec "${DB_CONTAINER}" psql -U "${DB_USER}" -lqt 2>/dev/null | cut -d \| -f 1 | grep -qw "${DB_NAME}"; then
+    echo "WARNING: Database ${DB_NAME} does not exist yet. Creating it..."
+    docker exec "${DB_CONTAINER}" psql -U "${DB_USER}" -d postgres -c "CREATE DATABASE ${DB_NAME};" 2>/dev/null || true
+fi
+
 # Perform backup using pg_dump
 echo "Creating database backup..."
-if docker exec "${DB_CONTAINER}" pg_dump -U "${DB_USER}" -d "${DB_NAME}" > "${BACKUP_FILE}"; then
+if docker exec "${DB_CONTAINER}" pg_dump -U "${DB_USER}" -d "${DB_NAME}" > "${BACKUP_FILE}" 2>&1; then
     # Compress the backup
     echo "Compressing backup..."
     gzip -f "${BACKUP_FILE}"
