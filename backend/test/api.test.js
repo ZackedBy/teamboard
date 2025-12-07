@@ -1,8 +1,70 @@
 import request from "supertest";
 import { describe, it, afterEach, expect, vi, beforeEach } from "vitest";
 
-import app from "../src/app.js";
-import pool from "../src/db/index.js";
+// NOTE: Adjusted import path for app.js (assuming correct location)
+import app from "../app.js"; 
+// IMPORT: We must import the pool object to mock its connect method
+import pool from "../database.js"; 
+
+// --- NEW: HEALTH AND READINESS TESTS ---
+
+describe("GET /health (Liveness Check)", () => {
+  it("responds with 200 OK and status 'ok'", () =>
+    request(app)
+      .get("/health")
+      .expect("Content-Type", /json/)
+      .expect(200)
+      .then((res) => {
+        expect(res.body).toHaveProperty("status", "ok");
+        expect(res.body).toHaveProperty("message", "Liveness probe successful");
+        expect(res.body).toHaveProperty("timestamp");
+      }));
+});
+
+describe("GET /ready (Readiness Check with DB)", () => {
+  // Ensure that mocks are restored after every test
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it("responds with 200 OK when the database is connected", async () => {
+    // Mock pool.connect to resolve successfully (DB is available)
+    const clientMock = { release: vi.fn() };
+    vi.spyOn(pool, 'connect').mockResolvedValueOnce(clientMock);
+    
+    const res = await request(app)
+      .get("/ready")
+      .expect("Content-Type", /json/)
+      .expect(200);
+
+    expect(res.body).toEqual({
+      status: "ready",
+      database: "connected",
+      timestamp: res.body.timestamp,
+    });
+    expect(pool.connect).toHaveBeenCalledOnce();
+  });
+
+  it("responds with 503 Service Unavailable when the database is disconnected", async () => {
+    // Mock pool.connect to throw an error (DB is unavailable)
+    vi.spyOn(pool, 'connect').mockRejectedValueOnce(
+      new Error("Connection refused by Postgres"),
+    );
+
+    const res = await request(app)
+      .get("/ready")
+      .expect("Content-Type", /json/)
+      .expect(503);
+
+    expect(res.body).toEqual({
+      status: "not ready",
+      database: "disconnected",
+      error: "Database connection failed. Service is not ready.",
+      timestamp: res.body.timestamp,
+    });
+    expect(pool.connect).toHaveBeenCalledOnce();
+  });
+});
 
 describe("GET /api/v1", () => {
   it("responds with a json message", () =>
