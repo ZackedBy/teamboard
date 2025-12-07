@@ -21,6 +21,8 @@ services:
       - "3000:3000"
     env_file:
       - .env
+    environment:
+      - DB_HOST=postgres
     restart: always
     depends_on:
       - postgres
