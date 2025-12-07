@@ -4,9 +4,9 @@ import helmet from "helmet";
 import morgan from "morgan";
 
 import api from "./api/index.js";
-import { checkDbConnection } from "./database.js";
-import healthRouter from "./api/health.js"; // Import the Health Check Router
+import healthRouter from "./health.js"; // IMPORT: Health Check Router
 import * as middlewares from "./middlewares.js";
+// NOTE: import checkDbConnection is NOT needed here anymore
 
 const app = express();
 
@@ -17,32 +17,8 @@ app.use(helmet());
 app.use(cors()); 
 app.use(express.json());
 
-// ROUTE: Health and Readiness Checks (connects to /health and /ready)
-app.use("/health", healthRouter);
-
-/**
- * GET /ready (Readiness Check)
- * Returns 200 OK only if the database connection is established.
- */
-app.get("/ready", async (_req, res) => {
-  const isDbReady = await checkDbConnection();
-  
-  if (isDbReady) {
-    res.status(200).json({
-      status: "ready",
-      database: "connected",
-      timestamp: new Date().toISOString(),
-    });
-  } else {
-    // Service Unavailable/Not Ready (HTTP 503)
-    res.status(503).json({
-      status: "not ready",
-      database: "disconnected",
-      error: "Database connection failed. Service is not ready.",
-      timestamp: new Date().toISOString(),
-    });
-  }
-});
+// ROUTE: Health and Readiness Checks (connects /health and /ready directly to root)
+app.use(healthRouter); 
 
 app.get("/", (_req, res) => {
   res.json({
