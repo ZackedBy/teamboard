@@ -1,20 +1,12 @@
 version: '3.8'
 
 services:
-  # Backend API Service
   backend:
-    # For local development: build from source
-    # For production: use pre-built image from registry
     build:
       context: ./backend
     image: ${BACKEND_IMAGE:-course-project-zada-backend:latest}
-    
-    # Frontend will communicate with the backend on port 3000
     ports:
       - "3000:3000"
-      
-    # Environment variables can be loaded from .env file or defined inline
-    # Prefer .env file for production, inline for local development
     env_file:
       - .env
     environment:
@@ -26,38 +18,25 @@ services:
       - DB_USER=${DB_USER:-postgres}
       - DB_PASSWORD=${DB_PASSWORD:-postgres}
       - JWT_SECRET=${JWT_SECRET:-your-super-secret-jwt-key-change-in-production}
-    
-    # Restart policy: unless-stopped will automatically restart the container
-    # if it crashes or if Docker daemon restarts, but won't restart if manually stopped
     restart: unless-stopped
     depends_on:
       db:
         condition: service_healthy
 
-  # Frontend Web Service
   frontend:
-    # For local development: build from source
-    # For production: use pre-built image from registry
     build:
       context: ./frontend
       args:
         - VITE_API_BASE_URL=${VITE_API_BASE_URL:-http://localhost:3000/api/v1}
     image: ${FRONTEND_IMAGE:-course-project-zada-frontend:latest}
-    
-    # Exposes the frontend on the default HTTP port 80
     ports:
       - "80:80"
-      
-    # Environment variables can be loaded from .env file
     env_file:
       - .env
-      
-    # Restart policy: unless-stopped ensures frontend recovers automatically
     restart: unless-stopped
     depends_on:
       - backend
 
-  # Database Service (PostgreSQL - Required for TeamBoard)
   db:
     image: postgres:16-alpine
     volumes:
@@ -68,8 +47,6 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
     ports:
       - "${DB_PORT:-5433}:5432"
-    # Restart policy: unless-stopped ensures database recovers automatically
-    # Critical for data persistence and service availability
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
@@ -77,6 +54,5 @@ services:
       timeout: 5s
       retries: 5
 
-# Define named volumes for persistent data (like database storage)
 volumes:
   postgres_data:

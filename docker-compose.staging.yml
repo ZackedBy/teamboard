@@ -9,8 +9,6 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:-teamboard}
     ports:
       - "5432:5432" 
-    # Restart policy: unless-stopped ensures database recovers automatically
-    # Critical for data persistence and service availability
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
@@ -32,8 +30,6 @@ services:
       - DB_PASSWORD=${POSTGRES_PASSWORD:-postgres}
       - DB_NAME=${POSTGRES_DB:-teamboard}
       - DB_PORT=5432
-    # Restart policy: unless-stopped will automatically restart the container
-    # if it crashes or if Docker daemon restarts, but won't restart if manually stopped
     restart: unless-stopped
     depends_on:
       postgres:
@@ -45,7 +41,6 @@ services:
       - "80:80"
     env_file:
       - .env
-    # Restart policy: unless-stopped ensures frontend recovers automatically
     restart: unless-stopped
     depends_on:
       - backend
