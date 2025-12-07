@@ -12,4 +12,5 @@ COPY . .
 EXPOSE 3000
 
 # Start the application
-CMD ["npm", "run", "start"]
+# Use start:prod in Docker since env vars come from docker-compose
+CMD ["npm", "run", "start:prod"]
