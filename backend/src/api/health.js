@@ -1,13 +1,12 @@
 import express from "express";
-import { checkDbConnection } from "./database.js"; // IMPORT: Database check function
+import { checkDbConnection } from "./database.js"; // Import the DB check function
 
 const router = express.Router();
 
 /**
  * GET /health (Liveness Check)
- * Basic health check endpoint - always returns 200 OK if the server process is running.
  */
-router.get("/health", (_req, res) => {
+router.get("/health", (_req, res) => { // Роут явно /health
   res.status(200).json({
     status: "ok",
     message: "Liveness probe successful",
@@ -17,9 +16,8 @@ router.get("/health", (_req, res) => {
 
 /**
  * GET /ready (Readiness Check)
- * Returns 200 OK only if the database connection is established.
  */
-router.get("/ready", async (_req, res) => {
+router.get("/ready", async (_req, res) => { // Роут явно /ready
   const isDbReady = await checkDbConnection();
   
   if (isDbReady) {
