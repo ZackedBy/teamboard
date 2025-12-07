@@ -5,7 +5,8 @@ import morgan from "morgan";
 
 import api from "./api/index.js";
 // Удаляем import { checkDbConnection } from "./database.js";
-import healthRouter from "./health.js"; // Import the Health Check Router
+// ИСПРАВЛЕНО: Убираем /api/ из пути, если health.js находится рядом с app.js
+import healthRouter from "./health.js"; 
 import * as middlewares from "./middlewares.js";
 
 const app = express();
@@ -17,8 +18,7 @@ app.use(helmet());
 app.use(cors()); 
 app.use(express.json());
 
-// ROUTE: Health and Readiness Checks (connects to /health and /ready directly to root)
-// ❌ СТАРЫЙ НЕПРАВИЛЬНЫЙ КОД: app.use("/health", healthRouter); 
+// ИСПРАВЛЕНО: Подключаем роутер БЕЗ ПРЕФИКСА, чтобы роуты /health и /ready работали на корневом уровне
 app.use(healthRouter); 
 
 // УДАЛЕНА ЛОГИКА app.get("/ready", ...)
