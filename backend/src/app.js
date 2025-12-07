@@ -4,9 +4,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 
 import api from "./api/index.js";
-// Удаляем import { checkDbConnection } from "./database.js";
-// ИСПРАВЛЕНО: Убираем /api/ из пути, если health.js находится рядом с app.js
-import healthRouter from "./health.js"; 
+import healthRouter from "./health.js"; // Import the Health Check Router
 import * as middlewares from "./middlewares.js";
 
 const app = express();
@@ -14,11 +12,10 @@ const app = express();
 app.use(morgan("dev"));
 app.use(helmet());
 
-// NOTE: Using simplified cors() for chat brevity; use your provided corsOptions if needed.
 app.use(cors()); 
 app.use(express.json());
 
-// ИСПРАВЛЕНО: Подключаем роутер БЕЗ ПРЕФИКСА, чтобы роуты /health и /ready работали на корневом уровне
+// ИСПРАВЛЕНО: Подключаем роутер БЕЗ ПРЕФИКСА. Теперь роуты /health и /ready будут доступны с корня.
 app.use(healthRouter); 
 
 // УДАЛЕНА ЛОГИКА app.get("/ready", ...)
