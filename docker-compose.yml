@@ -27,7 +27,9 @@ services:
       - DB_PASSWORD=${DB_PASSWORD:-postgres}
       - JWT_SECRET=${JWT_SECRET:-your-super-secret-jwt-key-change-in-production}
     
-    restart: always
+    # Restart policy: unless-stopped will automatically restart the container
+    # if it crashes or if Docker daemon restarts, but won't restart if manually stopped
+    restart: unless-stopped
     depends_on:
       db:
         condition: service_healthy
@@ -50,7 +52,8 @@ services:
     env_file:
       - .env
       
-    restart: always
+    # Restart policy: unless-stopped ensures frontend recovers automatically
+    restart: unless-stopped
     depends_on:
       - backend
 
@@ -65,7 +68,9 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
     ports:
       - "${DB_PORT:-5433}:5432"
-    restart: always
+    # Restart policy: unless-stopped ensures database recovers automatically
+    # Critical for data persistence and service availability
+    restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
       interval: 5s
