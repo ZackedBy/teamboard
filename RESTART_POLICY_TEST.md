@@ -17,14 +17,18 @@ docker compose -f docker-compose.staging.yml ps
 
 ### Step 2: Simulate a Container Crash
 
-Stop one container to simulate a crash:
+**Important:** Use `docker kill` (not `docker stop`) to simulate a crash. 
+- `docker stop` = graceful shutdown (won't restart with `unless-stopped`)
+- `docker kill` = crash simulation (will restart automatically)
+
+Kill one container to simulate a crash:
 
 ```bash
-# Stop the backend container
-docker stop course-project-zada-backend-1
+# Kill the backend container (simulates a crash)
+docker kill course-project-zada-backend-1
 
-# Or stop postgres
-docker stop course-project-zada-postgres-1
+# Or kill postgres
+docker kill course-project-zada-postgres-1
 ```
 
 ### Step 3: Verify Container Status During "Crash"
