@@ -1,10 +1,8 @@
 import request from "supertest";
 import { describe, it, afterEach, expect, vi, beforeEach } from "vitest";
 
-// NOTE: Adjusted import path for app.js (assuming correct location)
-import app from "../app.js"; 
-// IMPORT: We must import the pool object to mock its connect method
-import pool from "../database.js"; 
+import app from "../src/app.js";
+import pool from "../src/database.js"; 
 
 // --- NEW: HEALTH AND READINESS TESTS ---
 
@@ -156,8 +154,9 @@ describe("Readiness Check: GET /api/v1/ready", () => {
   });
 
   it("responds with 200 OK when database is connected", async () => {
-    // Mock pool.query to return successfully
-    vi.spyOn(pool, "query").mockResolvedValueOnce({ rows: [{ "?column?": 1 }] });
+    // Mock pool.connect to return successfully (DB is available)
+    const clientMock = { release: vi.fn() };
+    vi.spyOn(pool, "connect").mockResolvedValueOnce(clientMock);
 
     const res = await request(app)
       .get("/api/v1/ready")
@@ -169,11 +168,12 @@ describe("Readiness Check: GET /api/v1/ready", () => {
     expect(res.body).toHaveProperty("database", "connected");
     expect(res.body).toHaveProperty("timestamp");
     expect(typeof res.body.timestamp).toBe("string");
+    expect(pool.connect).toHaveBeenCalledOnce();
   });
 
   it("responds with 503 Service Unavailable when database is down", async () => {
-    // Mock pool.query to throw an error
-    vi.spyOn(pool, "query").mockRejectedValueOnce(
+    // Mock pool.connect to throw an error (DB is unavailable)
+    vi.spyOn(pool, "connect").mockRejectedValueOnce(
       new Error("Connection refused"),
     );
 
@@ -188,5 +188,6 @@ describe("Readiness Check: GET /api/v1/ready", () => {
     expect(res.body).toHaveProperty("error");
     expect(res.body).toHaveProperty("timestamp");
     expect(typeof res.body.timestamp).toBe("string");
+    expect(pool.connect).toHaveBeenCalledOnce();
   });
 });

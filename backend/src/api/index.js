@@ -1,9 +1,9 @@
 import express from "express";
-import pool from "../database.js"; // ИСПРАВЛЕНО: путь к database.js в корне
+import { checkDbConnection } from "../database.js";
 
 import auth from "./auth.js";
 import emojis from "./emojis.js";
-// import health from "./health.js"; // УДАЛЕНО: уже подключено в app.js
+import health from "./health.js";
 import tasks from "./tasks.js";
 import teams from "./teams.js";
 import users from "./users.js";
@@ -12,17 +12,39 @@ const router = express.Router();
 
 router.get("/", (_req, res) => {
   res.json({
-    message: "API - 窓月訣件",
+    message: "API - 👋🌎🌍🌏",
   });
 });
 
 router.use("/auth", auth);
 router.use("/emojis", emojis);
-// router.use("/health", health); // УДАЛЕНО: избегаем дублирования /api/v1/health/health
+router.use("/health", health);
 router.use("/tasks", tasks);
 router.use("/teams", teams);
 router.use("/users", users);
 
-// УДАЛЕНО: Роут /ready удален, так как он уже реализован в health.js и подключен в app.js
+/**
+ * GET /ready
+ * Readiness check endpoint - verifies database connectivity
+ * Returns 200 OK if database is accessible, 503 Service Unavailable if not
+ */
+router.get("/ready", async (_req, res) => {
+  const isDbReady = await checkDbConnection();
+  
+  if (isDbReady) {
+    res.status(200).json({
+      status: "ready",
+      database: "connected",
+      timestamp: new Date().toISOString(),
+    });
+  } else {
+    res.status(503).json({
+      status: "not ready",
+      database: "disconnected",
+      error: "Database connection failed. Service is not ready.",
+      timestamp: new Date().toISOString(),
+    });
+  }
+});
 
 export default router;

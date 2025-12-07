@@ -1,41 +1,20 @@
 import express from "express";
-import { checkDbConnection } from "./database.js"; // Импортируем функцию проверки БД
+import { checkDbConnection } from "../database.js";
 
 const router = express.Router();
 
 /**
  * GET /health (Liveness Check)
- * Явно определяем путь как /health
+ * Basic health check endpoint - always returns 200 OK if the server is running
+ * When mounted at root: /health
+ * When mounted at /api/v1/health: /api/v1/health
  */
-router.get("/health", (_req, res) => {
+router.get("/", (_req, res) => {
   res.status(200).json({
     status: "ok",
     message: "Liveness probe successful",
     timestamp: new Date().toISOString(),
   });
-});
-
-/**
- * GET /ready (Readiness Check)
- * Явно определяем путь как /ready и добавляем логику БД
- */
-router.get("/ready", async (_req, res) => {
-  const isDbReady = await checkDbConnection();
-  
-  if (isDbReady) {
-    res.status(200).json({
-      status: "ready",
-      database: "connected",
-      timestamp: new Date().toISOString(),
-    });
-  } else {
-    res.status(503).json({
-      status: "not ready",
-      database: "disconnected",
-      error: "Database connection failed. Service is not ready.",
-      timestamp: new Date().toISOString(),
-    });
-  }
 });
 
 export default router;
