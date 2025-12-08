@@ -39,14 +39,18 @@ try {
     console.error(
       "   The default value 'your-secret-key-change-in-production' is not allowed.",
     );
-    console.error("   Please set JWT_SECRET environment variable to a strong secret (min 32 characters).");
+    console.error(
+      "   Please set JWT_SECRET environment variable to a strong secret (min 32 characters).",
+    );
     process.exit(1);
   }
 } catch (error) {
   if (error instanceof z.ZodError) {
     console.error(
       "Missing environment variables:",
-      error.issues.map((issue) => `${issue.path.join('.')}: ${issue.message}`).join(', '),
+      error.issues
+        .map((issue) => `${issue.path.join(".")}: ${issue.message}`)
+        .join(", "),
     );
   } else {
     console.error(error);

@@ -30,7 +30,7 @@ router.use("/users", users);
  */
 router.get("/ready", async (_req, res) => {
   const isDbReady = await checkDbConnection();
-  
+
   if (isDbReady) {
     res.status(200).json({
       status: "ready",

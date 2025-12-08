@@ -1,7 +1,7 @@
 import express from "express";
 import { query } from "../db/index.js";
-import { authenticateToken } from "../middlewares/auth.js";
 import { requireAdmin } from "../middlewares/admin.js";
+import { authenticateToken } from "../middlewares/auth.js";
 
 const router = express.Router();
 
@@ -315,4 +315,3 @@ router.delete("/:id", async (req, res, next) => {
 });
 
 export default router;
-

@@ -14,7 +14,9 @@ async function retryDatabaseInit(maxRetries = 10, delay = 3000) {
         console.error("Failed to initialize database after retries:", error);
         process.exit(1);
       }
-      console.log(`Database connection attempt ${i + 1} failed, retrying in ${delay}ms...`);
+      console.log(
+        `Database connection attempt ${i + 1} failed, retrying in ${delay}ms...`,
+      );
       await new Promise((resolve) => setTimeout(resolve, delay));
     }
   }

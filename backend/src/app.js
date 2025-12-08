@@ -2,10 +2,9 @@ import cors from "cors";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
-
+import healthRouter from "./api/health.js";
 import api from "./api/index.js";
 import { checkDbConnection } from "./database.js";
-import healthRouter from "./api/health.js";
 import { env } from "./env.js";
 
 import * as middlewares from "./middlewares.js";
@@ -49,7 +48,7 @@ app.use("/health", healthRouter);
  */
 app.get("/ready", async (_req, res) => {
   const isDbReady = await checkDbConnection();
-  
+
   if (isDbReady) {
     res.status(200).json({
       status: "ready",
@@ -64,7 +63,7 @@ app.get("/ready", async (_req, res) => {
       timestamp: new Date().toISOString(),
     });
   }
-}); 
+});
 
 app.get("/", (_req, res) => {
   res.json({
