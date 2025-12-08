@@ -100,7 +100,7 @@ const TaskList = ({ teamId }) => {
                 checked={showAllTasks}
                 onChange={(e) => setShowAllTasks(e.target.checked)}
               />
-              <span>Show all tasks from my team</span>
+              <span>Show tasks from my teams</span>
             </label>
           )}
         </div>
