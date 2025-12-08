@@ -25,17 +25,11 @@ const Dashboard = () => {
           <p>View and manage all your tasks</p>
         </Link>
 
-        <div className="dashboard-card">
-          <div className="card-icon">📊</div>
-          <h3>Analytics</h3>
-          <p>Coming soon...</p>
-        </div>
-
-        <div className="dashboard-card">
-          <div className="card-icon">⚙️</div>
-          <h3>Settings</h3>
-          <p>Coming soon...</p>
-        </div>
+        <Link to="/calendar" className="dashboard-card">
+          <div className="card-icon">📅</div>
+          <h3>Calendar</h3>
+          <p>View tasks in calendar format</p>
+        </Link>
       </div>
     </div>
   );

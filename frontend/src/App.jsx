@@ -7,6 +7,7 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import TaskList from "./components/tasks/TaskList.jsx";
 import TeamList from "./components/teams/TeamList.jsx";
 import { AuthProvider, useAuth } from "./contexts/AuthContext.jsx";
+import Calendar from "./pages/Calendar.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import TeamTasks from "./pages/TeamTasks.jsx";
 import TeamView from "./pages/TeamView.jsx";
@@ -86,6 +87,16 @@ function AppRoutes() {
           <ProtectedRoute>
             <Layout>
               <TaskList />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/calendar"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <Calendar />
             </Layout>
           </ProtectedRoute>
         }

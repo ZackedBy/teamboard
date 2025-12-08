@@ -32,6 +32,9 @@ const Layout = ({ children }) => {
             <Link to="/tasks" className="nav-link">
               All Tasks
             </Link>
+            <Link to="/calendar" className="nav-link">
+              Calendar
+            </Link>
             <Link to="/users" className="nav-link">
               Users
             </Link>
