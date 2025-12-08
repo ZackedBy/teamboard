@@ -31,9 +31,10 @@ router.get("/", async (req, res, next) => {
       );
       tasks = result.rows;
     } else if (all === "true" || all === "1") {
-      // Get all tasks in the system (for admin/view-all functionality)
+      // Get all tasks from teams the user is a member of
+      // Only include tasks that belong to a team and that team is one the user belongs to
       const result = await query(
-        `SELECT t.*, 
+        `SELECT DISTINCT t.*, 
          u.name as assigned_to_name,
          creator.name as created_by_name,
          team.name as team_name
@@ -41,7 +42,14 @@ router.get("/", async (req, res, next) => {
          LEFT JOIN users u ON t.assigned_to = u.id
          LEFT JOIN users creator ON t.created_by = creator.id
          LEFT JOIN teams team ON t.team_id = team.id
+         WHERE t.team_id IS NOT NULL
+         AND t.team_id IN (
+           SELECT team_id FROM team_members WHERE user_id = $1
+           UNION
+           SELECT id FROM teams WHERE created_by = $1
+         )
          ORDER BY t.created_at DESC`,
+        [userId],
       );
       tasks = result.rows;
     } else {
@@ -133,8 +141,15 @@ router.get("/:id", async (req, res, next) => {
 // Create task
 router.post("/", async (req, res, next) => {
   try {
-    const { title, description, priority, status, dueDate, assignedTo, teamId } =
-      req.body;
+    const {
+      title,
+      description,
+      priority,
+      status,
+      dueDate,
+      assignedTo,
+      teamId,
+    } = req.body;
     const userId = req.user.id;
 
     if (!title) {
@@ -218,7 +233,8 @@ router.post("/", async (req, res, next) => {
 router.put("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { title, description, priority, status, dueDate, assignedTo } = req.body;
+    const { title, description, priority, status, dueDate, assignedTo } =
+      req.body;
 
     // Check if task exists
     const taskCheck = await query(
@@ -352,4 +368,3 @@ router.delete("/:id", async (req, res, next) => {
 });
 
 export default router;
-
