@@ -23,7 +23,7 @@ const Login = () => {
     if (email && localStorage.getItem("rememberedEmail") === email) {
       setRememberEmail(true);
     }
-  }, []);
+  }, [email]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -106,4 +106,3 @@ const Login = () => {
 };
 
 export default Login;
-

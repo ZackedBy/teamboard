@@ -10,7 +10,8 @@ if (!rootElement) {
 }
 
 // Show loading message immediately
-rootElement.innerHTML = '<div style="padding: 20px; text-align: center; font-family: sans-serif;"><p>Loading TeamBoard...</p></div>';
+rootElement.innerHTML =
+  '<div style="padding: 20px; text-align: center; font-family: sans-serif;"><p>Loading TeamBoard...</p></div>';
 
 try {
   createRoot(rootElement).render(

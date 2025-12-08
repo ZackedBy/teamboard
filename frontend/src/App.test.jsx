@@ -17,26 +17,25 @@ describe("The greetings component", () => {
   });
 });
 
-it("should increment count on click", async () => {
-  //Arrange
-  render(<App />);
-
-  //Act
-  await userEvent.click(screen.getByRole("button"));
-
-  //Assert
-  expect(await screen.findByText("count is 1")).toBeInTheDocument();
-});
-
-describe("On the Vite App page", () => {
-  it("the title is visible", () => {
+describe("App component", () => {
+  it("should render login page when not authenticated", () => {
     //Arrange
     render(<App />);
 
     //Act - No action to take
 
-    //Assert
-    expect(screen.getByText("Vite + React")).toBeInTheDocument();
+    //Assert - App should redirect to login and show login form
+    expect(screen.getByText("Login to TeamBoard")).toBeInTheDocument();
+  });
+
+  it("should have login form elements", () => {
+    //Arrange
+    render(<App />);
+
+    //Assert - Use exact label text or role to avoid multiple matches
+    expect(screen.getByLabelText("Email")).toBeInTheDocument();
+    expect(screen.getByLabelText("Password")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /login/i })).toBeInTheDocument();
   });
 });
 

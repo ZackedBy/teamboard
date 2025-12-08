@@ -1,7 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import Login from "./components/auth/Login.jsx";
 import Register from "./components/auth/Register.jsx";
+import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import Layout from "./components/layout/Layout.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import TaskList from "./components/tasks/TaskList.jsx";

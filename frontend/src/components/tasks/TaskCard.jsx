@@ -33,23 +33,6 @@ const TaskCard = ({ task, onEdit, onDelete, onStatusChange }) => {
     }
   };
 
-  const getStatusLabel = (status) => {
-    switch (status) {
-      case "todo":
-        return "To Do";
-      case "in-progress":
-        return "In Progress";
-      case "done":
-        return "Done";
-      case "delayed":
-        return "Delayed";
-      case "blocked":
-        return "Blocked";
-      default:
-        return status || "To Do";
-    }
-  };
-
   const handleStatusChange = async (e) => {
     const newStatus = e.target.value;
     setIsChangingStatus(true);
@@ -137,4 +120,3 @@ const TaskCard = ({ task, onEdit, onDelete, onStatusChange }) => {
 };
 
 export default TaskCard;
-

@@ -178,7 +178,6 @@
   align-items: center;
 }
 
-
 .task-actions {
   display: flex;
   gap: 8px;
@@ -293,4 +292,3 @@
   margin-bottom: 16px;
   border: 1px solid #fcc;
 }
-

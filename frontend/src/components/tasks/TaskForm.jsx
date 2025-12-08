@@ -139,4 +139,3 @@ const TaskForm = ({ task, onSubmit, onCancel, teamMembers = [] }) => {
 };
 
 export default TaskForm;
-

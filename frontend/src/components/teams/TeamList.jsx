@@ -55,7 +55,11 @@ const TeamList = () => {
   };
 
   const handleDelete = async (teamId) => {
-    if (!confirm("Are you sure you want to delete this team? This will also delete all tasks associated with this team. This action cannot be undone.")) {
+    if (
+      !confirm(
+        "Are you sure you want to delete this team? This will also delete all tasks associated with this team. This action cannot be undone.",
+      )
+    ) {
       return;
     }
 
@@ -136,4 +140,3 @@ const TeamList = () => {
 };
 
 export default TeamList;
-

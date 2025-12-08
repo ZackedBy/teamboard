@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
-import { teamsAPI } from "../services/api.js";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Layout from "../components/layout/Layout.jsx";
+import { teamsAPI } from "../services/api.js";
 import "./TeamView.css";
 
 const TeamView = () => {
@@ -43,9 +43,7 @@ const TeamView = () => {
     return (
       <Layout>
         <div className="team-view-container">
-          <div className="error-message">
-            {error || "Team not found"}
-          </div>
+          <div className="error-message">{error || "Team not found"}</div>
           <Link to="/teams" className="btn-secondary">
             Back to Teams
           </Link>
@@ -118,4 +116,3 @@ const TeamView = () => {
 };
 
 export default TeamView;
-

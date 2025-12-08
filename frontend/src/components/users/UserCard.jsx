@@ -6,7 +6,9 @@ const UserCard = ({ user, isAdmin, onDelete, currentUserId }) => {
 
   const handleDelete = () => {
     if (
-      confirm(`Are you sure you want to delete user "${user.name}"? This action cannot be undone.`)
+      confirm(
+        `Are you sure you want to delete user "${user.name}"? This action cannot be undone.`,
+      )
     ) {
       onDelete(user.id);
     }
@@ -15,9 +17,7 @@ const UserCard = ({ user, isAdmin, onDelete, currentUserId }) => {
   return (
     <div className="user-card">
       <div className="user-card-header">
-        <div className="user-avatar">
-          {user.name.charAt(0).toUpperCase()}
-        </div>
+        <div className="user-avatar">{user.name.charAt(0).toUpperCase()}</div>
         <div className="user-info">
           <div className="user-name-row">
             <h3>{user.name}</h3>
@@ -48,4 +48,3 @@ const UserCard = ({ user, isAdmin, onDelete, currentUserId }) => {
 };
 
 export default UserCard;
-

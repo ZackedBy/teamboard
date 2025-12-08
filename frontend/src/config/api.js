@@ -27,7 +27,7 @@ export const apiRequest = async (endpoint, options = {}) => {
 
   try {
     const response = await fetch(url, config);
-    
+
     // Handle non-JSON responses
     const contentType = response.headers.get("content-type");
     if (!contentType || !contentType.includes("application/json")) {
@@ -37,7 +37,7 @@ export const apiRequest = async (endpoint, options = {}) => {
       }
       return text ? JSON.parse(text) : {};
     }
-    
+
     const data = await response.json();
 
     if (!response.ok) {
@@ -52,4 +52,3 @@ export const apiRequest = async (endpoint, options = {}) => {
 };
 
 export default apiRequest;
-
