@@ -193,35 +193,137 @@
   border-left: 4px solid #c62828;
 }
 
-/* Responsive design */
+/* Tablet Responsive Design */
+@media (max-width: 1024px) {
+  .calendar-container {
+    padding: 16px;
+  }
+
+  .calendar-controls h2 {
+    min-width: 180px;
+    font-size: 1.3rem;
+  }
+
+  .calendar-day {
+    min-height: 100px;
+  }
+}
+
+/* Mobile Responsive Design */
 @media (max-width: 768px) {
+  .calendar-container {
+    padding: 12px 8px;
+  }
+
   .calendar-header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .calendar-header h1 {
+    font-size: 1.5rem;
   }
 
   .calendar-controls {
     width: 100%;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
   }
 
   .calendar-controls h2 {
     min-width: auto;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    order: 2;
+    width: 100%;
+    text-align: center;
+  }
+
+  .btn-nav,
+  .btn-secondary {
+    min-height: 44px;
+    min-width: 44px;
+    font-size: 1rem;
+    touch-action: manipulation;
+  }
+
+  .calendar-weekdays {
+    display: none;
+  }
+
+  .calendar-days {
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 
   .calendar-day {
-    min-height: 80px;
-    padding: 5px;
+    min-height: auto;
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background: white;
+  }
+
+  .calendar-day.empty {
+    display: none;
+  }
+
+  .calendar-day-number {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .calendar-day-tasks {
+    gap: 6px;
   }
 
   .calendar-task-item {
-    font-size: 0.65rem;
-    padding: 2px 4px;
+    font-size: 0.875rem;
+    padding: 8px 10px;
+    white-space: normal;
+    word-wrap: break-word;
   }
 
-  .calendar-weekday {
-    padding: 10px 5px;
+  .calendar-task-more {
     font-size: 0.75rem;
+    padding: 4px 10px;
+  }
+
+  .calendar-legend {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .legend-item {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .calendar-container {
+    padding: 8px 4px;
+  }
+
+  .calendar-header h1 {
+    font-size: 1.3rem;
+  }
+
+  .calendar-controls h2 {
+    font-size: 1rem;
+  }
+
+  .calendar-day {
+    padding: 10px;
+  }
+
+  .calendar-task-item {
+    font-size: 0.8rem;
+    padding: 6px 8px;
   }
 }

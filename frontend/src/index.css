@@ -25,6 +25,30 @@ body {
   min-height: 100vh;
   background-color: #f5f5f5;
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* Prevent horizontal scroll on mobile */
+  overflow-x: hidden;
+}
+
+/* Ensure all inputs are touch-friendly and prevent zoom on iOS */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="time"],
+textarea,
+select {
+  font-size: 16px !important;
+  min-height: 44px;
+  touch-action: manipulation;
+}
+
+/* On mobile, prevent zoom when focusing inputs */
+@media (max-width: 768px) {
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
 }
 
 #root {
@@ -55,6 +79,10 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  /* Touch-friendly minimum size for mobile */
+  min-height: 44px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 button:hover {
   border-color: #646cff;
@@ -62,6 +90,9 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+button:active {
+  transform: scale(0.98);
 }
 
 @media (prefers-color-scheme: light) {

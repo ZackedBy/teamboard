@@ -23,6 +23,9 @@ body {
   transition:
     transform 0.2s,
     box-shadow 0.2s;
+  min-height: 44px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .btn-primary:hover:not(:disabled) {
@@ -30,7 +33,20 @@ body {
   box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
 }
 
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
 .btn-primary:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .btn-primary {
+    width: 100%;
+    font-size: 16px;
+    padding: 14px 24px;
+  }
 }

@@ -292,3 +292,118 @@
   margin-bottom: 16px;
   border: 1px solid #fcc;
 }
+
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+  .task-list-container {
+    padding: 16px 12px;
+  }
+
+  .task-list-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .task-list-header > div:first-child {
+    width: 100%;
+  }
+
+  .btn-primary {
+    width: 100%;
+    min-height: 44px;
+    font-size: 16px;
+    touch-action: manipulation;
+  }
+
+  .task-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .task-card {
+    padding: 16px;
+  }
+
+  .task-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .task-badges {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .task-actions {
+    gap: 12px;
+  }
+
+  .btn-icon {
+    font-size: 20px;
+    padding: 8px;
+    min-width: 44px;
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+
+  .task-form-container {
+    padding: 20px 16px;
+    margin-bottom: 20px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    font-size: 16px;
+    min-height: 44px;
+    padding: 12px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .btn-secondary {
+    width: 100%;
+    min-height: 44px;
+    font-size: 16px;
+    touch-action: manipulation;
+  }
+
+  .toggle-all-tasks {
+    font-size: 16px;
+    min-height: 44px;
+    padding: 8px 0;
+  }
+
+  .toggle-all-tasks input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .task-list-container {
+    padding: 12px 8px;
+  }
+
+  .task-card {
+    padding: 12px;
+  }
+
+  .task-form-container {
+    padding: 16px 12px;
+  }
+
+  .status-select {
+    font-size: 12px;
+    padding: 6px 10px;
+    min-height: 44px;
+  }
+}

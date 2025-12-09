@@ -162,3 +162,86 @@
   padding: 40px;
   color: #666;
 }
+
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+  .team-view-container {
+    padding: 16px 12px;
+  }
+
+  .team-view-header {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .team-view-header h1 {
+    font-size: 24px;
+  }
+
+  .team-description {
+    font-size: 14px;
+  }
+
+  .team-stats {
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 30px;
+  }
+
+  .stat-card {
+    padding: 16px 20px;
+  }
+
+  .stat-value {
+    font-size: 24px;
+  }
+
+  .team-members-section {
+    padding: 20px 16px;
+  }
+
+  .team-members-section h2 {
+    font-size: 20px;
+  }
+
+  .members-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .member-card {
+    padding: 12px;
+  }
+
+  .back-button {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    touch-action: manipulation;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .team-view-container {
+    padding: 12px 8px;
+  }
+
+  .team-view-header h1 {
+    font-size: 20px;
+  }
+
+  .stat-card {
+    padding: 14px 16px;
+  }
+
+  .stat-value {
+    font-size: 20px;
+  }
+
+  .member-avatar {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+}

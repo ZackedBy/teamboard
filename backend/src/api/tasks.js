@@ -32,7 +32,6 @@ router.get("/", async (req, res, next) => {
       tasks = result.rows;
     } else if (all === "true" || all === "1") {
       // Get all tasks from teams the user is a member of
-      // Only include tasks that belong to a team and that team is one the user belongs to
       const result = await query(
         `SELECT DISTINCT t.*, 
          u.name as assigned_to_name,
@@ -42,8 +41,7 @@ router.get("/", async (req, res, next) => {
          LEFT JOIN users u ON t.assigned_to = u.id
          LEFT JOIN users creator ON t.created_by = creator.id
          LEFT JOIN teams team ON t.team_id = team.id
-         WHERE t.team_id IS NOT NULL
-         AND t.team_id IN (
+         WHERE t.team_id IN (
            SELECT team_id FROM team_members WHERE user_id = $1
            UNION
            SELECT id FROM teams WHERE created_by = $1

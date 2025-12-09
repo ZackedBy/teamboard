@@ -140,3 +140,56 @@
   padding: 40px;
   color: #999;
 }
+
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+  .user-list-container {
+    padding: 16px 12px;
+  }
+
+  .user-list-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .user-list-header h2 {
+    font-size: 24px;
+  }
+
+  .user-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .user-card {
+    padding: 16px;
+  }
+
+  .user-delete-btn {
+    min-width: 44px;
+    min-height: 44px;
+    font-size: 20px;
+    touch-action: manipulation;
+  }
+}
+
+@media (max-width: 480px) {
+  .user-list-container {
+    padding: 12px 8px;
+  }
+
+  .user-card {
+    padding: 12px;
+  }
+
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .user-info h3 {
+    font-size: 16px;
+  }
+}

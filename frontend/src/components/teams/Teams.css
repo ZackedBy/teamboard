@@ -155,3 +155,83 @@
   margin-bottom: 16px;
   border: 1px solid #fcc;
 }
+
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+  .team-list-container {
+    padding: 16px 12px;
+  }
+
+  .team-list-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .btn-primary {
+    width: 100%;
+    min-height: 44px;
+    font-size: 16px;
+    touch-action: manipulation;
+  }
+
+  .team-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .team-card {
+    padding: 20px 16px;
+  }
+
+  .team-actions {
+    flex-direction: column;
+  }
+
+  .team-actions .btn-secondary,
+  .team-actions .btn-primary {
+    width: 100%;
+    min-height: 44px;
+    font-size: 16px;
+    touch-action: manipulation;
+  }
+
+  .team-action-btn {
+    min-width: 44px;
+    min-height: 44px;
+    font-size: 18px;
+    touch-action: manipulation;
+  }
+
+  .team-form-container {
+    padding: 20px 16px;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    font-size: 16px;
+    min-height: 44px;
+    padding: 12px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions .btn-secondary,
+  .form-actions .btn-primary {
+    width: 100%;
+    min-height: 44px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .team-list-container {
+    padding: 12px 8px;
+  }
+
+  .team-card {
+    padding: 16px 12px;
+  }
+}
