@@ -77,6 +77,7 @@ router.get("/", async (req, res, next) => {
       status: task.status || "todo",
       dueDate: task.due_date ? new Date(task.due_date).toISOString() : null,
       assignedTo: task.assigned_to_name || null,
+      assignedToId: task.assigned_to || null,
       teamId: task.team_id,
       teamName: task.team_name || null,
       createdBy: task.created_by_name,
@@ -123,6 +124,7 @@ router.get("/:id", async (req, res, next) => {
       status: task.status || "todo",
       dueDate: task.due_date ? new Date(task.due_date).toISOString() : null,
       assignedTo: task.assigned_to_name || null,
+      assignedToId: task.assigned_to || null,
       teamId: task.team_id,
       teamName: task.team_name || null,
       createdBy: task.created_by_name,
@@ -146,6 +148,7 @@ router.post("/", async (req, res, next) => {
       status,
       dueDate,
       assignedTo,
+      assignedToId,
       teamId,
     } = req.body;
     const userId = req.user.id;
@@ -154,15 +157,26 @@ router.post("/", async (req, res, next) => {
       return res.status(400).json({ message: "Title is required" });
     }
 
-    // If assignedTo is provided, find the user ID by name/email
-    let assignedToId = null;
-    if (assignedTo) {
+    // Handle assignedTo - prefer assignedToId (user ID) over assignedTo (name/email)
+    let finalAssignedToId = null;
+    if (assignedToId) {
+      // Use provided user ID directly
+      finalAssignedToId = parseInt(assignedToId, 10);
+      // Verify user exists
+      const userCheck = await query("SELECT id FROM users WHERE id = $1", [
+        finalAssignedToId,
+      ]);
+      if (userCheck.rows.length === 0) {
+        return res.status(400).json({ message: "Assigned user not found" });
+      }
+    } else if (assignedTo) {
+      // Fallback: find user by name/email (for backward compatibility)
       const userResult = await query(
         "SELECT id FROM users WHERE name = $1 OR email = $1",
         [assignedTo],
       );
       if (userResult.rows.length > 0) {
-        assignedToId = userResult.rows[0].id;
+        finalAssignedToId = userResult.rows[0].id;
       }
     }
 
@@ -176,7 +190,7 @@ router.post("/", async (req, res, next) => {
         priority || "medium",
         status || "todo",
         dueDate ? new Date(dueDate) : null,
-        assignedToId,
+        finalAssignedToId,
         teamId || null,
         userId,
       ],
@@ -216,6 +230,7 @@ router.post("/", async (req, res, next) => {
         status: task.status || "todo",
         dueDate: task.due_date ? new Date(task.due_date).toISOString() : null,
         assignedTo: assignedToName,
+        assignedToId: task.assigned_to || null,
         teamId: task.team_id,
         teamName,
         createdAt: new Date(task.created_at).toISOString(),
@@ -231,7 +246,7 @@ router.post("/", async (req, res, next) => {
 router.put("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { title, description, priority, status, dueDate, assignedTo } =
+    const { title, description, priority, status, dueDate, assignedTo, assignedToId } =
       req.body;
 
     // Check if task exists
@@ -270,20 +285,33 @@ router.put("/:id", async (req, res, next) => {
       values.push(dueDate ? new Date(dueDate) : null);
     }
 
-    // Handle assignedTo
-    let assignedToId = null;
-    if (assignedTo !== undefined) {
-      if (assignedTo) {
+    // Handle assignedTo - prefer assignedToId (user ID) over assignedTo (name/email)
+    if (assignedToId !== undefined || assignedTo !== undefined) {
+      let finalAssignedToId = null;
+      
+      if (assignedToId !== undefined && assignedToId !== null && assignedToId !== "") {
+        // Use provided user ID directly
+        finalAssignedToId = parseInt(assignedToId, 10);
+        // Verify user exists
+        const userCheck = await query("SELECT id FROM users WHERE id = $1", [
+          finalAssignedToId,
+        ]);
+        if (userCheck.rows.length === 0) {
+          return res.status(400).json({ message: "Assigned user not found" });
+        }
+      } else if (assignedTo !== undefined && assignedTo !== null && assignedTo !== "") {
+        // Fallback: find user by name/email (for backward compatibility)
         const userResult = await query(
           "SELECT id FROM users WHERE name = $1 OR email = $1",
           [assignedTo],
         );
         if (userResult.rows.length > 0) {
-          assignedToId = userResult.rows[0].id;
+          finalAssignedToId = userResult.rows[0].id;
         }
       }
+      
       updates.push(`assigned_to = $${paramCount++}`);
-      values.push(assignedToId);
+      values.push(finalAssignedToId);
     }
 
     if (updates.length === 0) {
@@ -332,6 +360,7 @@ router.put("/:id", async (req, res, next) => {
         status: task.status || "todo",
         dueDate: task.due_date ? new Date(task.due_date).toISOString() : null,
         assignedTo: assignedToName,
+        assignedToId: task.assigned_to || null,
         teamId: task.team_id,
         teamName,
         updatedAt: new Date(task.updated_at).toISOString(),

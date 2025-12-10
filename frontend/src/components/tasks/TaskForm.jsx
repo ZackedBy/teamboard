@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { usersAPI } from "../../services/api.js";
 import "./Tasks.css";
 
 const TaskForm = ({ task, onSubmit, onCancel, teamMembers = [] }) => {
@@ -9,11 +10,40 @@ const TaskForm = ({ task, onSubmit, onCancel, teamMembers = [] }) => {
     status: "todo",
     dueDate: "",
     assignedTo: "",
+    assignedToId: "",
     teamId: "",
   });
+  const [users, setUsers] = useState([]);
+  const [loadingUsers, setLoadingUsers] = useState(true);
+
+  useEffect(() => {
+    // Fetch all users for assignment
+    const loadUsers = async () => {
+      try {
+        const data = await usersAPI.getAll();
+        setUsers(data.users || []);
+      } catch (err) {
+        console.error("Error loading users:", err);
+      } finally {
+        setLoadingUsers(false);
+      }
+    };
+    loadUsers();
+  }, []);
 
   useEffect(() => {
     if (task) {
+      // Find user ID if assignedTo is a name
+      let assignedToId = "";
+      if (task.assignedTo) {
+        const user = users.find(
+          (u) => u.name === task.assignedTo || u.email === task.assignedTo,
+        );
+        if (user) {
+          assignedToId = user.id.toString();
+        }
+      }
+
       setFormData({
         title: task.title || "",
         description: task.description || "",
@@ -21,10 +51,11 @@ const TaskForm = ({ task, onSubmit, onCancel, teamMembers = [] }) => {
         status: task.status || "todo",
         dueDate: task.dueDate ? task.dueDate.split("T")[0] : "",
         assignedTo: task.assignedTo || "",
+        assignedToId: assignedToId || task.assignedToId || "",
         teamId: task.teamId || "",
       });
     }
-  }, [task]);
+  }, [task, users]);
 
   const handleChange = (e) => {
     setFormData({
@@ -35,7 +66,12 @@ const TaskForm = ({ task, onSubmit, onCancel, teamMembers = [] }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    // Convert assignedToId to number or null
+    const submitData = {
+      ...formData,
+      assignedToId: formData.assignedToId ? parseInt(formData.assignedToId, 10) : null,
+    };
+    onSubmit(submitData);
   };
 
   return (
@@ -107,24 +143,23 @@ const TaskForm = ({ task, onSubmit, onCancel, teamMembers = [] }) => {
             />
           </div>
         </div>
-        {teamMembers.length > 0 && (
-          <div className="form-group">
-            <label htmlFor="assignedTo">Assign To</label>
-            <select
-              id="assignedTo"
-              name="assignedTo"
-              value={formData.assignedTo}
-              onChange={handleChange}
-            >
-              <option value="">Unassigned</option>
-              {teamMembers.map((member) => (
-                <option key={member.id} value={member.name}>
-                  {member.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
+        <div className="form-group">
+          <label htmlFor="assignedToId">Assign To</label>
+          <select
+            id="assignedToId"
+            name="assignedToId"
+            value={formData.assignedToId}
+            onChange={handleChange}
+            disabled={loadingUsers}
+          >
+            <option value="">Unassigned</option>
+            {users.map((user) => (
+              <option key={user.id} value={user.id}>
+                {user.name} {user.isAdmin && "(Admin)"}
+              </option>
+            ))}
+          </select>
+        </div>
         <div className="form-actions">
           <button type="submit" className="btn-primary">
             {task ? "Update Task" : "Create Task"}
