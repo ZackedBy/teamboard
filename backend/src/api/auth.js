@@ -37,21 +37,31 @@ router.post("/register", async (req, res, next) => {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create user
+    // Check if this is the first user (make them admin automatically)
+    const userCount = await query("SELECT COUNT(*) as count FROM users");
+    const isFirstUser = parseInt(userCount.rows[0].count) === 0;
+
+    // Create user (make first user admin automatically)
     const result = await query(
-      "INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id, name, email, created_at",
-      [name, email.toLowerCase(), hashedPassword],
+      "INSERT INTO users (name, email, password, is_admin) VALUES ($1, $2, $3, $4) RETURNING id, name, email, is_admin, created_at",
+      [name, email.toLowerCase(), hashedPassword, isFirstUser],
     );
 
     const user = result.rows[0];
 
-    // Generate JWT token
-    const token = jwt.sign({ id: user.id, email: user.email }, env.JWT_SECRET, {
-      expiresIn: "7d",
-    });
+    // Generate JWT token (include admin status)
+    const token = jwt.sign(
+      { id: user.id, email: user.email, isAdmin: user.is_admin || false },
+      env.JWT_SECRET,
+      {
+        expiresIn: "7d",
+      },
+    );
 
     res.status(201).json({
-      message: "User created successfully",
+      message: isFirstUser
+        ? "User created successfully. First user is now an administrator."
+        : "User created successfully",
       token,
       user: {
         id: user.id,

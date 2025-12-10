@@ -4,14 +4,17 @@ import "./Teams.css";
 const TeamCard = ({
   team,
   onJoin,
+  onLeave,
   onEdit,
   onDelete,
   currentUserId,
   isAdmin,
 }) => {
   const isCreator = team.createdById === currentUserId;
+  const isMember = team.isMember || false;
   const canEdit = isCreator || isAdmin;
   const canDelete = isCreator || isAdmin;
+  const canLeave = isMember && !isCreator; // Can't leave if you're the creator
 
   const handleDelete = () => {
     if (onDelete) {
@@ -31,16 +34,14 @@ const TeamCard = ({
         <h3>{team.name}</h3>
         {canEdit && (
           <div className="team-card-actions">
-            {canEdit && (
-              <button
-                onClick={handleEdit}
-                className="team-action-btn"
-                aria-label="Edit team"
-                title="Edit team"
-              >
-                ✏️
-              </button>
-            )}
+            <button
+              onClick={handleEdit}
+              className="team-action-btn"
+              aria-label="Edit team"
+              title="Edit team"
+            >
+              ✏️
+            </button>
             {canDelete && (
               <button
                 onClick={handleDelete}
@@ -62,16 +63,26 @@ const TeamCard = ({
         {team.createdBy && <span>Created by: {team.createdBy}</span>}
       </div>
       <div className="team-actions">
-        <Link to={`/teams/${team.id}/view`} className="btn-secondary">
-          View Team
-        </Link>
-        <Link to={`/teams/${team.id}`} className="btn-secondary">
-          View Tasks
-        </Link>
-        {onJoin && (
-          <button onClick={() => onJoin(team.id)} className="btn-primary">
-            Join Team
-          </button>
+        {isMember ? (
+          <>
+            <Link to={`/teams/${team.id}/view`} className="btn-secondary">
+              View Team
+            </Link>
+            <Link to={`/teams/${team.id}`} className="btn-secondary">
+              View Tasks
+            </Link>
+            {canLeave && onLeave && (
+              <button onClick={() => onLeave(team.id)} className="btn-secondary">
+                Leave Team
+              </button>
+            )}
+          </>
+        ) : (
+          onJoin && (
+            <button onClick={() => onJoin(team.id)} className="btn-primary">
+              Join Team
+            </button>
+          )
         )}
       </div>
     </div>

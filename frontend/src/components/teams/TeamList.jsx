@@ -76,10 +76,29 @@ const TeamList = () => {
     try {
       await teamsAPI.join(teamId);
       await loadTeams();
-      alert("Successfully joined team!");
+      setError("");
     } catch (err) {
-      setError("Failed to join team. Please try again.");
+      setError(err.message || "Failed to join team. Please try again.");
       console.error("Error joining team:", err);
+    }
+  };
+
+  const handleLeave = async (teamId) => {
+    if (
+      !confirm(
+        "Are you sure you want to leave this team? You will lose access to all team tasks.",
+      )
+    ) {
+      return;
+    }
+
+    try {
+      await teamsAPI.leave(teamId);
+      await loadTeams();
+      setError("");
+    } catch (err) {
+      setError(err.message || "Failed to leave team. Please try again.");
+      console.error("Error leaving team:", err);
     }
   };
 
@@ -124,6 +143,7 @@ const TeamList = () => {
               key={team.id}
               team={team}
               onJoin={handleJoin}
+              onLeave={handleLeave}
               onEdit={(team) => {
                 setEditingTeam(team);
                 setShowForm(true);

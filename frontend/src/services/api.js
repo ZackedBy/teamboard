@@ -114,6 +114,12 @@ export const teamsAPI = {
       method: "POST",
     });
   },
+
+  leave: async (teamId) => {
+    return apiRequest(`/teams/${teamId}/leave`, {
+      method: "POST",
+    });
+  },
 };
 
 // Users API
@@ -127,6 +133,20 @@ export const usersAPI = {
   getById: async (userId) => {
     return apiRequest(`/users/${userId}`, {
       method: "GET",
+    });
+  },
+
+  update: async (userId, userData) => {
+    return apiRequest(`/users/${userId}`, {
+      method: "PUT",
+      body: JSON.stringify(userData),
+    });
+  },
+
+  toggleAdmin: async (userId, isAdmin) => {
+    return apiRequest(`/users/${userId}`, {
+      method: "PUT",
+      body: JSON.stringify({ isAdmin }),
     });
   },
 

@@ -61,6 +61,7 @@ const UserList = () => {
               user={user}
               isAdmin={isAdmin}
               onDelete={handleDelete}
+              onUpdate={loadUsers}
               currentUserId={currentUser?.id}
             />
           ))

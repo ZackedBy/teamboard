@@ -117,6 +117,14 @@
   color: #999;
 }
 
+.user-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+  align-items: center;
+}
+
+.user-admin-btn,
 .user-delete-btn {
   background: none;
   border: none;
@@ -126,7 +134,11 @@
   border-radius: 4px;
   transition: background-color 0.2s;
   opacity: 0.7;
-  margin-left: auto;
+}
+
+.user-admin-btn:hover {
+  background-color: #fff9e6;
+  opacity: 1;
 }
 
 .user-delete-btn:hover {
@@ -166,6 +178,12 @@
     padding: 16px;
   }
 
+  .user-actions {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .user-admin-btn,
   .user-delete-btn {
     min-width: 44px;
     min-height: 44px;

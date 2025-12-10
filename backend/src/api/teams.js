@@ -8,34 +8,58 @@ const router = express.Router();
 // All routes require authentication
 router.use(authenticateToken);
 
-// Get all teams
+// Get all teams (with membership status)
 router.get("/", async (req, res, next) => {
   try {
     const userId = req.user.id;
 
-    // Get teams where user is a member or creator
-    const result = await query(
-      `SELECT DISTINCT t.*, 
-       creator.name as created_by_name,
-       COUNT(DISTINCT tm.user_id) as member_count
+    // Get ALL teams (no filtering by membership)
+    // Then check membership status for each team
+    const teamsResult = await query(
+      `SELECT 
+       t.id,
+       t.name,
+       t.description,
+       t.created_by,
+       t.created_at,
+       t.updated_at,
+       creator.name as created_by_name
        FROM teams t
-       LEFT JOIN team_members tm ON t.id = tm.team_id
        LEFT JOIN users creator ON t.created_by = creator.id
-       WHERE t.created_by = $1 OR EXISTS (
-         SELECT 1 FROM team_members WHERE team_id = t.id AND user_id = $1
-       )
-       GROUP BY t.id, creator.name
        ORDER BY t.created_at DESC`,
+    );
+
+    // Get member counts for all teams
+    const memberCountsResult = await query(
+      `SELECT team_id, COUNT(user_id) as count
+       FROM team_members
+       GROUP BY team_id`,
+    );
+
+    // Get user's team memberships
+    const userMembershipsResult = await query(
+      `SELECT team_id FROM team_members WHERE user_id = $1`,
       [userId],
     );
 
-    const teams = result.rows.map((team) => ({
+    const memberCountsMap = new Map();
+    memberCountsResult.rows.forEach((row) => {
+      memberCountsMap.set(row.team_id, parseInt(row.count, 10));
+    });
+
+    const userMembershipsSet = new Set();
+    userMembershipsResult.rows.forEach((row) => {
+      userMembershipsSet.add(row.team_id);
+    });
+
+    const teams = teamsResult.rows.map((team) => ({
       id: team.id,
       name: team.name,
       description: team.description,
       createdBy: team.created_by_name,
       createdById: team.created_by,
-      memberCount: parseInt(team.member_count, 10),
+      memberCount: memberCountsMap.get(team.id) || 0,
+      isMember: userMembershipsSet.has(team.id),
       createdAt: new Date(team.created_at).toISOString(),
     }));
 
@@ -183,6 +207,50 @@ router.post("/:id/join", async (req, res, next) => {
     );
 
     res.json({ message: "Successfully joined team" });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Leave team
+router.post("/:id/leave", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+
+    // Check if team exists
+    const teamCheck = await query("SELECT created_by FROM teams WHERE id = $1", [id]);
+
+    if (teamCheck.rows.length === 0) {
+      return res.status(404).json({ message: "Team not found" });
+    }
+
+    // Prevent creator from leaving their own team
+    if (teamCheck.rows[0].created_by === userId) {
+      return res.status(400).json({
+        message: "Team creator cannot leave the team. Transfer ownership or delete the team instead.",
+      });
+    }
+
+    // Check if user is a member
+    const memberCheck = await query(
+      "SELECT id FROM team_members WHERE team_id = $1 AND user_id = $2",
+      [id, userId],
+    );
+
+    if (memberCheck.rows.length === 0) {
+      return res.status(404).json({
+        message: "You are not a member of this team",
+      });
+    }
+
+    // Remove user from team
+    await query(
+      "DELETE FROM team_members WHERE team_id = $1 AND user_id = $2",
+      [id, userId],
+    );
+
+    res.json({ message: "Successfully left team" });
   } catch (error) {
     next(error);
   }
