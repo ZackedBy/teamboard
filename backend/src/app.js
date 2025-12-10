@@ -19,7 +19,13 @@ const allowedOrigins = env.ALLOWED_ORIGINS
   ? env.ALLOWED_ORIGINS.split(",").map((origin) => origin.trim())
   : env.NODE_ENV === "production"
     ? []
-    : ["http://localhost:80", "http://localhost:3000", "http://127.0.0.1:80"];
+    : [
+        "http://localhost:80",
+        "http://localhost:3000",
+        "http://127.0.0.1:80",
+        "http://172.16.7.59",
+        "http://172.16.7.59:80",
+      ];
 
 app.use(
   cors({

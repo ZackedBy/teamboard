@@ -25,6 +25,7 @@ services:
     env_file:
       - .env
     environment:
+      - JWT_SECRET=super_long_secret_key_change_me_to_something_random_and_secure_32_chars
       - DB_HOST=postgres
       - DB_USER=${POSTGRES_USER:-postgres}
       - DB_PASSWORD=${POSTGRES_PASSWORD:-postgres}
@@ -36,7 +37,11 @@ services:
         condition: service_healthy
 
   frontend:
-    image: ${FRONTEND_IMAGE}
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://172.16.7.59:3000/api/v1}
+    image: ${FRONTEND_IMAGE:-course-project-zada-frontend:latest}
     ports:
       - "80:80"
     env_file:
