@@ -10,7 +10,7 @@ RUN npm ci --only=production=false
 COPY . .
 
 # Build with environment variable for API URL
-# Browser must use localhost:3000, not the Docker service name
+# Accept VITE_API_BASE_URL as build argument, default to localhost for local development
 ARG VITE_API_BASE_URL=http://localhost:3000/api/v1
 ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 RUN npm run build
