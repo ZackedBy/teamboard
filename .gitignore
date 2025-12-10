@@ -142,3 +142,5 @@ vite.config.ts.timestamp-*
 backups/
 *.sql.gz
 *.sql
+.DS_Store
+.DS_Store
