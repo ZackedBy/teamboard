@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { BrowserRouter } from "react-router-dom";
-import { describe, expect, it, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { AuthProvider } from "../../contexts/AuthContext.jsx";
 import Login from "./Login.jsx";
 
@@ -49,9 +49,7 @@ describe("Login Component", () => {
     renderWithProviders(<Login />);
 
     expect(screen.getByLabelText(/remember email/i)).toBeInTheDocument();
-    expect(
-      screen.getByLabelText(/remember me.*30 days/i),
-    ).toBeInTheDocument();
+    expect(screen.getByLabelText(/remember me.*30 days/i)).toBeInTheDocument();
   });
 
   it("shows register link", () => {
@@ -82,7 +80,7 @@ describe("Login Component", () => {
 
     const emailInput = screen.getByLabelText("Email");
     const submitButton = screen.getByRole("button", { name: /login/i });
-    
+
     // Try to submit without filling fields
     await user.click(submitButton);
 
@@ -90,4 +88,3 @@ describe("Login Component", () => {
     expect(emailInput).toBeInvalid();
   });
 });
-

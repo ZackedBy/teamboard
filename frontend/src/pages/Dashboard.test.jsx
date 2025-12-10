@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
-import { describe, expect, it, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { AuthProvider } from "../contexts/AuthContext.jsx";
 import Dashboard from "./Dashboard.jsx";
 
@@ -61,12 +61,13 @@ describe("Dashboard Component", () => {
       "href",
       "/teams",
     );
-    expect(
-      screen.getByRole("link", { name: /all tasks/i }),
-    ).toHaveAttribute("href", "/tasks");
-    expect(
-      screen.getByRole("link", { name: /calendar/i }),
-    ).toHaveAttribute("href", "/calendar");
+    expect(screen.getByRole("link", { name: /all tasks/i })).toHaveAttribute(
+      "href",
+      "/tasks",
+    );
+    expect(screen.getByRole("link", { name: /calendar/i })).toHaveAttribute(
+      "href",
+      "/calendar",
+    );
   });
 });
-
