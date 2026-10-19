@@ -58,6 +58,7 @@ const TeamView = () => {
         <div className="team-view-header">
           <div>
             <button
+              type="button"
               onClick={() => navigate("/teams")}
               className="back-button"
               aria-label="Back to teams"

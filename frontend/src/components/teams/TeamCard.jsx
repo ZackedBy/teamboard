@@ -33,6 +33,7 @@ const TeamCard = ({
           <div className="team-card-actions">
             {canEdit && (
               <button
+                type="button"
                 onClick={handleEdit}
                 className="team-action-btn"
                 aria-label="Edit team"
@@ -43,6 +44,7 @@ const TeamCard = ({
             )}
             {canDelete && (
               <button
+                type="button"
                 onClick={handleDelete}
                 className="team-action-btn"
                 aria-label="Delete team"
@@ -69,7 +71,11 @@ const TeamCard = ({
           View Tasks
         </Link>
         {onJoin && (
-          <button onClick={() => onJoin(team.id)} className="btn-primary">
+          <button
+            type="button"
+            onClick={() => onJoin(team.id)}
+            className="btn-primary"
+          >
             Join Team
           </button>
         )}

@@ -3,7 +3,7 @@ import { useAuth } from "../../contexts/AuthContext.jsx";
 import "./Layout.css";
 
 const Layout = ({ children }) => {
-  const { user, logout, isAuthenticated } = useAuth();
+  const { user, logout, isAuthenticated, isAdmin } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -32,12 +32,18 @@ const Layout = ({ children }) => {
             <Link to="/tasks" className="nav-link">
               All Tasks
             </Link>
-            <Link to="/users" className="nav-link">
-              Users
-            </Link>
+            {isAdmin && (
+              <Link to="/users" className="nav-link">
+                Users
+              </Link>
+            )}
             <div className="nav-user">
               <span className="user-name">{user?.name || "User"}</span>
-              <button onClick={handleLogout} className="btn-logout">
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="btn-logout"
+              >
                 Logout
               </button>
             </div>

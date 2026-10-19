@@ -55,8 +55,8 @@ export async function initializeDatabase() {
         id SERIAL PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
         description TEXT,
-        priority VARCHAR(20) DEFAULT 'medium',
-        status VARCHAR(20) DEFAULT 'todo',
+        priority VARCHAR(20) DEFAULT 'medium' CHECK (priority IN ('low', 'medium', 'high')),
+        status VARCHAR(20) DEFAULT 'todo' CHECK (status IN ('todo', 'in-progress', 'done', 'delayed', 'blocked')),
         due_date TIMESTAMP,
         assigned_to INTEGER REFERENCES users(id) ON DELETE SET NULL,
         team_id INTEGER REFERENCES teams(id) ON DELETE CASCADE,
@@ -91,10 +91,11 @@ export async function initializeDatabase() {
       CREATE INDEX IF NOT EXISTS idx_team_members_user_id ON team_members(user_id)
     `);
 
-    console.log("Database schema initialized successfully");
+    if (process.env.NODE_ENV !== "test") {
+      console.log("Database schema initialized successfully");
+    }
   } catch (error) {
     console.error("Error initializing database:", error);
     throw error;
   }
 }
-

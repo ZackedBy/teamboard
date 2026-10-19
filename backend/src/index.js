@@ -2,7 +2,6 @@ import app from "./app.js";
 import { initializeDatabase } from "./db/schema.js";
 import { env } from "./env.js";
 
-// Retry function for database connection
 async function retryDatabaseInit(maxRetries = 10, delay = 3000) {
   for (let i = 0; i < maxRetries; i++) {
     try {
@@ -14,22 +13,18 @@ async function retryDatabaseInit(maxRetries = 10, delay = 3000) {
         console.error("Failed to initialize database after retries:", error);
         process.exit(1);
       }
-      console.log(`Database connection attempt ${i + 1} failed, retrying in ${delay}ms...`);
+      console.log(
+        `Database connection attempt ${i + 1} failed, retrying in ${delay}ms...`,
+      );
       await new Promise((resolve) => setTimeout(resolve, delay));
     }
   }
 }
 
-// Initialize database schema with retry logic
-retryDatabaseInit().catch((error) => {
-  console.error("Failed to initialize database:", error);
-  process.exit(1);
-});
+await retryDatabaseInit();
 
 const server = app.listen(env.PORT, () => {
-  /* eslint-disable no-console */
   console.log(`Listening: http://localhost:${env.PORT}`);
-  /* eslint-enable no-console */
 });
 
 server.on("error", (err) => {

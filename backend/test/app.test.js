@@ -1,5 +1,5 @@
 import request from "supertest";
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 
 import app from "../src/app.js";
 
@@ -15,12 +15,11 @@ describe("app", () => {
 describe("Security Headers", () => {
   it("should have security headers (Helmet)", async () => {
     const res = await request(app).get("/");
-    
+
     expect(res.headers).toHaveProperty("x-dns-prefetch-control");
     expect(res.headers).toHaveProperty("x-frame-options");
     expect(res.headers).toHaveProperty("strict-transport-security");
-    
-    expect(res.headers).not.toHaveProperty("x-powered-by"); 
+    expect(res.headers).not.toHaveProperty("x-powered-by");
   });
 });
 
@@ -31,6 +30,6 @@ describe("GET /", () => {
       .set("Accept", "application/json")
       .expect("Content-Type", /json/)
       .expect(200, {
-        message: "🦄🌈✨👋🌎🌍🌏✨🌈🦄",
+        message: "TeamBoard API",
       }));
 });

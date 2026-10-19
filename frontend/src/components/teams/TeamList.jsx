@@ -72,17 +72,6 @@ const TeamList = () => {
     }
   };
 
-  const handleJoin = async (teamId) => {
-    try {
-      await teamsAPI.join(teamId);
-      await loadTeams();
-      alert("Successfully joined team!");
-    } catch (err) {
-      setError("Failed to join team. Please try again.");
-      console.error("Error joining team:", err);
-    }
-  };
-
   if (loading) {
     return <div className="loading">Loading teams...</div>;
   }
@@ -92,6 +81,7 @@ const TeamList = () => {
       <div className="team-list-header">
         <h2>Teams</h2>
         <button
+          type="button"
           onClick={() => {
             setEditingTeam(null);
             setShowForm(true);
@@ -123,7 +113,6 @@ const TeamList = () => {
             <TeamCard
               key={team.id}
               team={team}
-              onJoin={handleJoin}
               onEdit={(team) => {
                 setEditingTeam(team);
                 setShowForm(true);

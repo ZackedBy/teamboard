@@ -100,6 +100,7 @@ const TaskCard = ({ task, onEdit, onDelete, onStatusChange }) => {
         </div>
         <div className="task-actions">
           <button
+            type="button"
             onClick={() => onEdit(task)}
             className="btn-icon"
             aria-label="Edit task"
@@ -107,6 +108,7 @@ const TaskCard = ({ task, onEdit, onDelete, onStatusChange }) => {
             ✏️
           </button>
           <button
+            type="button"
             onClick={() => onDelete(task.id)}
             className="btn-icon"
             aria-label="Delete task"

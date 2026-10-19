@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
+import { useAuth } from "../../contexts/AuthContext.jsx";
 import { tasksAPI } from "../../services/api.js";
 import TaskCard from "./TaskCard.jsx";
 import TaskForm from "./TaskForm.jsx";
 import "./Tasks.css";
 
 const TaskList = ({ teamId }) => {
+  const { isAdmin } = useAuth();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -93,18 +95,19 @@ const TaskList = ({ teamId }) => {
       <div className="task-list-header">
         <div>
           <h2>Tasks</h2>
-          {!teamId && (
+          {!teamId && isAdmin && (
             <label className="toggle-all-tasks">
               <input
                 type="checkbox"
                 checked={showAllTasks}
                 onChange={(e) => setShowAllTasks(e.target.checked)}
               />
-              <span>Show all tasks (from everyone)</span>
+              <span>Show every task</span>
             </label>
           )}
         </div>
         <button
+          type="button"
           onClick={() => {
             setEditingTask(null);
             setShowForm(true);

@@ -26,7 +26,9 @@ class ErrorBoundary extends Component {
         >
           <h1>Something went wrong</h1>
           <p>{this.state.error?.toString()}</p>
-          <button onClick={() => window.location.reload()}>Reload Page</button>
+          <button type="button" onClick={() => window.location.reload()}>
+            Reload Page
+          </button>
         </div>
       );
     }

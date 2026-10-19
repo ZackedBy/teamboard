@@ -1,5 +1,5 @@
 {
-  "name": "frontend",
+  "name": "teamboard-frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -8,7 +8,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "biome check ./src",
-    "test": "vitest",
+    "lint:fix": "biome check --write ./src",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "test:ci": "vitest run",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage"

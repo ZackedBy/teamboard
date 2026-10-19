@@ -3,7 +3,35 @@ import { authAPI } from "../services/api.js";
 
 const AuthContext = createContext(null);
 
-// biome-ignore lint/style/useComponentExportOnlyModules: useAuth hook needs to be exported alongside AuthProvider
+function isTokenExpired(token) {
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    if (!payload.exp) return true;
+    return payload.exp * 1000 <= Date.now();
+  } catch {
+    return true;
+  }
+}
+
+function readStoredUser() {
+  const token = localStorage.getItem("authToken");
+  const storedUser = localStorage.getItem("user");
+  if (!token || !storedUser || isTokenExpired(token)) {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("user");
+    return null;
+  }
+
+  try {
+    return JSON.parse(storedUser);
+  } catch (error) {
+    console.error("Error parsing stored user:", error);
+    localStorage.removeItem("user");
+    localStorage.removeItem("authToken");
+    return null;
+  }
+}
+
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -17,18 +45,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is already logged in
-    const storedUser = localStorage.getItem("user");
-    const token = localStorage.getItem("authToken");
-    if (storedUser && token) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch (error) {
-        console.error("Error parsing stored user:", error);
-        localStorage.removeItem("user");
-        localStorage.removeItem("authToken");
-      }
-    }
+    setUser(readStoredUser());
     setLoading(false);
   }, []);
 

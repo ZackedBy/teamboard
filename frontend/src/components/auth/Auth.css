@@ -115,7 +115,6 @@
 }
 
 .checkbox-label input[type="checkbox"] {
-  width: auto;
   margin: 0;
   margin-right: 8px;
   cursor: pointer;

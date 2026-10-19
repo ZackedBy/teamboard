@@ -27,10 +27,11 @@ const UserCard = ({ user, isAdmin, onDelete, currentUserId }) => {
               </span>
             )}
           </div>
-          <p className="user-email">{user.email}</p>
+          {user.email && <p className="user-email">{user.email}</p>}
         </div>
         {canDelete && (
           <button
+            type="button"
             onClick={handleDelete}
             className="user-delete-btn"
             aria-label="Delete user"

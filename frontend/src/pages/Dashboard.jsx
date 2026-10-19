@@ -21,21 +21,9 @@ const Dashboard = () => {
 
         <Link to="/tasks" className="dashboard-card">
           <div className="card-icon">✓</div>
-          <h3>All Tasks</h3>
-          <p>View and manage all your tasks</p>
+          <h3>Tasks</h3>
+          <p>View tasks assigned to you or created by you</p>
         </Link>
-
-        <div className="dashboard-card">
-          <div className="card-icon">📊</div>
-          <h3>Analytics</h3>
-          <p>Coming soon...</p>
-        </div>
-
-        <div className="dashboard-card">
-          <div className="card-icon">⚙️</div>
-          <h3>Settings</h3>
-          <p>Coming soon...</p>
-        </div>
       </div>
     </div>
   );

@@ -26,7 +26,10 @@ export const apiRequest = async (endpoint, options = {}) => {
   }
 
   try {
-    const response = await fetch(url, config);
+    const response = await fetch(url, {
+      ...config,
+      signal: options.signal ?? AbortSignal.timeout(apiConfig.timeout),
+    });
 
     // Handle non-JSON responses
     const contentType = response.headers.get("content-type");

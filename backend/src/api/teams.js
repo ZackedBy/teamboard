@@ -1,12 +1,12 @@
 import express from "express";
-import { query } from "../db/index.js";
-import { authenticateToken } from "../middlewares/auth.js";
-import { requireAdmin } from "../middlewares/admin.js";
+import pool, { query } from "../db/index.js";
+import { attachCurrentUser, authenticateToken } from "../middlewares/auth.js";
 
 const router = express.Router();
 
 // All routes require authentication
 router.use(authenticateToken);
+router.use(attachCurrentUser);
 
 // Get all teams
 router.get("/", async (req, res, next) => {
@@ -67,6 +67,18 @@ router.get("/:id", async (req, res, next) => {
       return res.status(404).json({ message: "Team not found" });
     }
 
+    if (!req.user.isAdmin) {
+      const membership = await query(
+        "SELECT 1 FROM team_members WHERE team_id = $1 AND user_id = $2",
+        [id, userId],
+      );
+      if (membership.rows.length === 0) {
+        return res.status(403).json({
+          message: "You are not a member of this team",
+        });
+      }
+    }
+
     const team = result.rows[0];
 
     // Get team members
@@ -103,30 +115,44 @@ router.get("/:id", async (req, res, next) => {
 // Create team
 router.post("/", async (req, res, next) => {
   try {
-    const { name, description } = req.body;
+    const name = typeof req.body.name === "string" ? req.body.name.trim() : "";
+    const description =
+      typeof req.body.description === "string"
+        ? req.body.description.trim()
+        : "";
     const userId = req.user.id;
 
     if (!name) {
       return res.status(400).json({ message: "Team name is required" });
     }
+    if (name.length > 255) {
+      return res.status(400).json({ message: "Team name is too long" });
+    }
 
-    // Create team
-    const result = await query(
-      `INSERT INTO teams (name, description, created_by)
-       VALUES ($1, $2, $3)
-       RETURNING *`,
-      [name, description || null, userId],
-    );
-
-    const team = result.rows[0];
-
-    // Automatically add creator as a team member
-    await query(
-      `INSERT INTO team_members (team_id, user_id)
-       VALUES ($1, $2)
-       ON CONFLICT (team_id, user_id) DO NOTHING`,
-      [team.id, userId],
-    );
+    const client = await pool.connect();
+    let team;
+    try {
+      await client.query("BEGIN");
+      const result = await client.query(
+        `INSERT INTO teams (name, description, created_by)
+         VALUES ($1, $2, $3)
+         RETURNING *`,
+        [name, description || null, userId],
+      );
+      team = result.rows[0];
+      await client.query(
+        `INSERT INTO team_members (team_id, user_id)
+         VALUES ($1, $2)
+         ON CONFLICT (team_id, user_id) DO NOTHING`,
+        [team.id, userId],
+      );
+      await client.query("COMMIT");
+    } catch (error) {
+      await client.query("ROLLBACK");
+      throw error;
+    } finally {
+      client.release();
+    }
 
     // Get creator name
     const creatorResult = await query("SELECT name FROM users WHERE id = $1", [
@@ -315,4 +341,3 @@ router.delete("/:id", async (req, res, next) => {
 });
 
 export default router;
-

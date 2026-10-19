@@ -31,15 +31,18 @@ const Register = () => {
       return;
     }
 
-    if (formData.password.length < 6) {
-      setError("Password must be at least 6 characters");
+    if (formData.password.length < 8) {
+      setError("Password must be at least 8 characters");
       return;
     }
 
     setLoading(true);
 
-    const { confirmPassword: _, ...userData } = formData;
-    const result = await register(userData);
+    const result = await register({
+      name: formData.name,
+      email: formData.email,
+      password: formData.password,
+    });
 
     if (result.success) {
       navigate("/dashboard");
@@ -88,7 +91,8 @@ const Register = () => {
               value={formData.password}
               onChange={handleChange}
               required
-              placeholder="Enter your password"
+              minLength={8}
+              placeholder="At least 8 characters"
             />
           </div>
           <div className="form-group">

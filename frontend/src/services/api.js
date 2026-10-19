@@ -136,12 +136,3 @@ export const usersAPI = {
     });
   },
 };
-
-// Emojis API (existing endpoint)
-export const emojisAPI = {
-  getRandom: async () => {
-    return apiRequest("/emojis/random", {
-      method: "GET",
-    });
-  },
-};
